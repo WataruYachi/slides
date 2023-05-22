@@ -40,6 +40,7 @@
 
 
 
+
 % color scheme
 \definecolor{green}{rgb}{0.0,0.5,0.0}
 \definecolor{blue}{rgb}{0.0,0.0,0.7}
@@ -50,6 +51,9 @@
 \definecolor{darkred}{rgb}{0.6,0.0,0.0}
 \definecolor{darkorange}{rgb}{0.6,0.2,0.1}
 \definecolor{darkgreen}{rgb}{0,0.3,0}
+
+\definecolor{orenge}{rgb}{0.94, 0.5, 0}
+
 %
 \newcommand{\IMAGE}[2]{\pgfdeclareimage[#1]{#2}{#2}\pgfuseimage{#2}}
 
@@ -139,7 +143,7 @@
             $Y$ is a subset of $X$ and therefore in correspondence with a $y \in X$.
         }
         \onslide<+->{
-            That is $\theta(y)=Y$. Either $y \in Y$ of $y \notin Y$.\\
+            So $\theta(y)=Y$. Thus either $y \in Y$ or $y \notin Y$.\\
         }
         \begin{itemize}[<+->]
         \item If $y \in Y$ then $y \notin Y$, because $y \notin \theta(y)$.
@@ -152,8 +156,36 @@
     \end{proof}
 \end{frame}
 
+\begin{frame}
+    \frametitle{Why it's Called ``Diagonal" Arugument}
+        consider following table where $i$th row and $j$th column is placed $1$ if $x_i \in \theta(x_j)$ and 0 otherwise 
 
+    \begin{table}
+        \centering
+    \begin{tabular}{c | c c c c c c}
+        & $\theta(x_0)$ & $\theta(x_1)$ & $\theta(x_2)$ & $\cdots$ & $\theta(x_j)$ & $\cdots$ \\ \hline
+        $x_0$    & \only<-1>{$0$}\only<2->{\colorbox{orange}{$0$}} & $1$ & $1$ & $\cdots$ & $1$ & $\cdots$ \\
+        $x_1$    & $1$ & \only<-1>{$1$}\only<2->{\colorbox{orange}{$1$}} & $0$ & $\cdots$ & $0$ & $\cdots$ \\
+        $x_2$    & $0$ & $0$ & \only<-1>{$1$}\only<2->{\colorbox{orange}{$1$}} & $\cdots$ & $1$ & $\cdots$ \\
+        $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & & $\vdots$ & \\
+        $x_i$    & $0$ & $1$ & $0$ & $\cdots$ & \only<-1>{$1$}\only<2->{\colorbox{orange}{$1$}} & $\cdots$ \\
+        $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & & $\vdots$ & \\
+    \end{tabular}
+    \end{table}
 
+    \pause
+    in above table, we can define $Y$ by pick up $x_n$ which corresponding cell along diagonal is 0\\
+    \pause
+    \onslide{\centering
+    $Y = \{x_0\}$
+    }
+\end{frame}
+
+\begin{frame}
+    \frametitle{Direct and Inverse Image of Relation}
+    \begin{definition}[direct image]
+    \end{definition}
+\end{frame}
 
 
 \end{document}
