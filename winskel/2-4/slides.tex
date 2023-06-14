@@ -35,6 +35,7 @@
 \setmainfont{CMU Serif}%{Times New Roman}
 \setmonofont{CMU Typewriter Text}%{Consolas}
 
+\usepackage{mathtools}
 \usepackage{lmodern,amsmath,amssymb,proof}
 \usepackage{tikz}
 \usetikzlibrary{arrows,positioning}
@@ -110,8 +111,16 @@
 %
 \newcommand{\app}{\circ}
 \def\coloneqq{\mathrel{\mathop:}=}%
+\newcommand{\cpair}[1]{\langle #1 \rangle}
+\newcommand{\ifthen}[3]{\mathbf{if}\; #1 \; \mathbf{then}\; #2 \; \mathbf{else}\; #3}
+\newcommand{\while}[2]{\mathbf{while}\; #1 \; \mathbf{do}\; #2}
+\AtBeginDocument{
+  \abovedisplayskip     =0.2\abovedisplayskip
+  \abovedisplayshortskip=0.2\abovedisplayshortskip
+  \belowdisplayskip     =0.2\belowdisplayskip
+  \belowdisplayshortskip=0.2\belowdisplayshortskip}
 
-\title{ 2.4 The execution of commands}
+\title{ 2.4 The Execution of Commands}
 \author{Wataru Yachi}
 \institute{JAIST}
 \date{June 15, 2023}
@@ -130,19 +139,89 @@
         means that execution of command $c$ in state $\sigma$ terminates in final state $\sigma'$.
     \end{definition}
 
-    \begin{block}{Notation}
-        Let $\sigma$ be a state. Let $m \in \mathbf{N}$. Let $X \in \mathbf{Loc}$.
-        A new state which obteined from $\sigma$ by replacing its contents in $X$ by $m$ is denoted as follows;
-        \[ \sigma[m / X]. \]
-        And we have
-        \[
-            \sigma[m/X](Y) =
-        \]
-    \end{block}
 
     \begin{example}
         $\langle X \coloneqq 5, \sigma \rangle \rightarrow \sigma'$
     \end{example}
 \end{frame}
 
+\begin{frame}
+    \frametitle{Replacement of Location}
+
+    \begin{block}{Notation}
+        Let $\sigma$ be a state. Let $m \in \mathbf{N}$. Let $X \in \mathbf{Loc}$.
+        A new state which obteined from $\sigma$ by replacing its contents in $X$ by $m$ is denoted as follows;
+        \[ \sigma \lbrack m / X \rbrack. \]
+        And we have
+        \[
+            \sigma \lbrack m/X \rbrack (Y) = \left\{ \begin{array}{lcl}
+                m & \mathrm{if} & Y = X\\
+                \sigma(Y) & \mathrm{if} & Y \neq X
+            \end{array} \right.
+        \]
+    \end{block}
+
+    \begin{example}[Quiz]
+        \begin{itemize}
+            \item $(\sigma[5/X])[3/Y](X) = \m{?}$
+            \item $\sigma[2/Y](X) = \m{?}$
+        \end{itemize}
+    \end{example}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Rules for Commands 1}
+
+    \begin{definition}
+        Atomic commands
+        \begin{align*}
+            \infer{\langle \mathbf{skip} , \sigma\rangle \rightarrow \sigma}{} 
+            \;\;\;\; 
+            \infer{\cpair{X \coloneqq a, \sigma} \to \sigma[m/X]}{\cpair{a, \sigma} \to m}
+        \end{align*}
+        Sequencing
+            \begin{align*}
+            \infer{\langle c_0;c_1, \sigma \rangle \rightarrow \sigma'}{\langle c_0, \sigma \rangle \to \sigma'' & \langle c_1, \sigma'' \rangle \to \sigma'}
+        \end{align*}
+        Conditionals
+        \begin{align*}\infer{\langle \ifthen{b}{c_0}{c_1}, \sigma \rangle \to \sigma'}
+            {\cpair{b,\sigma} \to \mathbf{true} & \cpair{c_0, \sigma} \to \sigma'}
+            \;\;\;\;\; \infer{\cpair{\ifthen{b}{c_0}{c_1}, \sigma} \to \sigma'}
+                {\cpair{b,\sigma} \to \mathbf{false} & \cpair{c_1, \sigma} \to \sigma'}
+        \end{align*}
+    \end{definition}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Rules for Commands 2}
+    \begin{definition}
+        While-loops
+        \begin{gather*}
+                \infer{\cpair{\while{b}{c}, \sigma} \to \sigma}{\cpair{b, \sigma} \to \mathbf{false}}\\
+                \infer{\cpair{\while{b}{c}, \sigma} \to \sigma'}
+                {\cpair{b,\sigma} \to \mathbf{true} & \cpair{c, \sigma} \to \sigma'' & \cpair{\while{b}{c},\sigma''} \to \sigma'}
+        \end{gather*}
+
+    \end{definition}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Equivalence Relation on Commands}
+    \begin{definition}[equivalence relation $\sim$ on commands]
+        Let $c_0$ and $c_1$ be a command,  
+        a equivalence relation $\sim$ on commands is defined as follows;
+        \[
+            c_0 \sim c_1 \coloneqq \forall \sigma, \sigma' \in \Sigma . \cpair{c_0, \sigma} \to \sigma' \iff \cpair{c_1, \sigma} \to \sigma'.
+        \]
+    \end{definition}
+
+    \begin{example}[Quiz]
+        \begin{itemize}
+            \item $X \coloneqq 5 \sim  X \coloneqq 2 + 3$ ? 
+            \item $\ifthen{\mathbf{true}}{X \coloneqq 5}{X \coloneqq 0} \sim \ifthen{\mathbf{false}}{X \coloneqq 0}{X \coloneqq 5}$ ?
+            \item $X \coloneqq 5 ; \mathbf{skip} \sim X \coloneqq 5 ; \while{\mathbf{false}}{X \coloneqq 0}$ ?
+        \end{itemize}
+    \end{example}
+
+\end{frame}
 \end{document}
