@@ -140,8 +140,12 @@
     \end{definition}
 
 
-    \begin{example}
-        $\langle X \coloneqq 5, \sigma \rangle \rightarrow \sigma'$
+    \begin{example}<+->
+        \begin{itemize}[<+->]
+            \item $\langle X \coloneqq 5, \sigma \rangle \rightarrow \sigma'$
+            \item $\cpair{\mathbf{skip}, \sigma} \to \sigma$
+            \item $\cpair{\while{\mathbf{false}}{X \coloneqq 5}, \sigma} \to \sigma$
+        \end{itemize}
     \end{example}
 \end{frame}
 
@@ -161,10 +165,11 @@
         \]
     \end{block}
 
-    \begin{example}[Quiz]
-        \begin{itemize}
-            \item $(\sigma[5/X])[3/Y](X) = \m{?}$
-            \item $\sigma[2/Y](X) = \m{?}$
+    \begin{example}[Quiz]<+->
+        \begin{itemize}[<+->]
+            \item $(\sigma[5/X])[3/Y](X) = \onslide<3->{5}$ \invisible<3->{?}
+            \pause
+            \item $\sigma[2/Y](X) = \onslide<5->{\sigma(X)}$ \invisible<5->{?}
         \end{itemize}
     \end{example}
 \end{frame}
@@ -172,7 +177,7 @@
 \begin{frame}
     \frametitle{Rules for Commands 1}
 
-    \begin{definition}
+    \begin{definition}[commands execution]
         Atomic commands
         \begin{align*}
             \infer{\langle \mathbf{skip} , \sigma\rangle \rightarrow \sigma}{} 
@@ -194,20 +199,43 @@
 
 \begin{frame}
     \frametitle{Rules for Commands 2}
-    \begin{definition}
+    \begin{definition}[commands execution]
         While-loops
         \begin{gather*}
                 \infer{\cpair{\while{b}{c}, \sigma} \to \sigma}{\cpair{b, \sigma} \to \mathbf{false}}\\
                 \infer{\cpair{\while{b}{c}, \sigma} \to \sigma'}
                 {\cpair{b,\sigma} \to \mathbf{true} & \cpair{c, \sigma} \to \sigma'' & \cpair{\while{b}{c},\sigma''} \to \sigma'}
         \end{gather*}
-
     \end{definition}
+
+
 \end{frame}
 
 \begin{frame}
+    \begin{example}
+        A deriving tree of $\cpair{X \coloneqq 2; \ifthen{X \leq 3}{X \coloneqq 0}{X \coloneqq 1}, \sigma} \to \sigma[0/X]$ is
+        {\small
+        \[
+            \infer{\cpair{X \coloneqq 2;\ifthen{X \leq 3}{X \coloneqq 0}{X \coloneqq 1}, \sigma} \to \sigma[0/X]}
+                {
+                    \infer{\cpair{X \coloneqq 2, \sigma} \to \sigma[2/X]}{\cpair{2,\sigma} \to 2} &
+                    \infer{\cpair{\ifthen{X \leq 3}{X \coloneqq 0}{X \coloneqq 1}, \sigma[2/X]} \to \sigma[0/X]}
+                        {
+                            \infer{\cpair{X \leq 3,\sigma[2/X]} \to \mathbf{true}}
+                                {\infer{\cpair{X, \sigma[2/X]} \to 2}{} & \infer{\cpair{3, \sigma[2/X]} \to 3}{}}
+                            &
+                            \infer{\cpair{X \coloneqq 0, \sigma[2/X]} \to \sigma[0/X]}{\cpair{0,\sigma[2/X]} \to 0}
+                        }
+                }.
+        \]
+    }
+    \end{example}
+\end{frame}
+
+
+\begin{frame}
     \frametitle{Equivalence Relation on Commands}
-    \begin{definition}[equivalence relation $\sim$ on commands]
+    \begin{definition}[equivalence relation $\sim$ on commands]<+->
         Let $c_0$ and $c_1$ be a command,  
         a equivalence relation $\sim$ on commands is defined as follows;
         \[
@@ -215,11 +243,13 @@
         \]
     \end{definition}
 
-    \begin{example}[Quiz]
-        \begin{itemize}
-            \item $X \coloneqq 5 \sim  X \coloneqq 2 + 3$ ? 
-            \item $\ifthen{\mathbf{true}}{X \coloneqq 5}{X \coloneqq 0} \sim \ifthen{\mathbf{false}}{X \coloneqq 0}{X \coloneqq 5}$ ?
-            \item $X \coloneqq 5 ; \mathbf{skip} \sim X \coloneqq 5 ; \while{\mathbf{false}}{X \coloneqq 0}$ ?
+    \begin{example}[Quiz]<+->
+        \begin{itemize}[<+->]
+            \item does $X \coloneqq 5 \sim  X \coloneqq 2 + 3$ hold? \onslide<4->{\alert{yes}}
+                \pause
+            \item does $\ifthen{\mathbf{true}}{X \coloneqq 5}{X \coloneqq 0} \sim \ifthen{\mathbf{false}}{X \coloneqq 0}{X \coloneqq 5}$ hold? \onslide<6->{\alert{yse}}
+                \pause
+            \item does $X \coloneqq 5 ; \mathbf{skip} \sim X \coloneqq 5 ; \while{\mathbf{false}}{X \coloneqq 0}$ hold? \onslide<8->{\alert{yes}}
         \end{itemize}
     \end{example}
 
