@@ -1,0 +1,167 @@
+% 4up version
+%\documentclass[handout, 12pt, aspectratio=169]{beamer}
+
+\documentclass[12pt,aspectratio=169]{beamer}
+
+\usefonttheme{professionalfonts}
+
+\mode<handout>
+{
+\usepackage{pgfpages}
+\pgfpagesuselayout{4 on 1}[a4paper,landscape]
+}
+
+\usepackage[english]{babel}
+\usepackage{luatexja}
+\usepackage{luatexja-fontspec}
+
+
+% for display code
+%\usepackage{minted}
+%\newfontfamily\hasklig{hasklig}[NFSSFamily=haskligFamily]
+%\setminted[haskell]{fontfamily=haskligFamily,
+%mathescape,
+%       numbersep=5pt
+%}
+
+% for proof tree
+%\usepackage{bcprules}
+
+%\usepackage[T1]{fontenc}
+
+%for lualatex
+\usepackage{fontspec}
+\setsansfont{CMU Sans Serif}%{Arial}
+\setmainfont{CMU Serif}%{Times New Roman}
+\setmonofont{CMU Typewriter Text}%{Consolas}
+
+\usepackage{lmodern,amsmath,amssymb,proof}
+\usepackage{tikz}
+\usetikzlibrary{arrows,positioning}
+
+
+
+% color scheme
+\definecolor{green}{rgb}{0.0,0.5,0.0}
+\definecolor{blue}{rgb}{0.0,0.0,0.7}
+\definecolor{red}{rgb}{0.8,0.0,0.0}
+\definecolor{lightred}{rgb}{1.0,0.97,0.97}
+\definecolor{lightblue}{rgb}{0.95,0.95,1.0}
+\definecolor{darkblue}{rgb}{0.3,0.3,0.5}
+\definecolor{darkred}{rgb}{0.6,0.0,0.0}
+\definecolor{darkorange}{rgb}{0.6,0.2,0.1}
+\definecolor{darkgreen}{rgb}{0,0.3,0}
+%
+\newcommand{\IMAGE}[2]{\pgfdeclareimage[#1]{#2}{#2}\pgfuseimage{#2}}
+
+\setbeamerfont{title}{series=\bfseries,size=\Large}
+\setbeamercolor{title}{fg=red}
+\setbeamerfont{subtitle}{series=\bfseries,size=\LARGE}
+\setbeamercolor{subtitle}{fg=red}
+\setbeamerfont{author}{series=\bfseries,size=\large}
+\setbeamercolor{author}{fg=blue}
+\setbeamerfont{institute}{series=\bfseries,size=\large}
+\setbeamercolor{institute}{fg=green}
+
+\setbeamertemplate{blocks}[rounded]
+\setbeamerfont{block title}{series=\bfseries,family=\sffamily,size=\small\strut}
+\setbeamercolor{block title}{bg=darkblue,fg=white}
+\setbeamercolor{block body}{bg=blue!4!white}
+\setbeamercolor{block title example}{bg=white,fg=darkgreen}
+\setbeamercolor{block body example}{bg=white}
+\setbeamercolor{block title alerted}{bg=darkred,fg=white}
+\setbeamercolor{block body alerted}{bg=red!4!white}
+\setbeamercolor{structure}{fg=darkred}
+% no fading effect
+\makeatletter
+\pgfdeclareverticalshading[lower.bg,upper.bg]{bmb@transition}{200cm}{%
+  color(0pt)=(lower.bg); color(4pt)=(lower.bg); color(4pt)=(upper.bg)}
+\makeatother
+
+% frametitle
+\useframetitletemplate{
+\begin{centering}
+\centerline{\large\bfseries\color{darkblue}\insertframetitle}
+\end{centering}
+}
+
+% footer  (title  page/pages)
+\setbeamertemplate{navigation symbols}{}
+\useheadtemplate{\vbox{\vskip8pt}}
+\usefoottemplate{\vbox{\vskip2pt\inserttitle\hfil\insertframenumber/\inserttotalframenumber\vskip5pt}}
+
+% enumerate/itemize environment
+\newcommand*\tikzboxed[1]{\tikz[baseline=(c.base)]{%
+\node[thick,shape=rectangle,draw,inner sep=2pt] (c) {#1};}}
+\setbeamertemplate{items}[square]
+\setbeamertemplate{enumerate item}{\tikzboxed{\footnotesize\insertenumlabel}}
+\setlength{\itemsep}{1ex}
+
+\newcommand{\m}[1]{\mathsf{#1}}
+\newcommand{\mi}[1]{\mathit{#1}}
+\newcommand{\md}[1]{\mathtt{\textcolor{blue}{#1}}}
+\newcommand{\seq}[2][n]{{#2_1},\dots,{#2_{#1}}}
+%
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\RR}{\mathcal{R}}
+\newcommand{\VV}{\mathcal{V}}
+\newcommand{\TT}{\mathcal{T}}
+\newcommand{\Var}{\mathcal{V}\m{ar}}
+%
+\newcommand{\app}{\circ}
+
+\newcommand{\cmd}[3]{\langle #1, #2 \rangle \to #3}
+\newcommand{\cmdd}[2]
+
+\title{3.2 Structural Induction}
+\author{Wataru Yachi}
+\institute{JAIST}
+\date{June 22, 2023}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}
+    \frametitle{Structural Induction on Arithmetic Expressions}
+    To prove some property $P$ for all arithmetic expressions $a$, we need to show:
+    \begin{itemize}
+        \item [1] for all $m \in \mathbf{N}$ $P(m)$ holds,
+        \item [2] for all $X \in \mathbf{Loc}$ $P(X)$ holds and
+        \item [3] for all $a_0, a_1 \in \mathbf{Aexp}$ $P(a_0)\; \& \; P(a_1)$ implise $P(a_0 * a_1)$ \\
+            where $* \in \{+, -, \times\}$.
+    \end{itemize}
+    Sometimes we must not show the property holds for subexpressions ($a_0, a_1$ in the above).
+    In that case, we can use a degenerate form of structural induction:
+    \begin{itemize}
+        \item [3] for all $a_0, a_1 \in \mathbf{Aexp}$ $P(a_0 * a_1)$ where $* \in \{+, -, \times\}$.
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+    \begin{block}{Claim}
+        For all arithmetic expressions $a$, states $\sigma$
+        and numbers $m, m'$
+        \[
+            \langle a, \sigma \rangle \to m \; \& \;
+                \langle a, \sigma \rangle \to m'
+                    \Rightarrow m = m'
+        \]
+    \end{block}
+
+    \begin{Proof}
+        We show the claim by structural induction on arithmetic expressions $a$.
+
+        \begin{itemize}
+            \item If $a$ is number $n$, $\cmd{a}{\sigma}{m}$ and $\cmd{a}{\sigma}{m'}$ implies $m = n = m'$.
+            \item If $a = a_0 + a_1$, we have $\cmd{a_0}{\sigma}{m_0}$ and $\cmd{a_1}{\sigma}{m_1}$ with $ m = m_0 + m_1$
+                and also, we have $\cmd{a_0}{\sigma}{m'_0}$ and $\cmd{a_1}{\sigma}{m'_1}$ with $ m' = m'_0 + m'_1$.\\ 
+                By induction hypothesis $m_0 = m_0'$ and $m_1 = m'_1$.\\
+                So $ m = m_0 + m_1 = m'_0 + m'_1 = m'$.
+        \end{itemize}
+        The remaning cases follow in a similar way.
+    \end{Proof}
+\end{frame}
+
+\end{document}
