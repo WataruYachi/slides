@@ -1,0 +1,206 @@
+% 4up version
+\documentclass[handout, 12pt, aspectratio=169]{beamer}
+
+%\documentclass[12pt,aspectratio=169]{beamer}
+
+\usefonttheme{professionalfonts}
+
+\mode<handout>
+{
+\usepackage{pgfpages}
+\pgfpagesuselayout{4 on 1}[a4paper,landscape]
+}
+
+\usepackage[english]{babel}
+\usepackage{luatexja}
+\usepackage{luatexja-fontspec}
+
+
+% for display code
+%\usepackage{minted}
+%\newfontfamily\hasklig{hasklig}[NFSSFamily=haskligFamily]
+%\setminted[haskell]{fontfamily=haskligFamily,
+%mathescape,
+%       numbersep=5pt
+%}
+
+% for proof tree
+%\usepackage{bcprules}
+
+%\usepackage[T1]{fontenc}
+
+%for lualatex
+\usepackage{fontspec}
+\setsansfont{CMU Sans Serif}%{Arial}
+\setmainfont{CMU Serif}%{Times New Roman}
+\setmonofont{CMU Typewriter Text}%{Consolas}
+
+\usepackage{lmodern,amsmath,amssymb,proof}
+\usepackage{tikz}
+\usetikzlibrary{arrows,positioning}
+
+
+
+% color scheme
+\definecolor{green}{rgb}{0.0,0.5,0.0}
+\definecolor{blue}{rgb}{0.0,0.0,0.7}
+\definecolor{red}{rgb}{0.8,0.0,0.0}
+\definecolor{lightred}{rgb}{1.0,0.97,0.97}
+\definecolor{lightblue}{rgb}{0.95,0.95,1.0}
+\definecolor{darkblue}{rgb}{0.3,0.3,0.5}
+\definecolor{darkred}{rgb}{0.6,0.0,0.0}
+\definecolor{darkorange}{rgb}{0.6,0.2,0.1}
+\definecolor{darkgreen}{rgb}{0,0.3,0}
+%
+\newcommand{\IMAGE}[2]{\pgfdeclareimage[#1]{#2}{#2}\pgfuseimage{#2}}
+
+\setbeamerfont{title}{series=\bfseries,size=\Large}
+\setbeamercolor{title}{fg=red}
+\setbeamerfont{subtitle}{series=\bfseries,size=\LARGE}
+\setbeamercolor{subtitle}{fg=red}
+\setbeamerfont{author}{series=\bfseries,size=\large}
+\setbeamercolor{author}{fg=blue}
+\setbeamerfont{institute}{series=\bfseries,size=\large}
+\setbeamercolor{institute}{fg=green}
+
+\setbeamertemplate{blocks}[rounded]
+\setbeamerfont{block title}{series=\bfseries,family=\sffamily,size=\small\strut}
+\setbeamercolor{block title}{bg=darkblue,fg=white}
+\setbeamercolor{block body}{bg=blue!4!white}
+\setbeamercolor{block title example}{bg=white,fg=darkgreen}
+\setbeamercolor{block body example}{bg=white}
+\setbeamercolor{block title alerted}{bg=darkred,fg=white}
+\setbeamercolor{block body alerted}{bg=red!4!white}
+\setbeamercolor{structure}{fg=darkred}
+% no fading effect
+\makeatletter
+\pgfdeclareverticalshading[lower.bg,upper.bg]{bmb@transition}{200cm}{%
+  color(0pt)=(lower.bg); color(4pt)=(lower.bg); color(4pt)=(upper.bg)}
+\makeatother
+
+% frametitle
+\useframetitletemplate{
+\begin{centering}
+\centerline{\large\bfseries\color{darkblue}\insertframetitle}
+\end{centering}
+}
+
+% footer  (title  page/pages)
+\setbeamertemplate{navigation symbols}{}
+\useheadtemplate{\vbox{\vskip8pt}}
+\usefoottemplate{\vbox{\vskip2pt\inserttitle\hfil\insertframenumber/\inserttotalframenumber\vskip5pt}}
+
+% enumerate/itemize environment
+\newcommand*\tikzboxed[1]{\tikz[baseline=(c.base)]{%
+\node[thick,shape=rectangle,draw,inner sep=2pt] (c) {#1};}}
+\setbeamertemplate{items}[square]
+\setbeamertemplate{enumerate item}{\tikzboxed{\footnotesize\insertenumlabel}}
+\setlength{\itemsep}{1ex}
+
+\newcommand{\m}[1]{\mathsf{#1}}
+\newcommand{\mi}[1]{\mathit{#1}}
+\newcommand{\md}[1]{\mathtt{\textcolor{blue}{#1}}}
+\newcommand{\seq}[2][n]{{#2_1},\dots,{#2_{#1}}}
+%
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\RR}{\mathcal{R}}
+\newcommand{\VV}{\mathcal{V}}
+\newcommand{\TT}{\mathcal{T}}
+\newcommand{\Var}{\mathcal{V}\m{ar}}
+%
+\newcommand{\app}{\circ}
+
+\newcommand{\torule}{\to_{\mathtt{rule}}}
+\newcommand{\tocalc}{\to_{\mathtt{calc}}}
+
+\title{ TITLE }
+\author{Wataru Yachi}
+\institute{JAIST}
+\date{month DD, YYYY}
+
+\begin{document}
+
+%\maketitle
+
+\begin{frame}
+    \frametitle{Motivation}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Sort}
+\end{frame}
+
+\begin{frame}
+    \frametitle{$\to_\RR$}
+\end{frame}
+
+\begin{frame}
+    \frametitle{LCTRS}
+\end{frame}
+
+\begin{frame}
+    \[
+        \m{sum}(n) = \sum \{ x \mid 0 \leq x \leq n, \text{$x$ is even 1}\}
+    \]
+    \begin{example}
+        \begin{tabular}{ll}
+        $\m{sum}(x) \to \m{sum2}(\m{even}(x),x)$ & \\
+        $\m{sum2}(\m{true}, x) \to \m{sum3}(x)$ & $\m{sum2}(\m{false}, x)$ \to $\m{sum3}(\m{p}(x))$\\
+        $\m{sum3}(\m{s}(\m{s}(x))) \to \m{add}(\m{s}(\m{s}(x)), \m{sum3}(x))$ & $\m{sum3}(\m{0}) \to \m{0}$\\\\
+        $\m{even}(\m{s}(\m{s}(x))) \to \m{even}(x)$ & $\m{even}(\m{s}(x)) \to \m{false}$\\
+        $\m{even}(\m{0}) \to \m{true}$ & \\
+        $\m{p}(\m{s}(x)) \to x$ & $\m{p}(\m{0}) \to \m{0}$\\
+        $\m{add}(x,\m{s}(y)) \to \m{s}(\m{add}(x,y))$ & $\m{add}(x,\m{0}) \to x$
+        \end{tabular}
+    \end{example}
+\end{frame}
+
+\begin{frame}
+    \begin{example}
+        \begin{tabular}{ll}
+            $\m{sum} : [\m{int}] \Rightarrow \m{int}$ & $\m{sum2} [\m{bool} \times \m{int}] \Rightarrow \m{int}$ \\
+            $\m{0} : \m{int}$ & $\m{s} : [\m{int}] \Rightarrow \m{int}$\\
+            $\m{true} : \m{bool}$ & $\m{false} :\m{bool}$
+        \end{tabular}
+
+        \begin{itemize}
+            \item $\m{sum}(\m{0})$
+            \item $\m{sum2}(\m{true}, \m{s}(\m{0}))$
+            \item $\m{s}(\m{false})$
+            \item $\m{sum2}(\m{s}(\m{0}) ,\m{ture})$
+        \end{itemize}
+
+    \end{example}
+\end{frame}
+
+\begin{frame}
+    \begin{example}
+    \begin{tabular}{ll}
+        $\m{sum}(x) \to \m{sum2}(x) \; [x \bmod 2 = 0]$ & $\m{sum}(x) \to \m{sum2}(x - 1) \; [x \bmod 2 = 1]$\\
+        $\m{sum2}(x) \to x + \m{sum2}(x-2) \; [\neg(0 \geq x)]$ & $\m{sum2}(x) \to 0 \; [0 \geq x]$
+    \end{tabular}
+    \end{example}
+    \begin{example}
+    \begin{tabular}{l}
+        $\m{sum}(x) \to x + \m{sum}(x - \m{2}) \; [\neg(\m{0} \geq x) \land \m{even}(x)]$ \\
+        $\m{sum}(x) \to \m{sum}(x - \m{1}) \; [\neg(\m{0} \geq x) \land \neg(\m{even}(x))]$\\
+        $\m{sum}(x) \to \m{0} \; [\m{0} \geq x]$
+    \end{tabular}
+
+        where $\mathcal{J}_{\m{even}} = \lambda x.\text{''$x$ is even 1"}$
+    \end{example}
+
+\end{frame}
+
+\begin{frame}
+    \begin{example}
+        \begin{align*}
+            \m{sum}(\m{4}) & \torule \m{sum2}(\m{4}) \torule \m{4} + \m{sum2}(\m{4}-\m{2}) \tocalc \m{4} + \m{sum2}(\m{2}) \\
+             & \torule \m{4} + (\m{2} + \m{sum2}(\m{2} - \m{0})) \tocalc \m{4} + (\m{2} + \m{sum2}(\m{0})) \\
+             & \torule \m{4} + (\m{2} + \m{0}) \tocalc \m{4} + \m{2} \tocalc \m{6}
+        \end{align*}
+    \end{example}
+\end{frame}
+
+
+\end{document}
