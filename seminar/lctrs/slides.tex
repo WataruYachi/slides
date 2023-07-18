@@ -1,7 +1,7 @@
 % 4up version
-\documentclass[handout, 12pt, aspectratio=169]{beamer}
+%\documentclass[handout, 12pt, aspectratio=169]{beamer}
 
-%\documentclass[12pt,aspectratio=169]{beamer}
+\documentclass[12pt,aspectratio=169]{beamer}
 
 \usefonttheme{professionalfonts}
 
@@ -38,8 +38,10 @@
 \usepackage{lmodern,amsmath,amssymb,proof}
 \usepackage{tikz}
 \usetikzlibrary{arrows,positioning}
+\usepackage{stmaryrd}
 
-
+\usepackage{comment}
+\usepackage{listings}
 
 % color scheme
 \definecolor{green}{rgb}{0.0,0.5,0.0}
@@ -106,54 +108,380 @@
 \newcommand{\RR}{\mathcal{R}}
 \newcommand{\VV}{\mathcal{V}}
 \newcommand{\TT}{\mathcal{T}}
-\newcommand{\Var}{\mathcal{V}\m{ar}}
+\newcommand{\Var}{\mathcal{V}\mathrm{ar}}
+\newcommand{\LVar}{\mathcal{LV}\mathrm{ar}}
+\newcommand{\II}{\mathcal{I}}
+\newcommand{\JJ}{\mathcal{J}}
 %
 \newcommand{\app}{\circ}
 
 \newcommand{\torule}{\to_{\mathtt{rule}}}
 \newcommand{\tocalc}{\to_{\mathtt{calc}}}
 
-\title{ TITLE }
+\newcommand{\Terms}{\TT\mathrm{erms}}
+\newcommand{\Stheory}{\Sigma_\mi{theory}}
+\newcommand{\Sterms}{\Sigma_\mi{terms}}
+\newcommand{\interpret}[1]{\llbracket #1 \rrbracket_\JJ}
+
+\lstset{
+  %language=c,
+  basicstyle={\ttfamily\normalsize},
+  %basicstyle=\normalsize,
+  commentstyle=\textit,
+  classoffset=1,
+  keywordstyle=\bfseries,
+  %frame=tRBl,
+  %framesep=10pt,
+  showstringspaces=false,
+  %numbers=left,
+  stepnumber=1,
+  numberstyle=\footnotesize,
+  tabsize=2,
+  breaklines=true
+}
+
+\title{ Logically Constrained Term Rewriting Systems }
 \author{Wataru Yachi}
 \institute{JAIST}
-\date{month DD, YYYY}
+\date{July 21, 2023}
 
 \begin{document}
 
-%\maketitle
+\maketitle
 
+\begin{comment}
 \begin{frame}
-    \frametitle{Motivation}
-\end{frame}
+    \frametitle{If Treat Integers in Rules}
 
-\begin{frame}
-    \frametitle{Sort}
-\end{frame}
-
-\begin{frame}
-    \frametitle{$\to_\RR$}
-\end{frame}
-
-\begin{frame}
-    \frametitle{LCTRS}
-\end{frame}
-
-\begin{frame}
-    \[
-        \m{sum}(n) = \sum \{ x \mid 0 \leq x \leq n, \text{$x$ is even 1}\}
-    \]
     \begin{example}
+        for every $n,m,k \in \mathbb{Z}$
+        \begin{tabular}{lcl}
+            $\m{add}(\m{m}, \m{n}) \to k$ & if & $k = m + n$ \\
+            $\m{even}(\m{n}) \to \m{true}$  & if & $n$ is even number\\
+            $\m{even}(\m{n}) \to \m{false}$ & if & $n$ is not even number
+            \end{tabular}
+    \end{example}
+\end{frame}
+\end{comment}
+
+\begin{frame}[fragile]
+    \frametitle{Motivation}
+
+\begin{center}
+\begin{tabular}{c}
+\begin{lstlisting}
+function sum(int n){
+    if (even(n))
+        n = n;
+    else
+        n = n - 1;
+    int x = 0;
+    while(0 <= n) {
+        x = x + n;
+        n = n - 2;
+    }
+}
+\end{lstlisting}
+\end{tabular}
+\end{center}
+    \[
+        \m{sum}(n) = \sum \{ x \mid 0 \leq x \leq n, \text{$x$ is even number}\}
+    \]
+\end{frame}
+
+\begin{frame}
+        TRS
+        \vspace{2mm}
+        {\small
         \begin{tabular}{ll}
         $\m{sum}(x) \to \m{sum2}(\m{even}(x),x)$ & \\
         $\m{sum2}(\m{true}, x) \to \m{sum3}(x)$ & $\m{sum2}(\m{false}, x)$ \to $\m{sum3}(\m{p}(x))$\\
-        $\m{sum3}(\m{s}(\m{s}(x))) \to \m{add}(\m{s}(\m{s}(x)), \m{sum3}(x))$ & $\m{sum3}(\m{0}) \to \m{0}$\\\\
+        $\m{sum3}(\m{s}(\m{s}(x))) \to \m{add}(\m{s}(\m{s}(x)), \m{sum3}(x))$ & $\m{sum3}(\m{0}) \to \m{0}$\\
         $\m{even}(\m{s}(\m{s}(x))) \to \m{even}(x)$ & $\m{even}(\m{s}(x)) \to \m{false}$\\
         $\m{even}(\m{0}) \to \m{true}$ & \\
         $\m{p}(\m{s}(x)) \to x$ & $\m{p}(\m{0}) \to \m{0}$\\
         $\m{add}(x,\m{s}(y)) \to \m{s}(\m{add}(x,y))$ & $\m{add}(x,\m{0}) \to x$
         \end{tabular}
+        }
+
+        LCTRS
+        \vspace{2mm}
+        {\small
+        \begin{tabular}{ll}
+            $\m{sum}(x) \to \m{sum2}(x)$ & \\
+            $\m{sum2}(x) \to \m{sum3}(x) \; [\m{even}(x)]$ & $\m{sum2}(x) \to \m{sum3}(x-1) \; [\neg(\m{even}(x))]$ \\
+            $\m{sum3}(x) \to x + \m{sum3}(x) \; [\neg(0 \geq x)]$ & $\m{sum3}(x) \to \m{0} \; [0 \geq x]$
+        \end{tabular}
+        }
+\end{frame}
+
+\begin{frame}
+    \frametitle{Signature}
+    \begin{definition}[signature]
+        \begin{itemize}
+        \item \textbf{signature} $\Sigma$ is set of function symbols $f$
+        \item each $f$ has \textbf{sort declaration}
+        $[\iota_1 \times \cdots \times \iota_n] \Rightarrow \kappa$
+        where all $\iota_i$ and $\kappa$ are sorts
+        \item abbreviate $f : [] \Rightarrow \kappa$ to $f : \kappa$
+    \end{itemize}
+    \end{definition}
+    \begin{example}
+    \begin{tabular}{llll}
+        $\m{0} : \m{int}$ & $\m{s} : [\m{int}] \Rightarrow \m{int}$ & $\m{true} : \m{bool}$ & $\m{false} : \m{bool}$ \\
+        $\m{even} : [\m{int}] \Rightarrow \m{bool}$ &
+        $\m{sum} : [\m{int}] \Rightarrow \m{int}$ & $\m{sum2} : [\m{bool} \times \m{int}] \Rightarrow \m{int}$ &
+    \end{tabular}
     \end{example}
 \end{frame}
+
+\begin{frame}
+    \frametitle{Term}
+    \begin{definition}[term]
+        \begin{itemize}
+        \item let $\VV$ be set of variables each equipped with sort
+        and $\Sigma$ be signature,
+        \textbf{term} $s : \iota$ over $\Sigma$ and $\VV$ iff
+        $\vdash s : \iota$ can be derived using following inference rules:
+        \begin{align*}
+            \infer{\vdash x : \iota}{x : \iota \in \VV} \;\;\;\;
+                & \infer{\vdash f(s_1,\cdots, s_n) : \kappa}
+                    {\vdash s_1 : \iota_1 & \cdots & \vdash s_n : \iota_n
+                    & f:[\iota_1 \times \cdots \times \iota_n]
+                    \Rightarrow \kappa \in \Sigma}
+        \end{align*}
+        \item in this time, we say term $s : \iota$ is \textbf{well-sorted}
+        \item $\Terms(\Sigma, \VV)$ is set of all terms over $\Sigma$ and $\VV$
+        \item $\Var(s)$ is set of all variables in $s$
+        \item term $s$ is \textbf{ground} if $\Var(s) = \emptyset$
+        \end{itemize}
+    \end{definition}
+\end{frame}
+
+
+\begin{frame}
+    \begin{example}
+        \begin{itemize}
+        \item $\m{sum2}(\m{even}(x), x) : \m{int}$ is well-sorted
+        {\small
+            \begin{align*}
+                \infer{\vdash \m{sum2}(\m{even}(x), \m{0}) : \m{int}}
+                {\infer{\vdash \m{even}(x) : \m{bool}}
+                    {\infer{\vdash x : \m{int}}{x : \m{int} \in \VV} & \m{even} : [\m{int}] \Rightarrow \m{bool} \in \Sigma}
+                & \infer{\vdash x : \m{int}}{x : \m{int} \in \VV}
+                & \m{sum2} : [\m{bool} \times \m{int}] \Rightarrow \m{int} \in \Sigma
+                }
+            \end{align*}
+        }
+        \item $\m{sum2}(\m{s}(\m{0}), \m{false}) : \m{int}$ is ill-sorted
+        \item $\m{sum}(\m{s}(\m{0}))$ is ground term
+        \item $\m{sum}(x)$ is non-ground term
+        \end{itemize}
+    \end{example}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Substitution and Context}
+    \begin{definition}[substitution]
+        \begin{itemize}
+            \item \textbf{substitution} $\gamma$ is mapping from variables to terms
+        $\{x_1:\iota_1 \mapsto s_1 : \iota_1, \cdots x_n:\iota_n \mapsto s_n : \iota_n\}$
+            \item $s\gamma$ denotes applying $\gamma$ to $s$
+        \end{itemize}
+    \end{definition}
+    \begin{definition}[context]
+        \begin{itemize}
+            \item \textbf{context} $C$ is term which contains special variables $\Box_i$
+            \item $C[s_1,\cdots,s_n]$ denotes $C$ with each $\Box_i$ replaced by corresponding $s_i$
+        \end{itemize}
+    \end{definition}
+\end{frame}
+
+\begin{frame}
+    \frametitle{}
+
+    \begin{tabular}{ll}
+        $\m{sum}(x) \to \m{sum2}(\m{even}(x),x)$ & \\
+        $\m{sum2}(\m{true}, x) \to \m{sum3}(x)$ & $\m{sum2}(\m{false}, x)$ \to $\m{sum3}(\m{p}(x))$\\
+        $\m{sum3}(\m{s}(\m{s}(x))) \to \m{add}(\m{s}(\m{s}(x)), \m{sum3}(x))$ & $\m{sum3}(\m{0}) \to \m{0}$\\\\\\
+        $\m{even}(\m{s}(\m{s}(x))) \to \m{even}(x)$ & $\m{even}(\m{s}(x)) \to \m{false}$\\
+        $\m{even}(\m{0}) \to \m{true}$ & \\
+        $\m{p}(\m{s}(x)) \to x$ & $\m{p}(\m{0}) \to \m{0}$\\
+        $\m{add}(x,\m{s}(y)) \to \m{s}(\m{add}(x,y))$ & $\m{add}(x,\m{0}) \to x$
+        \end{tabular}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{$\Sterms$ and $\Stheory$}
+    from now, consider two signatures $\Sterms$ and $\Stheory$
+    \begin{example}
+        \begin{itemize}
+            \item $\Sterms$\\
+                \begin{tabular}{lll}
+                    $\m{sum} : [\m{int}] \Rightarrow \m{int}$ & $\m{sum2} : [\m{bool} \times \m{int}] \Rightarrow \m{int}$ & $\m{sum3} : [\m{int}] \Rightarrow \m{int}$
+                \end{tabular}
+            \item $\Stheory$\\
+                \begin{tabular}{lll}
+                    $\m{n} : \m{int}$ (for all $n \in \mathbb{Z}$) & $\m{true} : \m{bool}$ & $\m{false} : \m{bool}$\\
+                    $+ : [\m{int} \times \m{int}] \Rightarrow \m{int}$ & $- : [\m{int} \times \m{int}] \Rightarrow \m{int}$ &\\
+                    $\geq : [\m{int} \times \m{int}] \Rightarrow \m{bool}$ & $\m{even}: [\m{int} \times \m{int}] \Rightarrow \m{bool}$ & $\neg : [\m{bool}] \Rightarrow \m{bool}$
+                \end{tabular}
+        \end{itemize}
+    \end{example}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Logical Term}
+
+    \begin{definition}[proper and logical term]
+        for term $s \in \Terms(\Sterms \cup \Stheory, \VV)$
+        \begin{itemize}
+            \item $s$ is \textbf{proper term} if $s \in \Terms(\Sterms, \VV)$
+            \item $s$ is \textbf{logical term} if $s \in \Terms(\Stheory, \VV)$
+            \item logical term is \textbf{value} if it is form of $s : \kappa$
+        \end{itemize}
+    \end{definition}
+
+    \begin{example}
+        \begin{itemize}
+            \item $\m{0},\m{true}$ logical term and value
+            \item $\m{x} + 1$ logical term
+            \item $\m{sum2}(\m{true},x)$ proper term
+            \item $\m{sum}{(\m{1} + \m{1})}$ mixed term
+        \end{itemize}
+    \end{example}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Interpretation of $\Stheory$}
+    \begin{definition}[interpretation mapping$\JJ$]
+        assume mapping $\II_\iota$ from occurring sort $\iota$ in $\Stheory$ to corresponding set
+        \begin{itemize}
+        \item \textbf{interpretation mapping} $\JJ$ is mapping from each
+            $f : [\iota_1 \times \cdots \times \iota_n] \in \Stheory$ to function $\JJ_f \in \II_{\iota_1} \Rightarrow \cdots \II{\iota_n} \Rightarrow \II{\kappa}$
+        \item interpretation $\JJ$ can be extended to interpretation of ground logical term
+            $\interpret{f(s_1,\cdot,s_n)} = \JJ_f(\interpret{s_1},\cdots,\interpret{s_n})$
+        \end{itemize}
+    \end{definition}
+
+    \begin{example}
+        choose $\II(\m{int}) = \mathbb{Z}$ and $\II(\m{bool}) = \mathbb{B} = \{\top, \perp \}$
+        \begin{itemize}
+            \item $\JJ(\m{+} : [\m{int} \times \m{int}] \Rightarrow \m{int}) = \lambda x y.x + y$
+            \item $\JJ(\m{even} : [\m{int}] \Rightarrow \m{bool}) = \lambda x.\text{''$x$ is even number"}$
+        \end{itemize}
+    \end{example}
+\end{frame}
+
+\begin{frame}
+        \begin{align*}
+        \m{sum}(x) &\to \m{sum2}(\m{even}(x),x) \\
+        \m{sum2}(\m{true}, x) &\to \m{sum3}(\neg(0 \geq x), x) \\
+        \m{sum2}(\m{false}, x) &\to \m{sum3}(\neg(0 \geq (x-\m{1})), x - \m{1}))\\
+        \m{sum3}(\m{true}, x) &\to x + \m{sum3}(\neg(0 \geq x-2), x-2) \\
+        \m{sum3}(\m{false},x) &\to \m{0}\\
+        \end{align*}
+        \vspace{-10mm}
+        \begin{align*}
+            \m{sum}(x) &\to \m{sum2}(x) &\\
+            \m{sum2}(x) &\to \m{sum3}(x) & \text{if} & \;\; \m{even}(x)\\
+            \m{sum2}(x) &\to \m{sum3}(x-\m{1}) & \text{if} & \;\; \neg(\m{even}(x))\\
+            \m{sum3}(x) &\to x + {sum3}(x-2) & \text{if} & \;\; \neg(0 \geq x)  \\
+            \m{sum3}(x) &\to \m{0} & \text{if} & \;\;0 \geq x \\
+        \end{align*}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Logical Constraint}
+    \begin{definition}[logical constraint]
+        \begin{itemize}
+        \item \textbf{logical constraint} is logical term of sort $\m{bool}$ with $\mathcal{I}_{\m{bool}} = \mathbb{B}$
+        \item logical constraint $\varphi$ is \textbf{valid} if $\llbracket \varphi\gamma \rrbracket_\JJ = \top$ for all substitution $\gamma$
+        \end{itemize}
+    \end{definition}
+    \begin{example}
+        \begin{itemize}
+            \item $\m{even}(\m{x} + \m{1})$ logical constraint
+            \item $\m{5} + {3}$ not logical constraint
+            \item $\m{true}$ logical constraint
+        \end{itemize}
+    \end{example}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Rewrite Rule}
+    \begin{definition}[rewrite rule]
+        let $l$ and $r$ be term and $\varphi$ be logical constraint
+        \begin{itemize}
+            \item \textbf{rewrite rule} is triple $l \to r \; [\varphi]$
+            \item $l$ and $r$ must be same sort
+            \item denote $l \to r$ if $l \to r \; [\m{true}]$
+            \item $\LVar(l \to r \; [\varphi])$ is defined as $\Var(\varphi) \cup (\Var(r) \setminus \Var(l))$
+        \end{itemize}
+    \end{definition}
+    \begin{itemize}
+        \item $\m{sum}(x) \to \m{sum2}(x)$ rule
+        \item $\m{sum2}(x) \to \m{sum3}(x-1) \; [\neg(\m{even}(x))]$ rule
+        \item $\m{sum}(x) \to \m{true} \; [\m{even}(x)]$ not rule
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Logically Constrained Term Rewriting System}
+    \begin{definition}[LCTRS]
+        \textbf{logical constrained term rewriting system} is set of rewrite rules
+    \end{definition}
+
+    \begin{example}
+        \begin{tabular}{ll}
+            $\m{sum}(x) \to \m{sum2}(x)$ & \\
+            $\m{sum2}(x) \to \m{sum3}(x) \; [\m{even}(x)]$ & $\m{sum2}(x) \to \m{sum3}(x-1) \; [\neg(\m{even}(x))]$ \\
+            $\m{sum3}(x) \to x + \m{sum3}(x) \; [0 \leq x]$ & $\m{sum3}(x) \to \m{0} \; [\neg(0 \leq x)]$
+        \end{tabular}
+    \end{example}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Rewrite Relation $\to_\RR$}
+    \begin{definition}
+        substitution $\gamma$ \textbf{respects} rule $l \to r \; [\varphi]$ if
+        \begin{itemize}
+            \item $Dom(\gamma) = \Var(l) \cup \Var(r) \cup \Var(\varphi)$
+            \item $\gamma(x)$ is value for all $x \in \LVar(l \to r \; [\varphi])$
+            \item $\varphi\gamma$ is valid
+        \end{itemize}
+    \end{definition}
+    \begin{definition}[rewrite relation $\to_\RR$]
+        \textbf{rewrite relation} $\to_\RR$ is union of $\torule$ and $\tocalc$ where
+        \begin{itemize}
+            \item $C[l\gamma] \torule C[r\gamma]$ if $l \to r \; [\varphi] \in \RR$ and $\gamma$ respects $l \to r \; [\varphi]$
+            \item $C[f(s_1,\cdots,s_n)] \tocalc C[v]$ if $f \in \Stheory\setminus\Sterms$, all $s_i$ values and $v$ is value of $f(s_1,\cdots,s_n)$
+        \end{itemize}
+    \end{definition}
+\end{frame}
+
+\begin{frame}
+    \begin{example}
+        \begin{tabular}{ll}
+            $\m{sum}(x) \to \m{sum2}(x)$ & \\
+            $\m{sum2}(x) \to \m{sum3}(x) \; [\m{even}(x)]$ & $\m{sum2}(x) \to \m{sum3}(x-1) \; [\neg(\m{even}(x))]$ \\
+            $\m{sum3}(x) \to x + \m{sum3}(x) \; [\neg(0 \geq x)]$ & $\m{sum3}(x) \to \m{0} \; [0 \geq x]$
+        \end{tabular}
+        \begin{align*}
+            & \m{sum}(\m{5}) \torule \m{sum2}(\m{5}) \torule \m{sum3}(\m{5} - \m{1}) \tocalc \m{sum3}(\m{4})\\
+            & \torule \m{4} + \m{sum3}(\m{4} -\m{2}) \tocalc \m{4} + \m{sum3}(\m{2}) \torule \m{4} + (\m{2} + \m{sum3}(\m{2}-\m{2}))\\
+            & \tocalc \m{4} + (\m{2} + \m{sum3}(0)) \torule \m{4} + (\m{2} + \m{0}) \tocalc \m{4} + \m{2} \\
+            & \tocalc \m{6}
+        \end{align*}
+    \end{example}
+
+\end{frame}
+
+\begin{comment}
+
 
 \begin{frame}
     \begin{example}
@@ -187,7 +515,7 @@
         $\m{sum}(x) \to \m{0} \; [\m{0} \geq x]$
     \end{tabular}
 
-        where $\mathcal{J}_{\m{even}} = \lambda x.\text{''$x$ is even 1"}$
+        where $\mathcal{J}_{\m{even}} = \lambda x.\text{''$x$ is even number"}$
     \end{example}
 
 \end{frame}
@@ -202,5 +530,6 @@
     \end{example}
 \end{frame}
 
+\end{comment}
 
 \end{document}
