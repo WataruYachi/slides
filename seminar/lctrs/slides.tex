@@ -190,10 +190,9 @@ function sum(int n){
 \end{frame}
 
 \begin{frame}
-        TRS
-        \vspace{2mm}
-        {\small
+
         \begin{tabular}{ll}
+        TRS & \\
         $\m{sum}(x) \to \m{sum2}(\m{even}(x),x)$ & \\
         $\m{sum2}(\m{true}, x) \to \m{sum3}(x)$ & $\m{sum2}(\m{false}, x)$ \to $\m{sum3}(\m{p}(x))$\\
         $\m{sum3}(\m{s}(\m{s}(x))) \to \m{add}(\m{s}(\m{s}(x)), \m{sum3}(x))$ & $\m{sum3}(\m{0}) \to \m{0}$\\
@@ -202,17 +201,14 @@ function sum(int n){
         $\m{p}(\m{s}(x)) \to x$ & $\m{p}(\m{0}) \to \m{0}$\\
         $\m{add}(x,\m{s}(y)) \to \m{s}(\m{add}(x,y))$ & $\m{add}(x,\m{0}) \to x$
         \end{tabular}
-        }
 
-        LCTRS
-        \vspace{2mm}
-        {\small
         \begin{tabular}{ll}
+            LCTRS & \\
             $\m{sum}(x) \to \m{sum2}(x)$ & \\
             $\m{sum2}(x) \to \m{sum3}(x) \; [\m{even}(x)]$ & $\m{sum2}(x) \to \m{sum3}(x-1) \; [\neg(\m{even}(x))]$ \\
             $\m{sum3}(x) \to x + \m{sum3}(x) \; [\neg(0 \geq x)]$ & $\m{sum3}(x) \to \m{0} \; [0 \geq x]$
         \end{tabular}
-        }
+
 \end{frame}
 
 \begin{frame}
@@ -448,11 +444,11 @@ function sum(int n){
     \frametitle{Rewrite Relation $\to_\RR$}
     \begin{definition}
         substitution $\gamma$ \textbf{respects} rule $l \to r \; [\varphi]$ if
-        \begin{itemize}
-            \item $Dom(\gamma) = \Var(l) \cup \Var(r) \cup \Var(\varphi)$
-            \item $\gamma(x)$ is value for all $x \in \LVar(l \to r \; [\varphi])$
+        \begin{enumerate}
+            \item $Dom(\gamma) = \Var(l) \cup \Var(r) \cup \Var(\varphi)$,
+            \item $\gamma(x)$ is value for all $x \in \LVar(l \to r \; [\varphi])$ and
             \item $\varphi\gamma$ is valid
-        \end{itemize}
+        \end{enumerate}
     \end{definition}
     \begin{definition}[rewrite relation $\to_\RR$]
         \textbf{rewrite relation} $\to_\RR$ is union of $\torule$ and $\tocalc$ where
