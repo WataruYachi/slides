@@ -167,6 +167,7 @@
 \begin{frame}[fragile]
     \frametitle{Motivation}
 
+    Program
 \begin{center}
 \begin{tabular}{c}
 \begin{lstlisting}
@@ -185,29 +186,51 @@ function sum(int n){
 \end{tabular}
 \end{center}
     \[
-        \m{sum}(n) = \sum \{ x \mid 0 \leq x \leq n, \text{$x$ is even number}\}
+        %\m{sum}(n) = \sum \{ x \mid 0 \leq x \leq n, \text{$x$ is even number}\}
+        \m{sum}(2n) = n^2 + n \;\; \text{for all} \;\; n \in \mathbb{N}
     \]
 \end{frame}
 
 \begin{frame}
 
+        TRS
+       \begin{table} 
         \begin{tabular}{ll}
-        TRS & \\
         $\m{sum}(x) \to \m{sum2}(\m{even}(x),x)$ & \\
         $\m{sum2}(\m{true}, x) \to \m{sum3}(x)$ & $\m{sum2}(\m{false}, x)$ \to $\m{sum3}(\m{p}(x))$\\
-        $\m{sum3}(\m{s}(\m{s}(x))) \to \m{add}(\m{s}(\m{s}(x)), \m{sum3}(x))$ & $\m{sum3}(\m{0}) \to \m{0}$\\
+        $\m{sum3}(\m{s}(\m{s}(x))) \to \m{add}(\m{s}(\m{s}(x)), \m{sum}(x))$ & $\m{sum3}(\m{0}) \to \m{0}$\\
         $\m{even}(\m{s}(\m{s}(x))) \to \m{even}(x)$ & $\m{even}(\m{s}(x)) \to \m{false}$\\
         $\m{even}(\m{0}) \to \m{true}$ & \\
         $\m{p}(\m{s}(x)) \to x$ & $\m{p}(\m{0}) \to \m{0}$\\
         $\m{add}(x,\m{s}(y)) \to \m{s}(\m{add}(x,y))$ & $\m{add}(x,\m{0}) \to x$
         \end{tabular}
+       \end{table}
 
+        \[
+            \m{sum}(\m{s}^{2n}(\m{0})) \to_{\RR}^{*} \m{s}^{n^2 + n}(\m{0}) \;\; \text{for all} \;\; n \in \mathbb{N}
+        \]
+
+\end{frame}
+
+
+\begin{frame}
+
+    LCTRS
+    \begin{table}
         \begin{tabular}{ll}
-            LCTRS & \\
             $\m{sum}(x) \to \m{sum2}(x)$ & \\
-            $\m{sum2}(x) \to \m{sum3}(x) \; [\m{even}(x)]$ & $\m{sum2}(x) \to \m{sum3}(x-1) \; [\neg(\m{even}(x))]$ \\
-            $\m{sum3}(x) \to x + \m{sum3}(x) \; [\neg(0 \geq x)]$ & $\m{sum3}(x) \to \m{0} \; [0 \geq x]$
+            $\m{sum2}(x) \to \m{sum3}(x) \; [\m{even}(x)]$ & $\m{sum2}(x) \to \m{sum3}(x-\m{1}) \; [\neg(\m{even}(x))]$ \\
+            $\m{sum3}(x) \to x + \m{sum}(x-\m{2}) \; [\neg(0 \geq x)]$ & $\m{sum3}(x) \to \m{0} \; [0 \geq x]$
         \end{tabular}
+    \end{table}
+
+    \[
+        \m{sum}(2n) \to_{\RR}^{*} n^2 + n \;\; \text{for all} \;\; n \in \mathbb{N}
+    \]
+\end{frame}
+
+\begin{frame}
+    \frametitle{About This Talk}
 
 \end{frame}
 
@@ -215,11 +238,11 @@ function sum(int n){
     \frametitle{Signature}
     \begin{definition}[signature]
         \begin{itemize}
-        \item \textbf{signature} $\Sigma$ is set of function symbols $f$
-        \item each $f$ has \textbf{sort declaration}
+        \item \alert{signature} $\Sigma$ is set of function symbols $f$
+        \item each $f$ has \alert{sort declaration}
         $[\iota_1 \times \cdots \times \iota_n] \Rightarrow \kappa$
         where all $\iota_i$ and $\kappa$ are sorts
-        \item abbreviate $f : [] \Rightarrow \kappa$ to $f : \kappa$
+        \item $[] \Rightarrow \kappa$ is abbreviated to $\kappa$
     \end{itemize}
     \end{definition}
     \begin{example}
@@ -235,10 +258,10 @@ function sum(int n){
     \frametitle{Term}
     \begin{definition}[term]
         \begin{itemize}
-        \item let $\VV$ be set of variables each equipped with sort
-        and $\Sigma$ be signature,
-        \textbf{term} $s : \iota$ over $\Sigma$ and $\VV$ iff
-        $\vdash s : \iota$ can be derived using following inference rules:
+        %\item let $\VV$ be set of variables each equipped with sort
+        %and $\Sigma$ be signature,
+        \item \alert{term} $s : \iota$ over $\Sigma$ and $\VV$ iff
+        $\vdash s : \iota$
         \begin{align*}
             \infer{\vdash x : \iota}{x : \iota \in \VV} \;\;\;\;
                 & \infer{\vdash f(s_1,\cdots, s_n) : \kappa}
@@ -246,10 +269,10 @@ function sum(int n){
                     & f:[\iota_1 \times \cdots \times \iota_n]
                     \Rightarrow \kappa \in \Sigma}
         \end{align*}
-        \item in this time, we say term $s : \iota$ is \textbf{well-sorted}
-        \item $\Terms(\Sigma, \VV)$ is set of all terms over $\Sigma$ and $\VV$
-        \item $\Var(s)$ is set of all variables in $s$
-        \item term $s$ is \textbf{ground} if $\Var(s) = \emptyset$
+        \item $s : \iota$ is \alert{well-sorted}
+        \item \alert{$\Terms(\Sigma, \VV)$} is set of all terms over $\Sigma$ and $\VV$
+        \item \alert{$\Var(s)$} is set of all variables in $s$
+        %\item term $s$ is \textbf{ground} if $\Var(s) = \emptyset$
         \end{itemize}
     \end{definition}
 \end{frame}
@@ -270,8 +293,8 @@ function sum(int n){
             \end{align*}
         }
         \item $\m{sum2}(\m{s}(\m{0}), \m{false}) : \m{int}$ is ill-sorted
-        \item $\m{sum}(\m{s}(\m{0}))$ is ground term
-        \item $\m{sum}(x)$ is non-ground term
+        %\item $\m{sum}(\m{s}(\m{0}))$ is ground term
+        %\item $\m{sum}(x)$ is non-ground term
         \end{itemize}
     \end{example}
 \end{frame}
@@ -280,15 +303,15 @@ function sum(int n){
     \frametitle{Substitution and Context}
     \begin{definition}[substitution]
         \begin{itemize}
-            \item \textbf{substitution} $\gamma$ is mapping from variables to terms
+            \item \alert{substitution} $\gamma$ is mapping from variables to terms
         $\{x_1:\iota_1 \mapsto s_1 : \iota_1, \cdots x_n:\iota_n \mapsto s_n : \iota_n\}$
             \item $s\gamma$ denotes applying $\gamma$ to $s$
         \end{itemize}
     \end{definition}
     \begin{definition}[context]
         \begin{itemize}
-            \item \textbf{context} $C$ is term which contains special variables $\Box_i$
-            \item $C[s_1,\cdots,s_n]$ denotes $C$ with each $\Box_i$ replaced by corresponding $s_i$
+            \item \alert{context} $C$ is term which contains special variable $\Box$
+            \item $C[s]$ denotes $C$ with $\Box$ replaced by $s$
         \end{itemize}
     \end{definition}
 \end{frame}
@@ -334,30 +357,34 @@ function sum(int n){
     \begin{definition}[proper and logical term]
         for term $s \in \Terms(\Sterms \cup \Stheory, \VV)$
         \begin{itemize}
-            \item $s$ is \textbf{proper term} if $s \in \Terms(\Sterms, \VV)$
-            \item $s$ is \textbf{logical term} if $s \in \Terms(\Stheory, \VV)$
-            \item logical term is \textbf{value} if it is form of $s : \kappa$
+            %\item $s$ is \textbf{proper term} if $s \in \Terms(\Sterms, \VV)$
+            \item $s$ is \alert{logical term} if $s \in \Terms(\Stheory, \VV)$
+            \item logical term is \alert{value} if it is form of $s : \kappa$
         \end{itemize}
     \end{definition}
 
     \begin{example}
+        $\Sterms = \{\m{sum}: [\m{int} \times \m{int}] \Rightarrow \m{int}\}$,
+        $\Stheory=\{0,1 : \m{int}, +:[\m{int} \times \m{int}] \Rightarrow \m{int}\}$
         \begin{itemize}
-            \item $\m{0},\m{true}$ logical term and value
-            \item $\m{x} + 1$ logical term
-            \item $\m{sum2}(\m{true},x)$ proper term
-            \item $\m{sum}{(\m{1} + \m{1})}$ mixed term
+            \item $\m{0},\m{true}$ \quad logical term and value
+            \item $x + 1$ \quad logical term
+            %\item $\m{sum2}(\m{true},x)$ proper term
+            \item $\m{sum}{(\m{1} + \m{1})}$ \quad mixed term
         \end{itemize}
     \end{example}
 \end{frame}
 
+
+
 \begin{frame}
     \frametitle{Interpretation of $\Stheory$}
     \begin{definition}[interpretation mapping$\JJ$]
-        assume mapping $\II_\iota$ from occurring sort $\iota$ in $\Stheory$ to corresponding set
+        assume \alert{mapping $\II_\iota$} from occurring sort $\iota$ in $\Stheory$ to corresponding set
         \begin{itemize}
-        \item \textbf{interpretation mapping} $\JJ$ is mapping from each
+            \item \alert{interpretation mapping $\JJ$} is mapping from each
             $f : [\iota_1 \times \cdots \times \iota_n] \in \Stheory$ to function $\JJ_f \in \II_{\iota_1} \Rightarrow \cdots \II{\iota_n} \Rightarrow \II{\kappa}$
-        \item interpretation $\JJ$ can be extended to interpretation of ground logical term
+        \item interpretation of logical term $s$ \alert{($\Var(s) = \emptyset$)}
             $\interpret{f(s_1,\cdot,s_n)} = \JJ_f(\interpret{s_1},\cdots,\interpret{s_n})$
         \end{itemize}
     \end{definition}
@@ -365,11 +392,14 @@ function sum(int n){
     \begin{example}
         choose $\II(\m{int}) = \mathbb{Z}$ and $\II(\m{bool}) = \mathbb{B} = \{\top, \perp \}$
         \begin{itemize}
+            \item $\JJ(\m{0}) = 0$, $\JJ(\m{true}) = \top$
             \item $\JJ(\m{+} : [\m{int} \times \m{int}] \Rightarrow \m{int}) = \lambda x y.x + y$
-            \item $\JJ(\m{even} : [\m{int}] \Rightarrow \m{bool}) = \lambda x.\text{''$x$ is even number"}$
+            \item $\JJ(\m{even} : [\m{int}] \Rightarrow \m{bool}) = \lambda x.\text{``$x$ is even number"}$
         \end{itemize}
     \end{example}
 \end{frame}
+
+
 
 \begin{frame}
         \begin{align*}
@@ -393,15 +423,15 @@ function sum(int n){
     \frametitle{Logical Constraint}
     \begin{definition}[logical constraint]
         \begin{itemize}
-        \item \textbf{logical constraint} is logical term of sort $\m{bool}$ with $\mathcal{I}_{\m{bool}} = \mathbb{B}$
-        \item logical constraint $\varphi$ is \textbf{valid} if $\llbracket \varphi\gamma \rrbracket_\JJ = \top$ for all substitution $\gamma$
+            \item \alert{logical constraint} is logical term of sort \alert{$\m{bool}$} %with $\mathcal{I}_{\m{bool}} = \mathbb{B}$
+        \item logical constraint $\varphi$ is \alert{valid} if $\llbracket \varphi\gamma \rrbracket_\JJ = \top$ for all substitution $\gamma$
         \end{itemize}
     \end{definition}
     \begin{example}
         \begin{itemize}
-            \item $\m{even}(\m{x} + \m{1})$ logical constraint
-            \item $\m{5} + {3}$ not logical constraint
-            \item $\m{true}$ logical constraint
+            \item $\m{even}(x + \m{1})$ \quad constraint
+            \item $\m{5} + {3}$ \quad not constraint
+            \item $\m{true}$ \quad constraint
         \end{itemize}
     \end{example}
 
@@ -412,30 +442,32 @@ function sum(int n){
     \begin{definition}[rewrite rule]
         let $l$ and $r$ be term and $\varphi$ be logical constraint
         \begin{itemize}
-            \item \textbf{rewrite rule} is triple $l \to r \; [\varphi]$
+            \item \alert{rewrite rule} is triple $l \to r \; [\varphi]$
             \item $l$ and $r$ must be same sort
             \item denote $l \to r$ if $l \to r \; [\m{true}]$
-            \item $\LVar(l \to r \; [\varphi])$ is defined as $\Var(\varphi) \cup (\Var(r) \setminus \Var(l))$
+            %\item $\LVar(l \to r \; [\varphi])$ is defined as $\Var(\varphi) \cup (\Var(r) \setminus \Var(l))$
         \end{itemize}
     \end{definition}
+    \begin{example}
     \begin{itemize}
         \item $\m{sum}(x) \to \m{sum2}(x)$ rule
         \item $\m{sum2}(x) \to \m{sum3}(x-1) \; [\neg(\m{even}(x))]$ rule
         \item $\m{sum}(x) \to \m{true} \; [\m{even}(x)]$ not rule
     \end{itemize}
+    \end{example}
 \end{frame}
 
 \begin{frame}
     \frametitle{Logically Constrained Term Rewriting System}
     \begin{definition}[LCTRS]
-        \textbf{logical constrained term rewriting system} is set of rewrite rules
+        \alert{logical constrained term rewriting system} is set of rewrite rules
     \end{definition}
 
     \begin{example}
         \begin{tabular}{ll}
             $\m{sum}(x) \to \m{sum2}(x)$ & \\
             $\m{sum2}(x) \to \m{sum3}(x) \; [\m{even}(x)]$ & $\m{sum2}(x) \to \m{sum3}(x-1) \; [\neg(\m{even}(x))]$ \\
-            $\m{sum3}(x) \to x + \m{sum3}(x) \; [0 \leq x]$ & $\m{sum3}(x) \to \m{0} \; [\neg(0 \leq x)]$
+            $\m{sum3}(x) \to x + \m{sum}(x-2) \; [0 \leq x]$ & $\m{sum3}(x) \to \m{0} \; [\neg(0 \leq x)]$
         \end{tabular}
     \end{example}
 \end{frame}
@@ -443,20 +475,75 @@ function sum(int n){
 \begin{frame}
     \frametitle{Rewrite Relation $\to_\RR$}
     \begin{definition}
-        substitution $\gamma$ \textbf{respects} rule $l \to r \; [\varphi]$ if
+        substitution $\gamma$ \alert{respects} rule $l \to r \; [\varphi]$ if
         \begin{enumerate}
             \item $Dom(\gamma) = \Var(l) \cup \Var(r) \cup \Var(\varphi)$,
-            \item $\gamma(x)$ is value for all $x \in \LVar(l \to r \; [\varphi])$ and
+            \item $\gamma(x)$ is value for all $x \in \Var(\varphi) \cup (\Var(r) \setminus \Var(l))$ and
             \item $\varphi\gamma$ is valid
         \end{enumerate}
     \end{definition}
     \begin{definition}[rewrite relation $\to_\RR$]
-        \textbf{rewrite relation} $\to_\RR$ is union of $\torule$ and $\tocalc$ where
+        \alert{rewrite relation} $\to_\RR$ is union of $\torule$ and $\tocalc$ where
         \begin{itemize}
             \item $C[l\gamma] \torule C[r\gamma]$ if $l \to r \; [\varphi] \in \RR$ and $\gamma$ respects $l \to r \; [\varphi]$
             \item $C[f(s_1,\cdots,s_n)] \tocalc C[v]$ if $f \in \Stheory\setminus\Sterms$, all $s_i$ values and $v$ is value of $f(s_1,\cdots,s_n)$
         \end{itemize}
     \end{definition}
+\end{frame}
+
+\begin{frame}
+    \begin{theorem}
+        let $s,t \in \Terms(\Sigma,\VV)$, $C$ be context and $\gamma$ be substitution
+        \begin{enumerate}
+            \item $s \to_{\RR} t \Rightarrow C[s] \to_{\RR} C[t]$
+            \item $s \to_{\RR} t \Rightarrow s\gamma \to_{\RR} t\gamma$
+        \end{enumerate}
+    \end{theorem}
+    \begin{lemma}[2]
+    \end{lemma}
+    \begin{proof}
+    \end{proof}
+\end{frame}
+
+\begin{frame}
+    \begin{lemma}[1]
+
+    \end{lemma}
+    \begin{proof}
+    \end{proof}
+\end{frame}
+
+\begin{frame}
+    \begin{theorem}
+        \[
+            s \to_{\RR} t \Rightarrow C[s] \to_{\RR} C[t] \;\; \text{for all} \;\; C 
+        \]
+    \end{theorem}
+    \begin{proof}
+        perform structual induction on $C$\\
+        \begin{itemize}
+            \item if $C=\Box$, obviously we have $C[s] \to_{\RR} C[t]$
+            \item if $C=f(u_1,\cdots,C',\cdots,u_i)$,\\
+                %$C[s] = f(u_1,\cdots,C'[s],\cdots,u_i)$ and $C[t] = f(u_1,\cdots,C'[t],\cdots,u_i)$\\
+                by I.H. $C'[l\gamma] \to_{\RR} C'[r\gamma]$ for some $l \to r \; [\varphi]$ and $\gamma$\\
+                so we have $C[l\gamma]$ and $C[r\gamma]$\\
+                hence $C[s] \to_{\RR} C[t]$
+
+        \end{itemize}
+    \end{proof}
+\end{frame}
+
+\begin{frame}
+    \begin{theorem}
+            $s \to_{\RR} t \Rightarrow s\sigma \to_{\RR} t\sigma$ for all $\sigma$
+    \end{theorem}
+    \begin{proof}
+        assume $s \to_{\RR} t$\\
+        let $\sigma$ be substitution\\
+        we have $s\sigma = (C[l\gamma])\sigma = (C\sigma)[l(\gamma\sigma)]$ and $t\sigma = (C\sigma)[r(\gamma\sigma)]$
+
+    \end{proof}
+
 \end{frame}
 
 \begin{frame}
