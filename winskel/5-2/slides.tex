@@ -1,0 +1,197 @@
+% 4up version
+%\documentclass[handout, 12pt, aspectratio=169]{beamer}
+
+\documentclass[12pt,aspectratio=169]{beamer}
+
+\usefonttheme{professionalfonts}
+
+\mode<handout>
+{
+\usepackage{pgfpages}
+\pgfpagesuselayout{4 on 1}[a4paper,landscape]
+}
+
+\usepackage[english]{babel}
+\usepackage{luatexja}
+\usepackage{luatexja-fontspec}
+
+\usepackage{autobreak}
+
+% for display code
+%\usepackage{minted}
+%\newfontfamily\hasklig{hasklig}[NFSSFamily=haskligFamily]
+%\setminted[haskell]{fontfamily=haskligFamily,
+%mathescape,
+%       numbersep=5pt
+%}
+
+% for proof tree
+%\usepackage{bcprules}
+
+%\usepackage[T1]{fontenc}
+
+%for lualatex
+\usepackage{fontspec}
+\setsansfont{CMU Sans Serif}%{Arial}
+\setmainfont{CMU Serif}%{Times New Roman}
+\setmonofont{CMU Typewriter Text}%{Consolas}
+
+\usepackage{lmodern,amsmath,amssymb,proof}
+\usepackage{tikz}
+\usetikzlibrary{arrows,positioning}
+
+\usepackage{stmaryrd}
+
+
+
+% color scheme
+\definecolor{green}{rgb}{0.0,0.5,0.0}
+\definecolor{blue}{rgb}{0.0,0.0,0.7}
+\definecolor{red}{rgb}{0.8,0.0,0.0}
+\definecolor{lightred}{rgb}{1.0,0.97,0.97}
+\definecolor{lightblue}{rgb}{0.95,0.95,1.0}
+\definecolor{darkblue}{rgb}{0.3,0.3,0.5}
+\definecolor{darkred}{rgb}{0.6,0.0,0.0}
+\definecolor{darkorange}{rgb}{0.6,0.2,0.1}
+\definecolor{darkgreen}{rgb}{0,0.3,0}
+%
+\newcommand{\IMAGE}[2]{\pgfdeclareimage[#1]{#2}{#2}\pgfuseimage{#2}}
+
+\setbeamerfont{title}{series=\bfseries,size=\Large}
+\setbeamercolor{title}{fg=red}
+\setbeamerfont{subtitle}{series=\bfseries,size=\LARGE}
+\setbeamercolor{subtitle}{fg=red}
+\setbeamerfont{author}{series=\bfseries,size=\large}
+\setbeamercolor{author}{fg=blue}
+\setbeamerfont{institute}{series=\bfseries,size=\large}
+\setbeamercolor{institute}{fg=green}
+
+\setbeamertemplate{blocks}[rounded]
+\setbeamerfont{block title}{series=\bfseries,family=\sffamily,size=\small\strut}
+\setbeamercolor{block title}{bg=darkblue,fg=white}
+\setbeamercolor{block body}{bg=blue!4!white}
+\setbeamercolor{block title example}{bg=white,fg=darkgreen}
+\setbeamercolor{block body example}{bg=white}
+\setbeamercolor{block title alerted}{bg=darkred,fg=white}
+\setbeamercolor{block body alerted}{bg=red!4!white}
+\setbeamercolor{structure}{fg=darkred}
+% no fading effect
+\makeatletter
+\pgfdeclareverticalshading[lower.bg,upper.bg]{bmb@transition}{200cm}{%
+  color(0pt)=(lower.bg); color(4pt)=(lower.bg); color(4pt)=(upper.bg)}
+\makeatother
+
+% frametitle
+\useframetitletemplate{
+\begin{centering}
+\centerline{\large\bfseries\color{darkblue}\insertframetitle}
+\end{centering}
+}
+
+% footer  (title  page/pages)
+\setbeamertemplate{navigation symbols}{}
+\useheadtemplate{\vbox{\vskip8pt}}
+\usefoottemplate{\vbox{\vskip2pt\inserttitle\hfil\insertframenumber/\inserttotalframenumber\vskip5pt}}
+
+% enumerate/itemize environment
+\newcommand*\tikzboxed[1]{\tikz[baseline=(c.base)]{%
+\node[thick,shape=rectangle,draw,inner sep=2pt] (c) {#1};}}
+\setbeamertemplate{items}[square]
+\setbeamertemplate{enumerate item}{\tikzboxed{\footnotesize\insertenumlabel}}
+\setlength{\itemsep}{1ex}
+
+\newcommand{\m}[1]{\mathsf{#1}}
+\newcommand{\mi}[1]{\mathit{#1}}
+\newcommand{\md}[1]{\mathtt{\textcolor{blue}{#1}}}
+\newcommand{\seq}[2][n]{{#2_1},\dots,{#2_{#1}}}
+%
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\RR}{\mathcal{R}}
+\newcommand{\VV}{\mathcal{V}}
+\newcommand{\TT}{\mathcal{T}}
+\newcommand{\Var}{\mathcal{V}\m{ar}}
+%
+\newcommand{\app}{\circ}
+\newcommand{\Aexp}{\mathbf{Aexp}}
+\newcommand{\Bexp}{\mathbf{Bexp}}
+\newcommand{\Com}{\mathbf{Com}}
+
+\newcommand{\denoA}[1]{\mathcal{A} \llbracket #1 \rrbracket}
+\newcommand{\denoB}[1]{\mathcal{B} \llbracket #1 \rrbracket}
+\newcommand{\denoC}[1]{\mathcal{C} \llbracket #1 \rrbracket}
+
+\newcommand{\true}{\mathbf{true}}
+\newcommand{\false}{\mathbf{false}}
+\newcommand{\Skip}{\mathbf{skip}}
+\def\coloneqq{\mathrel{\mathop:}=}
+\newcommand{\Assign}[2]{#1 \coloneqq #2}
+\newcommand{\ITE}[3]{\mathbf{if}\; #1 \; \mathbf{then} \; #2 \; \mathbf{else} \; #3}
+\newcommand{\While}[2]{\mathbf{while}\; #1 \; \mathbf{do} \; #2}
+
+
+\title{5.2 Denotational Semantics}
+\author{Wataru Yachi}
+\institute{JAIST}
+\date{October 5, 2023}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}
+    \frametitle{Denotations of $\Aexp$}
+    \begin{definition}
+        \begin{align*}
+            & \denoA{n} = \{(\sigma,n) \mid \sigma \in \Sigma \}\\
+            & \denoA{X} = \{ (\sigma, \sigma(X)) \mid \sigma \in \Sigma \}\\
+            & \denoA{a_0 + a_1} = \{(\sigma, n_0 + n_1) \mid
+                (\sigma, n_0) \in \denoA{a_0} \; \& \; (\sigma, n_1) \in \denoA{a_1}\}\\
+            & \denoA{a_0 - a_1} = \{(\sigma, n_0 - n_1) \mid
+                (\sigma, n_0) \in \denoA{a_0} \; \& \; (\sigma, n_1) \in \denoA{a_1}\}\\
+            & \denoA{a_0 \times a_1} = \{(\sigma, n_0 \times n_1) \mid
+                (\sigma, n_0) \in \denoA{a_0} \; \& \; (\sigma, n_1) \in \denoA{a_1}\}\\
+        \end{align*}
+    \end{definition}
+    \begin{example}
+        
+    \end{example}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Denotations of $\Bexp$}
+    \begin{definition}
+        \begin{align*}
+            & \denoB{\true} = \{(\sigma, \true) \mid \sigma \in \Sigma\} \\
+            & \denoB{\false} = \{ (\sigma,\false) \mid \sigma \in \Sigma\} \\
+            & \denoB{a_0 = a_1} =
+            \{ (\sigma, \true) \mid \sigma \in \Sigma \; \& \; \denoA{a_0}\sigma = \denoA{a_1}\sigma\}\cup\\
+            & \{ (\sigma, \false) \mid \sigma \in \Sigma \; \& \; \denoA{a_0}\sigma \neq \denoA{a_1}\sigma\}\\
+            & \denoB{b_0 \land b_1} = \{ \mid \sigma \in \Sigma \; \& \; (\sigma,t_1) \in \denoB{b_0} \; \& \; (\sigma,b_1) \in \denoB{b_1} \}
+        \end{align*}
+    \end{definition}
+\end{frame}
+\begin{example}
+
+\end{example}
+
+\begin{frame}
+    \frametitle{Denotations of $\Com$}
+    denotations of $\Com$ are defined as function from state to state
+    \begin{align*}
+        \denoC{\Skip} =& \;\{(\sigma,\sigma) \mid \sigma \in \Sigma\}\\
+        \denoC{\Assign{X}{a}} =& \;\{(\sigma,\sigma[n/X]) \mid \sigma \in \Sigma \; \& \; n = \denoA{a}\sigma\}\\
+        \denoC{c_0;c_1} =& \;\denoC{c_1} \circ \denoC{c_0}\\
+        \denoC{\ITE{b}{c_0}{c_1}} =& \;
+            \{(\sigma,\sigma') \mid \denoB{b}\sigma = \true \; \& \; (\sigma, \sigma') \in \denoC{c_0}\} \cup\\
+            & \;\{(\sigma,\sigma') \mid \denoB{b}\sigma = \false \; \& \; (\sigma, \sigma') \in \denoC{c_1}\}
+    \end{align*}
+    but how we define $\While{b}{c}$?
+\end{frame}
+
+\begin{frame}
+    \frametitle{Denotation of While-Loop}
+    let $w \equiv \While{b}{c}$
+    recall that 
+\end{frame}
+
+\end{document}
