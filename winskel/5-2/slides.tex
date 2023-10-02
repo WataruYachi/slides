@@ -139,50 +139,57 @@
 \maketitle
 
 \begin{frame}
+    \frametitle{Denotational Semantics}
+
+\end{frame}
+
+\begin{frame}
     \frametitle{Denotations of $\Aexp$}
-    \begin{definition}
+    denotations of $\Aexp$ are defined as functions from states to numbers
         \begin{align*}
-            & \denoA{n} = \{(\sigma,n) \mid \sigma \in \Sigma \}\\
-            & \denoA{X} = \{ (\sigma, \sigma(X)) \mid \sigma \in \Sigma \}\\
-            & \denoA{a_0 + a_1} = \{(\sigma, n_0 + n_1) \mid
+            \denoA{n} & = \{(\sigma,n) \mid \sigma \in \Sigma \}\\
+            \denoA{X} & = \{ (\sigma, \sigma(X)) \mid \sigma \in \Sigma \}\\
+            \denoA{a_0 + a_1} & = \{(\sigma, n_0 + n_1) \mid
                 (\sigma, n_0) \in \denoA{a_0} \; \& \; (\sigma, n_1) \in \denoA{a_1}\}\\
-            & \denoA{a_0 - a_1} = \{(\sigma, n_0 - n_1) \mid
+            \denoA{a_0 - a_1} & = \{(\sigma, n_0 - n_1) \mid
                 (\sigma, n_0) \in \denoA{a_0} \; \& \; (\sigma, n_1) \in \denoA{a_1}\}\\
-            & \denoA{a_0 \times a_1} = \{(\sigma, n_0 \times n_1) \mid
-                (\sigma, n_0) \in \denoA{a_0} \; \& \; (\sigma, n_1) \in \denoA{a_1}\}\\
+            \denoA{a_0 \times a_1} & = \{(\sigma, n_0 \times n_1) \mid
+                (\sigma, n_0) \in \denoA{a_0} \; \& \; (\sigma, n_1) \in \denoA{a_1}\}
         \end{align*}
-    \end{definition}
     \begin{example}
-        
+        let $\sigma = \{(X,1),(Y,2)\}$
+        \begin{itemize}
+            \item $\denoA{1} = 1$, $\denoA{X}\sigma = 1$
+            \item $\denoA{X \times (Y + 3)}\sigma = \denoA{X}\sigma \times (\denoA{Y + 3}\sigma) = 1 \times (2 + 3) = 5$
+        \end{itemize}
     \end{example}
 \end{frame}
 
 \begin{frame}
     \frametitle{Denotations of $\Bexp$}
-    \begin{definition}
+    denotations of $\Bexp$ are defined as functions from states to truth values
         \begin{align*}
-            & \denoB{\true} = \{(\sigma, \true) \mid \sigma \in \Sigma\} \\
-            & \denoB{\false} = \{ (\sigma,\false) \mid \sigma \in \Sigma\} \\
-            & \denoB{a_0 = a_1} =
-            \{ (\sigma, \true) \mid \sigma \in \Sigma \; \& \; \denoA{a_0}\sigma = \denoA{a_1}\sigma\}\cup\\
-            & \{ (\sigma, \false) \mid \sigma \in \Sigma \; \& \; \denoA{a_0}\sigma \neq \denoA{a_1}\sigma\}\\
-            & \denoB{b_0 \land b_1} = \{ \mid \sigma \in \Sigma \; \& \; (\sigma,t_1) \in \denoB{b_0} \; \& \; (\sigma,b_1) \in \denoB{b_1} \}
+            \denoB{\true} = & \; \{(\sigma, \true) \mid \sigma \in \Sigma\} \\
+            \denoB{\false} = & \; \{ (\sigma,\false) \mid \sigma \in \Sigma\} \\
+            \denoB{a_0 = a_1} = & \;
+            \{ (\sigma, \true) \mid \sigma \in \Sigma \; \& \; \denoA{a_0}\sigma = \denoA{a_1}\sigma\} \; \cup\\
+            & \; \{ (\sigma, \false) \mid \sigma \in \Sigma \; \& \; \denoA{a_0}\sigma \neq \denoA{a_1}\sigma\}\\
+            \denoB{b_0 \land b_1} = & \; \{(\sigma, t_0 \land_T t_1) \mid \sigma \in \Sigma \; \& \; (\sigma,t_0) \in \denoB{b_0} \; \& \; (\sigma,t_1) \in \denoB{b_1} \}
         \end{align*}
-    \end{definition}
-\end{frame}
-\begin{example}
+    \begin{example}
 
-\end{example}
+    \end{example}
+\end{frame}
 
 \begin{frame}
     \frametitle{Denotations of $\Com$}
-    denotations of $\Com$ are defined as function from state to state
+    denotations of $\Com$ are defined as functions from state to state
     \begin{align*}
         \denoC{\Skip} =& \;\{(\sigma,\sigma) \mid \sigma \in \Sigma\}\\
         \denoC{\Assign{X}{a}} =& \;\{(\sigma,\sigma[n/X]) \mid \sigma \in \Sigma \; \& \; n = \denoA{a}\sigma\}\\
         \denoC{c_0;c_1} =& \;\denoC{c_1} \circ \denoC{c_0}\\
         \denoC{\ITE{b}{c_0}{c_1}} =& \;
-            \{(\sigma,\sigma') \mid \denoB{b}\sigma = \true \; \& \; (\sigma, \sigma') \in \denoC{c_0}\} \cup\\
+            \{(\sigma,\sigma') \mid \denoB{b}\sigma = \true \; \& \; (\sigma, \sigma') \in \denoC{c_0}\} \; \cup\\
             & \;\{(\sigma,\sigma') \mid \denoB{b}\sigma = \false \; \& \; (\sigma, \sigma') \in \denoC{c_1}\}
     \end{align*}
     but how we define $\While{b}{c}$?
@@ -191,7 +198,65 @@
 \begin{frame}
     \frametitle{Denotation of While-Loop}
     let $w \equiv \While{b}{c}$
-    recall that 
+
+    recall that
+    \[
+        w \sim \ITE{b}{c;w}{\Skip}
+    \]
+
+    so we have
+    \begin{align*}
+        \denoC{w} = & \; \denoC{\ITE{b}{c;w}{\Skip}}\\
+            = & \; \{(\sigma, \sigma') \mid \denoB{b}\sigma = \true \; \& \; (\sigma, \sigma') \in \denoC{w} \circ \denoC{c}\} \; \cup \\
+            & \; \{ (\sigma,\sigma) \mid \denoB{b}\sigma = \false \}
+    \end{align*}
+
+    $\denoC{w}$ appears in both side of eqation, how to solve it?
+    %writing $\varphi$ for $\denoC{w}$, $\beta$ for $\denoB{b}$ and $\gamma$ for $\denoC{c}$
+    
+\end{frame}
+
+\begin{frame}
+    \frametitle{Fixed Point of $\Gamma$}
+    we assume $\Gamma$, where
+        \begin{align*}
+            \Gamma(\varphi) %= & \; \{(\sigma, \sigma') \mid \beta(\sigma) = \true \; \& \; (\sigma,\sigma') \in \varphi \circ \gamma\} \; \cup \\
+                            %& \; \{(\sigma, \sigma) \mid \beta(\sigma) = \false\}\\
+                            = & \; \{(\sigma, \sigma') \mid \exists \sigma'' .\, \beta(\sigma) = \true \; \& \; (\sigma, \sigma'') \in \gamma \; \& \; (\sigma'', \sigma') \in \varphi\} \; \cup \\
+                            & \; \{(\sigma,\sigma) \mid \beta(\sigma) = \false \}
+        \end{align*}
+    and we want to fixed point $\varphi$ of $\Gamma$ such that
+    \[
+        \varphi = \Gamma(\varphi)
+    \]
+    $\Gamma$ is equal to $\widehat{R}$ which determined by $R$
+    \begin{align*}
+        R = & \; \{ (\{(\sigma'', \sigma')\} / (\sigma, \sigma')) \mid \beta(\sigma) = \true \; \& \; (\sigma, \sigma'') \in \gamma\}\; \cup \\
+        & \; \{(\emptyset / (\sigma,\sigma)) \mid \beta(\sigma) = \false \}
+    \end{align*}
+    \begin{align*}
+        \Gamma(\varphi) = \{(\sigma,\sigma') \mid \exists \{(\sigma'',\sigma')\} \subseteq \varphi \, . \, \{(\sigma'',\sigma')\} / (\sigma, \sigma') \in R \}
+    \end{align*}
+    and we know that $\widehat{R}$ has least fixed point
+\end{frame}
+
+\begin{frame}
+    %\frametitle{Denotations of $\Com$}
+    finally, we have
+    \begin{align*}
+        \denoC{\Skip} =& \;\{(\sigma,\sigma) \mid \sigma \in \Sigma\}\\
+        \denoC{\Assign{X}{a}} =& \;\{(\sigma,\sigma[n/X]) \mid \sigma \in \Sigma \; \& \; n = \denoA{a}\sigma\}\\
+        \denoC{c_0;c_1} =& \;\denoC{c_1} \circ \denoC{c_0}\\
+        \denoC{\ITE{b}{c_0}{c_1}} =& \;
+            \{(\sigma,\sigma') \mid \denoB{b}\sigma = \true \; \& \; (\sigma, \sigma') \in \denoC{c_0}\} \; \cup\\
+            & \;\{(\sigma,\sigma') \mid \denoB{b}\sigma = \false \; \& \; (\sigma, \sigma') \in \denoC{c_1}\}\\
+        \denoC{\While{b}{c}} = & \; \mathrm{fix}(\Gamma)
+    \end{align*}
+    where
+    \begin{align*}
+        \Gamma(\varphi) = & \; \{ (\sigma, \sigma') \mid \denoB{b}\sigma = \true \; \& \; (\sigma, \sigma') \in \varphi \circ \denoC{c}\} \; \cup \\
+        & \; \{(\sigma,\sigma) \mid \denoB{b} = \false \}
+    \end{align*}
 \end{frame}
 
 \end{document}
