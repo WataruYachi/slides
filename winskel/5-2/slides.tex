@@ -127,6 +127,7 @@
 \newcommand{\Assign}[2]{#1 \coloneqq #2}
 \newcommand{\ITE}[3]{\mathbf{if}\; #1 \; \mathbf{then} \; #2 \; \mathbf{else} \; #3}
 \newcommand{\While}[2]{\mathbf{while}\; #1 \; \mathbf{do} \; #2}
+\newcommand{\deriv}[3]{\langle #1, #2 \rangle \rightarrow #3}
 
 
 \title{5.2 Denotational Semantics}
@@ -225,7 +226,7 @@
                             = & \; \{(\sigma, \sigma') \mid \exists \sigma'' .\, \beta(\sigma) = \true \; \& \; (\sigma, \sigma'') \in \gamma \; \& \; (\sigma'', \sigma') \in \varphi\} \; \cup \\
                             & \; \{(\sigma,\sigma) \mid \beta(\sigma) = \false \}
         \end{align*}
-    and we want to fixed point $\varphi$ of $\Gamma$ such that
+    and we want to find fixed point $\varphi$ of $\Gamma$ such that
     \[
         \varphi = \Gamma(\varphi)
     \]
@@ -257,6 +258,48 @@
         \Gamma(\varphi) = & \; \{ (\sigma, \sigma') \mid \denoB{b}\sigma = \true \; \& \; (\sigma, \sigma') \in \varphi \circ \denoC{c}\} \; \cup \\
         & \; \{(\sigma,\sigma) \mid \denoB{b} = \false \}
     \end{align*}
+\end{frame}
+
+\begin{frame}
+    \begin{block}{Claim (Exercise 5.5 (1))}
+        for alll arithmetic expressions $a$, $\{(\sigma, n) \mid \langle a, \sigma \rangle \rightarrow n\} \subseteq \denoA{a}$
+    \end{block}
+    \begin{proof}
+        We show the claim by rule induction on arithmetic expressions.
+        Let $n$ be a number, $\sigma$ state and $X$ location.
+        Fix $A = \{(\sigma, n) \mid \deriv{a}{\sigma}{n}\}$.
+        \begin{itemize}
+            \item Assume $(\sigma, n) \in A$. So there exists $\deriv{n}{\sigma}{n}$.
+                Clearly, we have $(\sigma,n) \in A \Rightarrow (\sigma,n) \in \denoA{n}$ for any $n$ and $\sigma$.
+            \item Similarly, assume $(\sigma, \sigma(X)) \in A$ and we have $(\sigma, \sigma(X)) \in \denoA{X}$ for all $X$.
+            \item Assume $\deriv{a_0}{\sigma}{n_0}$ and $\deriv{a_1}{\sigma}{n_1}$.
+                Suppose $(\sigma, n) \in A$. We have $n = n_0 + n_1$.
+                By I.H., we have $(\sigma, n_0) \in \denoA{a_0}$ and $(\sigma,n_1) \in \denoA{a_1}$.
+                Thus $(\sigma, n) \in \denoA{a_0 + a_1} $ holds.\\
+                The other cases can be shown by the similar way.
+        \end{itemize}
+    \end{proof}
+\end{frame}
+
+\begin{frame}
+    \begin{block}{Claim (Exercise 5.5 (2))}
+        for all arithmetic expressions $a$, $\denoA{a} \subseteq \{(\sigma,n) \mid \deriv{a}{\sigma}{n}\}$
+    \end{block}
+    \begin{proof}
+        We show the claim by structual induction on arithmetic expressions $a$.
+        \begin{itemize}
+            \item If $a$ is a number $m$: Assume $(\sigma, n) \in \denoA{m}$. Clearly we have $\deriv{m}{\sigma}{n}$
+                and $n = m$. So $(\sigma,n) \in A$.
+            \item If $a$ is a location $X$: Assume $(\sigma, n) \in \denoA{X}$.
+                Then we have $\deriv{X}{\sigma}{\sigma(X)}$ and $\sigma(X) = n$. So $(\sigma,n) \in A$
+            \item If $a$ is of the form $a_0 + a_1$: Assume $(\sigma, n) \in \denoA{a_0 + a_1}$.
+                    We have $(\sigma,n_0) \in \denoA{a_0}$ and $(\sigma, n_1) \in \denoA{a_1}$.
+                    By I.H., we obtain $\deriv{a_0}{\sigma}{n_0}$ and $\deriv{a_1}{\sigma}{n_1}$.
+                    Hence we have $\deriv{a_0 + a_1}{\sigma}{n}$.
+                    Thus $(\sigma,n) \in A$.\\
+                    The remaining cases follows the same way.
+        \end{itemize}
+    \end{proof}
 \end{frame}
 
 \end{document}
