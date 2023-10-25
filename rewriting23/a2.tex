@@ -1,0 +1,212 @@
+% 4up version
+%\documentclass[handout, 12pt, aspectratio=169]{beamer}
+
+\documentclass[12pt,aspectratio=169]{beamer}
+
+\usefonttheme{professionalfonts}
+
+\mode<handout>
+{
+\usepackage{pgfpages}
+\pgfpagesuselayout{4 on 1}[a4paper,landscape]
+}
+
+\usepackage[english]{babel}
+\usepackage{luatexja}
+\usepackage{luatexja-fontspec}
+
+
+% for display code
+%\usepackage{minted}
+%\newfontfamily\hasklig{hasklig}[NFSSFamily=haskligFamily]
+%\setminted[haskell]{fontfamily=haskligFamily,
+%mathescape,
+%       numbersep=5pt
+%}
+
+% for proof tree
+%\usepackage{bcprules}
+
+%\usepackage[T1]{fontenc}
+
+%for lualatex
+\usepackage{fontspec}
+\setsansfont{CMU Sans Serif}%{Arial}
+\setmainfont{CMU Serif}%{Times New Roman}
+\setmonofont{CMU Typewriter Text}%{Consolas}
+
+\usepackage{lmodern,amsmath,amssymb,proof}
+\usepackage{tikz}
+\usetikzlibrary{arrows,positioning}
+
+
+
+% color scheme
+\definecolor{green}{rgb}{0.0,0.5,0.0}
+\definecolor{blue}{rgb}{0.0,0.0,0.7}
+\definecolor{red}{rgb}{0.8,0.0,0.0}
+\definecolor{lightred}{rgb}{1.0,0.97,0.97}
+\definecolor{lightblue}{rgb}{0.95,0.95,1.0}
+\definecolor{darkblue}{rgb}{0.3,0.3,0.5}
+\definecolor{darkred}{rgb}{0.6,0.0,0.0}
+\definecolor{darkorange}{rgb}{0.6,0.2,0.1}
+\definecolor{darkgreen}{rgb}{0,0.3,0}
+%
+\newcommand{\IMAGE}[2]{\pgfdeclareimage[#1]{#2}{#2}\pgfuseimage{#2}}
+
+\setbeamerfont{title}{series=\bfseries,size=\Large}
+\setbeamercolor{title}{fg=red}
+\setbeamerfont{subtitle}{series=\bfseries,size=\LARGE}
+\setbeamercolor{subtitle}{fg=red}
+\setbeamerfont{author}{series=\bfseries,size=\large}
+\setbeamercolor{author}{fg=blue}
+\setbeamerfont{institute}{series=\bfseries,size=\large}
+\setbeamercolor{institute}{fg=green}
+
+\setbeamertemplate{blocks}[rounded]
+\setbeamerfont{block title}{series=\bfseries,family=\sffamily,size=\small\strut}
+\setbeamercolor{block title}{bg=darkblue,fg=white}
+\setbeamercolor{block body}{bg=blue!4!white}
+\setbeamercolor{block title example}{bg=white,fg=darkgreen}
+\setbeamercolor{block body example}{bg=white}
+\setbeamercolor{block title alerted}{bg=darkred,fg=white}
+\setbeamercolor{block body alerted}{bg=red!4!white}
+\setbeamercolor{structure}{fg=darkred}
+% no fading effect
+\makeatletter
+\pgfdeclareverticalshading[lower.bg,upper.bg]{bmb@transition}{200cm}{%
+  color(0pt)=(lower.bg); color(4pt)=(lower.bg); color(4pt)=(upper.bg)}
+\makeatother
+
+% frametitle
+\useframetitletemplate{
+\begin{centering}
+\centerline{\large\bfseries\color{darkblue}\insertframetitle}
+\end{centering}
+}
+
+% footer  (title  page/pages)
+\setbeamertemplate{navigation symbols}{}
+\useheadtemplate{\vbox{\vskip8pt}}
+\usefoottemplate{\vbox{\vskip2pt\inserttitle\hfil\insertframenumber/\inserttotalframenumber\vskip5pt}}
+
+% enumerate/itemize environment
+\newcommand*\tikzboxed[1]{\tikz[baseline=(c.base)]{%
+\node[thick,shape=rectangle,draw,inner sep=2pt] (c) {#1};}}
+\setbeamertemplate{items}[square]
+\setbeamertemplate{enumerate item}{\tikzboxed{\footnotesize\insertenumlabel}}
+\setlength{\itemsep}{1ex}
+
+\newcommand{\m}[1]{\mathsf{#1}}
+\newcommand{\mi}[1]{\mathit{#1}}
+\newcommand{\md}[1]{\mathtt{\textcolor{blue}{#1}}}
+\newcommand{\seq}[2][n]{{#2_1},\dots,{#2_{#1}}}
+%
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\RR}{\mathcal{R}}
+\newcommand{\VV}{\mathcal{V}}
+\newcommand{\TT}{\mathcal{T}}
+\newcommand{\Var}{\mathcal{V}\m{ar}}
+%
+\newcommand{\app}{\circ}
+
+\title{ Term Rewriting / A2.Well-founded Induction }
+\author{Wataru Yachi}
+\institute{JAIST}
+\date{Oct 26, 2023}
+
+\begin{document}
+
+\maketitle
+
+
+
+\begin{frame}
+    \frametitle{Relation Admits Induction}
+    \begin{definition}
+        relation $R$ on set $A$ \alert{admits induction} if
+        property $P$ holds for all elements in $A$ whenever
+        element $a \in A$ has property $P$ if for all $b \in A$
+        with $a \; R \; b$, $P(b)$ holds
+    \end{definition}
+
+    \begin{example}
+        successor relation $>_1$ on $\mathbb{N}$ admits induction
+    \end{example}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Minimal Element}
+
+    \begin{definition}
+        let $R$ be relation on $A$ and let $B$ be subset of $A$,
+        element $a \in B$ is called \alert{minimal} element of $B$
+        if there is no $b \in B$ such that $a \; R \; b$
+    \end{definition}
+
+    \begin{example}
+    \end{example}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Well-founded Induction}
+
+    \begin{theorem}
+        let $R$ be relation on $A$, following statements are equivalent
+        \begin{enumerate}
+            \item $R$ admits induction
+            \item there are no infinite descending sequence $a_1 \;R \; a_2 \; R \; a_3 \; R \; \cdots$
+            \item every non-empty subset $B$ of $A$ contains a minimal element
+        \end{enumerate}
+    \end{theorem}
+
+    \begin{definition}
+        relation is called \alert{well-founded} if it
+        satisfied one of above assertions
+    \end{definition}
+\end{frame}
+
+\begin{frame}
+    \frametitle{}
+    \begin{definition}
+        \begin{itemize}
+            \item well-founded strict order is called \alert{well-founded order}
+            \item partial order is \alert{well-founded} if its strict part is well-founded
+            \item \alert{well-order} is total well-founded order
+        \end{itemize}
+    \end{definition}
+\end{frame}
+
+\begin{frame}
+    \frametitle{}
+    \begin{lemma}
+        every strict order on finite set is well-founded
+    \end{lemma}
+
+    \begin{proof}
+        We show the claim by contradiction.
+        Let $>$ be a strict order on a finite set $A$.
+        Suppose an infinite descending chain $a_1 > a_2 > a_3 > \cdots$
+        of elements of $A$.
+        Because $A$ is finite, some element $a$ appears at least two times in the chain. Thus $a > a$ since the transitivity of $>$.
+        By the irreflexivity of $>$, there is no $a \in A$ such that $a > a$. So we have contradiction.
+    \end{proof}
+
+    \begin{theorem}
+        every well-founded order can be extended to well-order on same set
+    \end{theorem}
+\end{frame}
+
+\begin{frame}
+    \frametitle{}
+    \begin{theorem}
+        lexicographic product of well-founded orders is well-founded
+    \end{theorem}
+
+    \begin{proof}
+        Let $>_1$ and $>_2$ be a well-founded order on $A$ and $B$ respectively. Fix $> \: = (>_1,>_2)_{\mathsf{lex}}$ on $A \times B$.
+        Suppose an infinite descending chain $(a_1, b_1) > (a_2, b_2) > (a_3, b_3) > \cdots$ of elements of $A \times B$.
+    \end{proof}
+\end{frame}
+
+\end{document}
