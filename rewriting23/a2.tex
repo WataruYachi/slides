@@ -129,9 +129,14 @@
         element $a \in A$ has property $P$ if for all $b \in A$
         with $a \; R \; b$, $P(b)$ holds
     \end{definition}
-
+    \pause
     \begin{example}
-        successor relation $>_1$ on $\mathbb{N}$ admits induction
+        \begin{itemize}
+            \pause
+            \item successor relation $>_1$ on $\mathbb{N}$ admits induction \pause \quad \alert{weak induction}
+            \pause
+            \item standard order $>$ on $\mathbb{N}$ admits induction \pause \quad \alert{strong induction}
+        \end{itemize}
     \end{example}
 \end{frame}
 
@@ -143,13 +148,23 @@
         element $a \in B$ is called \alert{minimal} element of $B$
         if there is no $b \in B$ such that $a \; R \; b$
     \end{definition}
-
+    \pause
     \begin{example}
+        \begin{itemize}
+            \pause
+            \item $\{4,5,7,9\} \subset \mathbb{N}$ with $>$ \pause \quad \alert{$0$, $1$, $2$, $3$}
+            \pause
+            \item $\{(1,1), (2,2)\} \subset \mathbb{N} \times \mathbb{N}$ with $(>,>)_{\mathsf{lex}}$
+                \pause \quad \alert{$(0,0)$, $(0,1)$, $\cdots$, $(2,0)$, $(2,1)$}
+            \pause
+            \item $\{ \{1,1\}, \{2,1\} \} \subset Pow(\mathbb{N})$ with $\subset$
+                \pause \quad \alert{$\phi$, $\{1\}$, $\{2\}$}
+        \end{itemize}
     \end{example}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Well-founded Induction}
+    \frametitle{Well-Founded Induction}
 
     \begin{theorem}
         let $R$ be relation on $A$, following statements are equivalent
@@ -159,7 +174,7 @@
             \item every non-empty subset $B$ of $A$ contains a minimal element
         \end{enumerate}
     \end{theorem}
-
+    \pause
     \begin{definition}
         relation is called \alert{well-founded} if it
         satisfied one of above assertions
@@ -167,7 +182,7 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{}
+    \frametitle{Well-Founded Order}
     \begin{definition}
         \begin{itemize}
             \item well-founded strict order is called \alert{well-founded order}
@@ -175,6 +190,17 @@
             \item \alert{well-order} is total well-founded order
         \end{itemize}
     \end{definition}
+    \pause
+    \begin{example}
+        \begin{itemize}
+            \pause
+            \item $>$ on $\mathbb{N}$ is well-order
+            \pause
+            \item $\subset$ on $Pow(\mathbb{N})$ is not well-founded order
+            \pause
+            \item $\supset$ on finite subsets of $\mathbb{N}$ is well-founded order but not well-order
+        \end{itemize}
+    \end{example}
 \end{frame}
 
 \begin{frame}
@@ -183,14 +209,25 @@
         every strict order on finite set is well-founded
     \end{lemma}
 
+    \pause
+
     \begin{proof}
         We show the claim by contradiction.
+        \pause
         Let $>$ be a strict order on a finite set $A$.
+        \pause
         Suppose an infinite descending chain $a_1 > a_2 > a_3 > \cdots$
         of elements of $A$.
-        Because $A$ is finite, some element $a$ appears at least two times in the chain. Thus $a > a$ since the transitivity of $>$.
-        By the irreflexivity of $>$, there is no $a \in A$ such that $a > a$. So we have contradiction.
+        \pause
+        Because $A$ is finite, some element $a$ appears at least two times in the chain.
+        Thus $a > a$ since the transitivity of $>$.
+        \pause
+        By the irreflexivity of $>$, there is no $a \in A$ such that $a > a$.
+        \pause
+        So we have contradiction.
     \end{proof}
+
+    \pause
 
     \begin{theorem}
         every well-founded order can be extended to well-order on same set
@@ -202,10 +239,29 @@
     \begin{theorem}
         lexicographic product of well-founded orders is well-founded
     \end{theorem}
-
+    \pause
     \begin{proof}
-        Let $>_1$ and $>_2$ be a well-founded order on $A$ and $B$ respectively. Fix $> \: = (>_1,>_2)_{\mathsf{lex}}$ on $A \times B$.
-        Suppose an infinite descending chain $(a_1, b_1) > (a_2, b_2) > (a_3, b_3) > \cdots$ of elements of $A \times B$.
+        Let $>_1$ and $>_2$ be a well-founded order on $A$ and $B$ respectively.
+        Fix $> \: = (>_1,>_2)_{\mathsf{lex}}$ on $A \times B$.
+        \pause
+        Suppose an infinite descending chain $(a_1, b_1) > (a_2, b_2) > (a_3, b_3) > \cdots$ of elements of $A \times B$.\\
+        \pause
+        Recall that for all $i \geq 1$, $(a_i, b_i) > (a_{i+1} + b_{i+1})$ if
+        \pause
+        \begin{itemize}
+            \pause
+            \item $a_i >_1 a_{i+1}$ or
+            \pause
+            \item $a_i = a_{i+1}$ and $b_i >_2 b_{i+1}$.
+        \end{itemize}
+        \pause
+        However, since $>_1$ is well-founded order,
+        there exist some $a_i$ which dose not have a $a_{i+1}$ such that $a_i > a_{i+1}$.
+        \pause
+        Similarly, there exist some $b_i$ such that $b_i \ngtr b_{i+1}$.
+        %But both conditions are not satisfied, because $>_1$ and $>_2$ is well-founded order.
+        \pause
+        So we have contradiction.
     \end{proof}
 \end{frame}
 
