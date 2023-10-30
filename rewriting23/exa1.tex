@@ -194,4 +194,26 @@
     \end{proof}
 \end{frame}
 
+\begin{frame}
+    \begin{claim}
+        $R$ is transitive if and only if $R \cdot R \subseteq R$
+    \end{claim}
+
+    \begin{proof}
+        \begin{itemize}
+            \item \underline{\Rightarrow-direction}
+            Suppose $R$ is transitive.
+            Let $(a,b) \in R$ and $(b,c) \in R$.
+            Then we have $(a,c) \in R \cdot R$.
+            Since $R$ is transitive, $(a,c) \in R$
+            \item \underline{\Leftarrow-direction}
+            Suppose $R \cdot R \subseteq R$.
+            Assume $(a,b) \in R$ and $(b,c) \in R$.
+            Then we have $(a,c) \in R \cdot R$.
+            So we obtain $(a,c) \in R$.
+            Hence $R$ is transitive.
+      \end{itemize}
+    \end{proof}
+\end{frame}
+
 \end{document}
