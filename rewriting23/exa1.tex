@@ -172,4 +172,26 @@
     \end{proof}
 \end{frame}
 
+\begin{frame}
+    \begin{claim}
+        $R \cdot (S \cup T) = (R \cdot S) \cup (R \cdot T)$
+    \end{claim}
+
+    \begin{proof}
+        Suppose $(a,c) \in R \cdot (S \cup T)$.
+        So there exists some $b$ such that $(a,b) \in R$ and $(b,c) \in S$ or $(b,c) \in T$.
+        \begin{itemize}
+            \item If $(b,c) \in S$ then $(a,c) \in R \cdot S$ holds.
+            \item If $(b,c) \in T$ then $(a,c) \in R \cdot T$ holds.
+        \end{itemize}
+        Thus we have $(a,c) \in (R \cdot S) \cup (R \cdot T)$.
+        Conversely, suppose $(a,c) \in (R \cdot S) \cup (R \cdot T)$.
+        \begin{itemize}
+            \item If $(a,c) \in (R \cdot S)$ then we have $(a,b) \in R$ and $(b,c) \in S$ for some $b$.
+            So we obtain $(b,c) \in S \cup T$. Thus we have $(a,c) \in R \cdot (S \cup T)$.
+            \item If $(a,c) \in (R \cdot T)$ then similary we have $(a,c) \in R \cdot (S \cup T)$.
+        \end{itemize}
+    \end{proof}
+\end{frame}
+
 \end{document}
