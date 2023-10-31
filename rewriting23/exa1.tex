@@ -134,8 +134,7 @@
 \newcommand{\R}[3]{#1 \; #2 \; #3}
 
 \begin{frame}
-    \frametitle{A.3 (a)}
-    \begin{claim}
+    \begin{claim}[A.3(a)]
       $(R^{-1})^{-1} = R$
     \end{claim}
     \begin{proof}
@@ -152,7 +151,7 @@
 \end{frame}
 
 \begin{frame}
-    \begin{claim}
+    \begin{claim}[A.4(b)]
         $(R_1 \cup R_2)^{-1} = R_1^{-1} \cup R_2^{-1}$
     \end{claim}
     \begin{proof}
@@ -173,7 +172,7 @@
 \end{frame}
 
 \begin{frame}
-    \begin{claim}
+    \begin{claim}[A.5(a)]
         $R \cdot (S \cup T) = (R \cdot S) \cup (R \cdot T)$
     \end{claim}
 
@@ -195,8 +194,26 @@
 \end{frame}
 
 \begin{frame}
-    \begin{claim}
-        $R$ is transitive if and only if $R \cdot R \subseteq R$
+    \frametitle{A.6}
+    \newcommand{\yes}{\color{green}$\checkmark$}
+    \newcommand{\no}{\color{red}$\times$}
+    \begin{table}
+        \centering
+    \begin{tabular}{r|ccccc}
+        & $>$ on $\mathbb{N}$ & $\geq$ on $\mathbb{Z}$ & $\emptyset$ on $\mathbb{N}$ & $\mathrm{id}_{\mathbb{N}}$ & $\emptyset$ on $\emptyset$ \\ \hline
+        reflexive     & \no  & \yes & \no  & \yes & \yes \\
+        irreflexive   & \yes & \no  & \yes & \no  & \yes \\
+        transitive    & \yes & \yes & \yes & \yes & \yes \\
+        symmetric     & \no  & \no  & \yes & \yes & \yes \\
+        asymmetric    & \yes & \no  & \yes & \no  & \yes \\
+        antisymmetric & \no  & \yes & \yes & \yes & \yes \\
+    \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}
+    \begin{claim}[A.7(3)]
+        $R$ is transitive $\Leftrightarrow$ $R \cdot R \subseteq R$
     \end{claim}
 
     \begin{proof}
@@ -217,8 +234,8 @@
 \end{frame}
 
 \begin{frame}
-    \begin{claim}
-        $R$ is antisymmetric if and only if $R \cap R^{-1} \subseteq \mathrm{id}_A$
+    \begin{claim}[A.7(6)]
+        $R$ is antisymmetric $\Leftrightarrow$ $R \cap R^{-1} \subseteq \mathrm{id}_A$
     \end{claim}
     \begin{proof}
         \begin{itemize}
