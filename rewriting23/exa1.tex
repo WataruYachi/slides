@@ -145,7 +145,7 @@
       Suppose $(a,b) \in (R^{-1})^{-1}$.
       Then we have $(b,a) \in R^{-1}$.
       Hence $(a,b) \in R$.
-      \item $R \subseteq (R^{-1})^{-1}$: Suppose $(a,b) \in R$.
+  \item $R \subseteq (R^{-1})^{-1}$: Suppose $(a,b) \in R$.
       Then $(b,a) \in R^{-1}$. Hence $(a,b) \in (R^{-1})^{-1}$.
       \end{itemize}
     \end{proof}
@@ -184,7 +184,7 @@
             \item If $(b,c) \in S$ then $(a,c) \in R \cdot S$ holds.
             \item If $(b,c) \in T$ then $(a,c) \in R \cdot T$ holds.
         \end{itemize}
-        Thus we have $(a,c) \in (R \cdot S) \cup (R \cdot T)$.
+        Thus we have $(a,c) \in (R \cdot S) \cup (R \cdot T)$.\\
         Conversely, suppose $(a,c) \in (R \cdot S) \cup (R \cdot T)$.
         \begin{itemize}
             \item If $(a,c) \in (R \cdot S)$ then we have $(a,b) \in R$ and $(b,c) \in S$ for some $b$.
@@ -201,18 +201,39 @@
 
     \begin{proof}
         \begin{itemize}
-            \item \underline{\Rightarrow-direction}
+            \item \underline{\Rightarrow-direction:}
             Suppose $R$ is transitive.
             Let $(a,b) \in R$ and $(b,c) \in R$.
             Then we have $(a,c) \in R \cdot R$.
             Since $R$ is transitive, $(a,c) \in R$
-            \item \underline{\Leftarrow-direction}
+            \item \underline{\Leftarrow-direction:}
             Suppose $R \cdot R \subseteq R$.
             Assume $(a,b) \in R$ and $(b,c) \in R$.
             Then we have $(a,c) \in R \cdot R$.
             So we obtain $(a,c) \in R$.
             Hence $R$ is transitive.
       \end{itemize}
+    \end{proof}
+\end{frame}
+
+\begin{frame}
+    \begin{claim}
+        $R$ is antisymmetric if and only if $R \cap R^{-1} \subseteq \mathrm{id}_A$
+    \end{claim}
+    \begin{proof}
+        \begin{itemize}
+            \item \underline{\Rightarrow-direction:}
+                Suppose $R$ is antisymmetric.
+                Let $(a,b) \in R \cap R^{-1}$.
+                Then we have $(a,b) \in R$ and $(a,b) \in R^{-1}$.
+                Since $R$ is antisymmetric, $a=b$. Hence $(a,b) \in \mathrm{id}_A$.
+            \item \underline{\Leftarrow-direction:}
+                Suppose $R \cap R^{-1} \subseteq \mathrm{id}_A$.
+                Let $(a,b) \in R$ and $(b,a) \in R$.
+                Then $(a,b) \in R \cap R^{-1}$.
+                Thus $(a,b) \in \mathrm{id}_A$.
+                Hence $a = b$.
+        \end{itemize}
     \end{proof}
 \end{frame}
 
