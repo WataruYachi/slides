@@ -101,9 +101,9 @@
 \makeatletter
 \def\th@claim{%
 \normalfont %body font
-\setbeamercolor{block title example}{bg=darkred, fg=white}
-\setbeamercolor{block body example}{bg=darkred!10, fg=black}
-\setbeamercolor{example text}{fg=red}
+\setbeamercolor{block title example}{bg=orange, fg=white}
+\setbeamercolor{block body example}{bg=orange!10, fg=black}
+\setbeamercolor{example text}{fg=darkorange}
 \def\inserttheoremblockenv{exampleblock}
 }
 \makeatother
@@ -132,6 +132,40 @@
 
 \maketitle
 \newcommand{\R}[3]{#1 \; #2 \; #3}
+\newcommand{\sn}[1]{>_1^{#1}}
+
+\begin{frame}
+    \begin{example}
+        \begin{itemize}
+            \setlength{\itemsep}{+5mm} % 項目の隙間
+            \item $\sn{2}\; = \; >_1 \cdot >_1 = \{ 0 \sn{2} 2, 1 \sn{2} 3, 2 \sn{2} 4, 3 \sn{2} 5, \cdots \}$
+                    \quad $\therefore ran(\sn{2}) = \{2, 3, 4, 5, \cdots \}$
+            \item $\sn{3}\; = \; \sn{2} \cdot >_1  = \{ 0 \sn{3} 3, 1 \sn{3} 4, 2 \sn{3} 5, 3 \sn{3} 6, \cdots \}$
+            $\therefore ran(\sn{3}) = \{3,4,5,6,\cdots\}$
+            \item $\sn{4}\; = \;\sn{3} \cdot >_1 = \{ 0 \sn{4} 4, 1 \sn{4} 5, 2 \sn{4} 6, 3 \sn{4} 7, \cdots \}$
+                $\therefore ran(\sn{4}) = \{4,5,6,7\cdots\}$
+        \end{itemize}
+    \end{example}
+    \begin{claim}
+        $ran(\sn{n}) = \{n, n+1, n+2, n+3, \cdots\}$
+    \end{claim}
+\end{frame}
+
+\begin{frame}
+    \begin{claim}
+        $ran(\sn{n}) = \{n, n+1, n+2, n+3, \cdots\}$
+    \end{claim}
+    \begin{proof}
+        We perfome induction on $n$.
+        \begin{itemize}
+            \item If $n=0$ then $\sn{0} \; = \mathrm{id}_{\mathbb{N}}$.
+            So $ran(\sn{0}) = \mathbb{N} = \{0,1,2,3,\cdots \}$.
+            \item If $n=n'+1$ then by I.H., $ran(\sn{n'}) = \{n', n'+1, n'+2, n'+3, \cdots \}$.\\
+                    So $ran(\sn{n'} \cdot >_1) = \{n'+1, n'+1+1, n'+2+1, n'+3+1, \cdots \}$.\\
+                    Hence $ran(\sn{n}) = \{n, n+1, n+2, n+3, \cdots\}$.
+        \end{itemize}
+    \end{proof}
+\end{frame}
 
 \begin{frame}
     \begin{claim}[A.3(a)]
@@ -209,6 +243,18 @@
         antisymmetric & \no  & \yes & \yes & \yes & \yes \\
     \end{tabular}
     \end{table}
+\end{frame}
+
+\newcommand{\RL}[2]{#1\, R\, #2}
+\begin{frame}
+    \begin{itemize}
+    \item reflexive     : $\RL{a}{a}$ for all $a \in A$ \quad $(a,a) \notin \emptyset$
+    \item irreflexive   : there is no $a \in A$ s.t. $\RL{a}{a}$ \quad $(a,a)\notin \emptyset$
+    \item transitive    : $\RL{a}{b}$ and $\RL{b}{c}$ $\Rightarrow$ $\RL{a}{c}$ %for all $a,b,c \in A$
+    \item symmetric     : $\RL{a}{b} \Rightarrow \RL{b}{a}$ \quad $(a,b) \notin \emptyset$
+    \item asymmetric    : there is no $a$ and $b$ s.t. $\RL{a}{b}$ and $\RL{b}{a}$ \quad $(a,b)$ and $(a,b)$ $\notin \emptyset$
+    \item antisymmetric : $\RL{a}{b}$ and $\RL{b}{a}$ $\Rightarrow$ $a=b$
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
