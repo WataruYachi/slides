@@ -101,8 +101,8 @@
 \makeatletter
 \def\th@claim{%
 \normalfont %body font
-\setbeamercolor{block title example}{bg=orange, fg=white}
-\setbeamercolor{block body example}{bg=orange!10, fg=black}
+\setbeamercolor{block title example}{bg=darkorange, fg=white}
+\setbeamercolor{block body example}{bg=darkorange!10, fg=black}
 \setbeamercolor{example text}{fg=darkorange}
 \def\inserttheoremblockenv{exampleblock}
 }
@@ -123,7 +123,8 @@
 %
 \newcommand{\app}{\circ}
 
-\title{ Term Rewriting / Exercises in A1 }
+\title{Term Rewriting}
+\subtitle{Solutions for Exercises in Appendix 1}
 \author{Wataru Yachi}
 \institute{JAIST}
 \date{Nov 2, 2023}
@@ -135,33 +136,52 @@
 \newcommand{\sn}[1]{>_1^{#1}}
 
 \begin{frame}
+    \frametitle{What is $ran(\sn{n})$?}
     \begin{example}
+        \newcommand{\idn}{\; \mathrm{id}_\mathbb{N} \;}
         \begin{itemize}
-            \setlength{\itemsep}{+5mm} % 項目の隙間
+            \setlength{\itemsep}{+5mm}
+            \pause
+            \item $\sn{0}\; = \mathrm{id}_\mathbb{N} = \{0 \idn 0, 1 \idn 1, 2 \idn 2, 3 \idn 3, \cdots\}$
+            \pause \quad $\therefore ran(\idn) = \{0,1,2,3,\cdots\}$
+            \pause
+            \item $\sn{1}\; = \; >_1 \cdot \;\mathrm{id}_\mathbb{N} = \{0 >_1 1, 1 >_1 2, 2 >_1 3, 3 >_1 4, cdots\}$
+            \pause
+            \quad $\therefore ran(\sn{1}) = \{1,2,3,4,\cdots\}$
+            \pause
             \item $\sn{2}\; = \; >_1 \cdot >_1 = \{ 0 \sn{2} 2, 1 \sn{2} 3, 2 \sn{2} 4, 3 \sn{2} 5, \cdots \}$
-                    \quad $\therefore ran(\sn{2}) = \{2, 3, 4, 5, \cdots \}$
+            \pause \quad $\therefore ran(\sn{2}) = \{2, 3, 4, 5, \cdots \}$
+            \pause
             \item $\sn{3}\; = \; \sn{2} \cdot >_1  = \{ 0 \sn{3} 3, 1 \sn{3} 4, 2 \sn{3} 5, 3 \sn{3} 6, \cdots \}$
+            \pause
             $\therefore ran(\sn{3}) = \{3,4,5,6,\cdots\}$
-            \item $\sn{4}\; = \;\sn{3} \cdot >_1 = \{ 0 \sn{4} 4, 1 \sn{4} 5, 2 \sn{4} 6, 3 \sn{4} 7, \cdots \}$
-                $\therefore ran(\sn{4}) = \{4,5,6,7\cdots\}$
+            %\pause
+            %\item $\sn{4}\; = \;\sn{3} \cdot >_1 = \{ 0 \sn{4} 4, 1 \sn{4} 5, 2 \sn{4} 6, 3 \sn{4} 7, \cdots \}$
+            %\pause
+            %$\therefore ran(\sn{4}) = \{4,5,6,7\cdots\}$
         \end{itemize}
     \end{example}
-    \begin{claim}
-        $ran(\sn{n}) = \{n, n+1, n+2, n+3, \cdots\}$
-    \end{claim}
 \end{frame}
 
 \begin{frame}
     \begin{claim}
         $ran(\sn{n}) = \{n, n+1, n+2, n+3, \cdots\}$
     \end{claim}
+    \pause
     \begin{proof}
+        \pause
         We perfome induction on $n$.
+        \pause
         \begin{itemize}
+            \pause
             \item If $n=0$ then $\sn{0} \; = \mathrm{id}_{\mathbb{N}}$.
+            \pause
             So $ran(\sn{0}) = \mathbb{N} = \{0,1,2,3,\cdots \}$.
+            \pause
             \item If $n=n'+1$ then by I.H., $ran(\sn{n'}) = \{n', n'+1, n'+2, n'+3, \cdots \}$.\\
+                \pause
                     So $ran(\sn{n'} \cdot >_1) = \{n'+1, n'+1+1, n'+2+1, n'+3+1, \cdots \}$.\\
+                    \pause
                     Hence $ran(\sn{n}) = \{n, n+1, n+2, n+3, \cdots\}$.
         \end{itemize}
     \end{proof}
@@ -174,12 +194,14 @@
     \begin{proof}
       %Let $R$ be a relation on a set $A$.
       \begin{itemize}
-      \item $(R^{-1})^{-1} \subseteq R$:
-      Suppose $(a,b) \in (R^{-1})^{-1}$.
-      Then we have $(b,a) \in R^{-1}$.
-      Hence $(a,b) \in R$.
-  \item $R \subseteq (R^{-1})^{-1}$: Suppose $(a,b) \in R$.
-      Then $(b,a) \in R^{-1}$. Hence $(a,b) \in (R^{-1})^{-1}$.
+            \pause
+            \item Suppose $(a,b) \in (R^{-1})^{-1}$.\pause
+                  Then we have $(b,a) \in R^{-1}$.\pause
+                  Thus $(a,b) \in R$. Hence $(R^{-1})^{-1} \subseteq R$.
+            \pause
+            \item Suppose $(a,b) \in R$.\pause
+                  Then $(b,a) \in R^{-1}$. Thus $(a,b) \in (R^{-1})^{-1}$.\pause
+                  Hence  $R \subseteq (R^{-1})^{-1}$.
       \end{itemize}
     \end{proof}
 \end{frame}
@@ -189,17 +211,18 @@
         $(R_1 \cup R_2)^{-1} = R_1^{-1} \cup R_2^{-1}$
     \end{claim}
     \begin{proof}
-        Suppose $(a,b) \in (R_1 \cup R_2)^{-1}$.
-        Then $(b,a) \in R_1$ or $(b,a) \in R_2$.
+        \pause
+        Suppose $(a,b) \in (R_1 \cup R_2)^{-1}$.\pause
+        Then $(b,a) \in R_1$ or $(b,a) \in R_2$.\pause
         \begin{itemize}
-          \item If $(b,a) \in R_1$ then $(a,b) \in R_1^{-1} or (a,b) \in R_2^{-1}$.
-          \item If $(b,a) \in R_2$ then $(a,b) \in R_2^{-1} or (a,b) \in R_2^{-1}$.
+          \item If $(b,a) \in R_1$ then $(a,b) \in R_1^{-1} or (a,b) \in R_2^{-1}$. \pause
+          \item If $(b,a) \in R_2$ then $(a,b) \in R_2^{-1} or (a,b) \in R_2^{-1}$. \pause
         \end{itemize}
-        Thus $(a,b) \in R_1^{-1} \cup R_2^{-1}$.
-        Conversely, suppose $(a,b) \in R_1^{-1} \cup R_2^{-1}$.
+        Thus $(a,b) \in R_1^{-1} \cup R_2^{-1}$.\pause
+        Conversely, suppose $(a,b) \in R_1^{-1} \cup R_2^{-1}$. \pause
         \begin{itemize}
-          \item If $(a,b) \in R_1^{-1}$ then $(b,a) \in R_1$ or $(b,a) \in R_2$.
-          \item If $(a,b) \in R_2^{-1}$ then $(b,a) \in R_2$ or $(b,a) \in R_1$.
+          \item If $(a,b) \in R_1^{-1}$ then $(b,a) \in R_1$ or $(b,a) \in R_2$.\pause
+          \item If $(a,b) \in R_2^{-1}$ then $(b,a) \in R_2$ or $(b,a) \in R_1$.\pause
         \end{itemize}
         So $(b,a) \in R_1 \cup R_2$. Hence $(a,b) \in (R_1 \cup R_2)^{-1}$
     \end{proof}
@@ -211,26 +234,28 @@
     \end{claim}
 
     \begin{proof}
-        Suppose $(a,c) \in R \cdot (S \cup T)$.
-        So there exists some $b$ such that $(a,b) \in R$ and $(b,c) \in S$ or $(b,c) \in T$.
+        Suppose $(a,c) \in R \cdot (S \cup T)$.\pause
+        So there exists some $b$ such that $(a,b) \in R$ and $(b,c) \in S$ or $(b,c) \in T$.\pause
         \begin{itemize}
-            \item If $(b,c) \in S$ then $(a,c) \in R \cdot S$ holds.
-            \item If $(b,c) \in T$ then $(a,c) \in R \cdot T$ holds.
+            \item If $(b,c) \in S$ then $(a,c) \in R \cdot S$ holds. \pause
+            \item If $(b,c) \in T$ then $(a,c) \in R \cdot T$ holds. \pause
         \end{itemize}
-        Thus we have $(a,c) \in (R \cdot S) \cup (R \cdot T)$.\\
-        Conversely, suppose $(a,c) \in (R \cdot S) \cup (R \cdot T)$.
+        Thus we have $(a,c) \in (R \cdot S) \cup (R \cdot T)$.\\ \pause
+        Conversely, suppose $(a,c) \in (R \cdot S) \cup (R \cdot T)$. \pause
         \begin{itemize}
-            \item If $(a,c) \in (R \cdot S)$ then we have $(a,b) \in R$ and $(b,c) \in S$ for some $b$.
-            So we obtain $(b,c) \in S \cup T$. Thus we have $(a,c) \in R \cdot (S \cup T)$.
+            \item If $(a,c) \in (R \cdot S)$ then we have $(a,b) \in R$ and $(b,c) \in S$ for some $b$. \pause
+            So we obtain $(b,c) \in S \cup T$. Thus we have $(a,c) \in R \cdot (S \cup T)$. \pause
             \item If $(a,c) \in (R \cdot T)$ then similary we have $(a,c) \in R \cdot (S \cup T)$.
         \end{itemize}
     \end{proof}
 \end{frame}
 
+\newcommand{\yes}{{\color{green}$\checkmark$}}
+\newcommand{\no}{{\color{red}$\times$}}
+
 \begin{frame}
     \frametitle{A.6}
-    \newcommand{\yes}{\color{green}$\checkmark$}
-    \newcommand{\no}{\color{red}$\times$}
+
     \begin{table}
         \centering
     \begin{tabular}{r|ccccc}
@@ -240,20 +265,27 @@
         transitive    & \yes & \yes & \yes & \yes & \yes \\
         symmetric     & \no  & \no  & \yes & \yes & \yes \\
         asymmetric    & \yes & \no  & \yes & \no  & \yes \\
-        antisymmetric & \no  & \yes & \yes & \yes & \yes \\
+        antisymmetric & \yes & \yes & \yes & \yes & \yes \\
     \end{tabular}
     \end{table}
 \end{frame}
 
 \newcommand{\RL}[2]{#1\, R\, #2}
 \begin{frame}
+    \frametitle{$\emptyset$ on $A$}
     \begin{itemize}
-    \item reflexive     : $\RL{a}{a}$ for all $a \in A$ \quad $(a,a) \notin \emptyset$
-    \item irreflexive   : there is no $a \in A$ s.t. $\RL{a}{a}$ \quad $(a,a)\notin \emptyset$
-    \item transitive    : $\RL{a}{b}$ and $\RL{b}{c}$ $\Rightarrow$ $\RL{a}{c}$ %for all $a,b,c \in A$
-    \item symmetric     : $\RL{a}{b} \Rightarrow \RL{b}{a}$ \quad $(a,b) \notin \emptyset$
-    \item asymmetric    : there is no $a$ and $b$ s.t. $\RL{a}{b}$ and $\RL{b}{a}$ \quad $(a,b)$ and $(a,b)$ $\notin \emptyset$
-    \item antisymmetric : $\RL{a}{b}$ and $\RL{b}{a}$ $\Rightarrow$ $a=b$
+    \pause
+    \item reflexive     : $a\in A \Rightarrow \RL{a}{a}$ \pause \quad \no \; \pause because $(a,a) \notin \emptyset$
+    \pause
+    \item irreflexive   : $a \in A \Rightarrow \RL{a}{a} \notin R$ \pause \quad \yes \; \pause because $(a,a)\notin \emptyset$
+    \pause
+    \item transitive    : $\RL{a}{b}$ and $\RL{b}{c}$ $\Rightarrow$ $\RL{a}{c}$ \pause \yes\; \pause because $(a,b) \notin \emptyset$
+    \pause
+    \item symmetric     : $\RL{a}{b} \Rightarrow \RL{b}{a}$ \quad \pause \yes\; \pause because $(a,b) \notin \emptyset$
+    \pause
+    \item asymmetric    : $\RL{a}{b} \Rightarrow \RL{b}{a} \notin R$ \pause \quad \yes\; \pause because $(a,b) \notin \emptyset$
+    \pause
+    \item antisymmetric : $\RL{a}{b}$ and $\RL{b}{a} \Rightarrow a=b$ \pause \quad \yes\; \pause because $(a,b) \notin \emptyset$
     \end{itemize}
 \end{frame}
 
@@ -264,16 +296,17 @@
 
     \begin{proof}
         \begin{itemize}
-            \item \underline{\Rightarrow-direction:}
-            Suppose $R$ is transitive.
-            Let $(a,b) \in R$ and $(b,c) \in R$.
-            Then we have $(a,c) \in R \cdot R$.
-            Since $R$ is transitive, $(a,c) \in R$
-            \item \underline{\Leftarrow-direction:}
-            Suppose $R \cdot R \subseteq R$.
-            Assume $(a,b) \in R$ and $(b,c) \in R$.
-            Then we have $(a,c) \in R \cdot R$.
-            So we obtain $(a,c) \in R$.
+            \pause
+            \item \underline{\Rightarrow-direction:} \pause
+            Suppose $R$ is transitive. \pause
+            Let $(a,b) \in R$ and $(b,c) \in R$. \pause
+            Then we have $(a,c) \in R \cdot R$. \pause
+            Since $R$ is transitive, $(a,c) \in R$ \pause
+            \item \underline{\Leftarrow-direction:} \pause
+            Suppose $R \cdot R \subseteq R$. \pause
+            Assume $(a,b) \in R$ and $(b,c) \in R$. \pause
+            Then we have $(a,c) \in R \cdot R$. \pause
+            So we obtain $(a,c) \in R$. \pause
             Hence $R$ is transitive.
       \end{itemize}
     \end{proof}
@@ -283,18 +316,18 @@
     \begin{claim}[A.7(6)]
         $R$ is antisymmetric $\Leftrightarrow$ $R \cap R^{-1} \subseteq \mathrm{id}_A$
     \end{claim}
-    \begin{proof}
+    \begin{proof}\pause
         \begin{itemize}
             \item \underline{\Rightarrow-direction:}
-                Suppose $R$ is antisymmetric.
-                Let $(a,b) \in R \cap R^{-1}$.
-                Then we have $(a,b) \in R$ and $(a,b) \in R^{-1}$.
-                Since $R$ is antisymmetric, $a=b$. Hence $(a,b) \in \mathrm{id}_A$.
+                Suppose $R$ is antisymmetric.\pause
+                Let $(a,b) \in R \cap R^{-1}$.\pause
+                Then we have $(a,b) \in R$ and $(a,b) \in R^{-1}$.\pause
+                Since $R$ is antisymmetric, $a=b$. Hence $(a,b) \in \mathrm{id}_A$.\pause
             \item \underline{\Leftarrow-direction:}
-                Suppose $R \cap R^{-1} \subseteq \mathrm{id}_A$.
-                Let $(a,b) \in R$ and $(b,a) \in R$.
-                Then $(a,b) \in R \cap R^{-1}$.
-                Thus $(a,b) \in \mathrm{id}_A$.
+                Suppose $R \cap R^{-1} \subseteq \mathrm{id}_A$.\pause
+                Let $(a,b) \in R$ and $(b,a) \in R$.\pause
+                Then $(a,b) \in R \cap R^{-1}$.\pause
+                Thus $(a,b) \in \mathrm{id}_A$.\pause
                 Hence $a = b$.
         \end{itemize}
     \end{proof}
