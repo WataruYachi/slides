@@ -1,0 +1,131 @@
+\documentclass[autodetect-enginem]{article}
+
+\usepackage{luatexja}
+\usepackage{luatexja-fontspec}
+\usepackage{luatexja-ruby}
+\usepackage{lmodern, amsmath, amsthm, amssymb, proof}
+\usepackage{tikz}
+\usetikzlibrary{arrows, positioning}
+
+
+\newcommand{\VV}{\mathcal{V}}
+\newcommand{\TT}{\mathcal{T}}
+\newcommand{\RR}{\mathcal{R}}
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\Var}{\mathcal{V}\mathrm{ar}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem*{theorem*}{Theorem}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem*{definition*}{Definition}
+
+\theoremstyle{definition}
+\newtheorem{claim}{Claim}
+\newtheorem*{claim*}{Claim}
+
+% page number
+% if you don't need page numbers, set "empty"
+\pagestyle{empty}
+
+
+\title{}
+\author{}
+\date{}
+
+\begin{document}
+
+\section*{A.8}
+\subsection*{(a)}
+    \begin{claim}
+        $R^m \cdot R^n = R^{m+n}$ for all $m,n \in \mathbb{N}$.
+    \end{claim}
+
+    \begin{proof}
+        We perfome induction on $n$.
+        Suppose $(a,c) \in R^m \cdot R^n$.
+        \begin{itemize}
+            \item If $n = 0$ then $R^m \cdot R^0 = R^m \cdot \mathrm{id}_A = R^m$.
+                    Thus $(a,c) \in R^{m+0}$.
+            \item If $n = n' + 1$ then $(a,c) \in R^m \cdot R^{n'} \cdot R$.
+                    So there exists some $b$ such that $(a,b) \in R^m \cdot R^{n'}$ and $(b,c) \in R$.
+                    By I.H., we have $(a,b) \in R^{m+n'}$.
+                    Thus $(a,c) \in R^{m+n'} \cdot R$.
+                    Hence $(a,c) \in R^{m+n}$.
+        \end{itemize}
+        Conversely, suppose $(a,c) \in R^{m+n}$.
+        \begin{itemize}
+            \item If $n=0$ then $(a,c) \in R^m$. Thus $(a,c) \in R^m \cdot R^0$.
+            \item If $n=n'+1$ then $(a,c) \in R^{m + n' + 1}$. So there exists some $b$ such that
+                    $(a,b) \in R^{m+n'}$ and $(b,c) \in R$.
+                    By I.H., we have $(a,b) \in R^{m} \cdot R^{n'}$.
+                    Thus $(a,c) \in R^{m} \cdot R^{n'} \cdot R$.
+                    Hence $(a,c) \in R^{m} \cdot R^{n}$.
+        \end{itemize}
+    \end{proof}
+
+
+\subsection*{(b)}
+    \begin{claim}
+        $(R^n)^{-1} = (R^{-1})^n$ for all $n \in \mathbb{N}$.
+    \end{claim}
+    \begin{proof}
+        We perfome induction on $n$.
+        \begin{itemize}
+            \item If $n = 0$: Suppose $(a,b) \in (R^0)^{-1}$.
+                    Hence we have $(a,b) \in (R^{-1})^0$.
+                    Conversely, suppose $(a,b) \in (R^{-1})^0$.
+                    Hence we have $(a,b) \in (R^0)^{-1}$.
+            \item If $n = n' + 1$: Suppose $(a,c) \in (R^{n'} \cdot R)^{-1}$.
+                    Then $(c,a) \in R^{n'} \cdot R$.
+                    So there exists some $b$ such that $(c,b) \in R^{n'}$ and $(b,a) \in R$.
+                    Therefore $(b,c) \in (R^{n'})^{-1}$ and $(a,b) \in R^{-1}$.
+                    By I.H., $(b,c) \in (R^{-1})^{n'}$.
+                    Thus $(a,c) \in R^{-1} \cdot (R^{-1})^{n'}$.
+                    Hence $(a,c) \in (R^{-1})^{n}$.
+                    Conversely, suppose $(a,c) \in (R^{-1})^{n'} \cdot R^{-1}$.
+                    Then there exists some $b$ such that $(a,b) \in (R^{-1})^{n'}$ and $(b,c) \in R^{-1}$.
+                    By I.H., we have $(a,b) \in (R^{n'})^{-1}$.
+                    So $(b,a) \in R^{n'}$ and $(c,b) \in R$.
+                    Thus $(c,a) \in R \cdot R^{n'}$.
+                    Hence $(a,c) \in (R^{n})^{-1}$.
+            \end{itemize}
+    \end{proof}
+
+\subsection*{(c)}
+    \begin{claim}
+        $R^{m+n} \cdot (R^{-1})^n = R^m$ does not hold for all $n,m \in \mathbb{N}$.
+    \end{claim}
+    \begin{proof}
+        Take
+            \begin{itemize}
+                \item $R =\{(0,1), (1,2)\}$,
+                \item $m=1$, and $n=1$.
+            \end{itemize}
+        Then we have
+            \begin{itemize}
+                \item $R^2 = \{(0,2)\}$,
+                \item $R^{-1} = \{(1,0), (2,1)\}$, and
+                \item $R^2 \cdot R^{-1} = \{(0,1)\}$.
+            \end{itemize}
+        But $R^m = R^1 = R = \{(0,1), (0,2)\} \neq \{(0,2)\}$.
+    \end{proof}
+
+\subsection*{(d)}
+    \begin{claim}
+        $(R^*)^{-1} = (R^{-1})^{*}$
+    \end{claim}
+    \begin{proof}
+        Firstly, we show $(\bigcup_{n \geq 0} R^n)^{-1} \subseteq \bigcup_{n \geq 0} (R^{-1})^n$.
+        We perfome case analysis on $n$.
+        \begin{itemize}
+            \item If $n=0$ then $(a,b) \in \mathrm{id}_A$ then $(a,b) \in \mathrm{id}_A$.
+            \item If $n>0$ then $(a,b) \in (\bigcup_{n \geq 0} R^{n} \cup R)^{-1}$.
+                \begin{itemize}
+                    \item If (a,b) \in 
+                \end{itemize}
+        \end{itemize}
+    \end{proof}
+\end{document}
