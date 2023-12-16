@@ -1,0 +1,64 @@
+\documentclass[autodetect-enginem]{article}
+
+\usepackage{luatexja}
+\usepackage{luatexja-fontspec}
+\usepackage{luatexja-ruby}
+\usepackage{lmodern, amsmath, amsthm, amssymb, proof}
+\usepackage{tikz}
+\usetikzlibrary{arrows, positioning}
+
+
+\newcommand{\VV}{\mathcal{V}}
+\newcommand{\TT}{\mathcal{T}}
+\newcommand{\RR}{\mathcal{R}}
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\Var}{\mathcal{V}\mathrm{ar}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem*{theorem*}{Theorem}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem*{definition*}{Definition}
+
+\newtheorem{claim}{Claim}
+\newtheorem*{claim*}{Claim}
+
+% page number
+% if you don't need page numbers, set "empty"
+\pagestyle{empty}
+
+\newcommand{\lto}{\reflectbox{$\rightarrow^*$}}
+
+\title{}
+\author{}
+\date{}
+
+\begin{document}
+
+\section*{1.7 (b)}
+
+Eliminate $e \rightarrow b$. Then the ARS terminates.
+
+\section*{1.9 (a)}
+
+\begin{claim*}
+    Every normal form of $\mathcal{A}$ is complete.
+\end{claim*}
+
+\begin{proof}
+    Let $a$ be a normal form of $\mathcal{A}$.
+    We show that $a$ is terminating and confluent.
+    Firstry, it is obvius that $a$ is terminating because there is no $b$ such that $a \rightarrow b$.
+    Secondly we show that $a$ is confluent.
+    Assume $b \;\reflectbox{$\rightarrow^*$}\; a \rightarrow^* c$ for some $b$ and $c$.
+    Since $a$ is a normal form, we have $a=b$ and $a=c$. Thus $b \rightarrow^* a \;\reflectbox{$\rightarrow^*$} \; c$.
+    Hence $a$ is complete.
+\end{proof}
+
+\section*{}
+
+
+
+\end{document}
