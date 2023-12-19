@@ -240,14 +240,30 @@
     \end{proof}
 \end{frame}
 
+\newcommand{\abto}{\to_{\alpha/\beta}}
+
 \begin{frame}
     \frametitle{}
     \begin{lemma}
-        for all $a \in A$, if $a$ is $\alpha$-terminating then $a$ is also $\alpha/\beta$-terminating
-        whenever $\alpha$ quasi-commutes over $\beta$
+        if $\alpha$ quasi-commutes over $\beta$,
+        every $\alpha$-terminating element $a$ is $\alpha/\beta$-terminating
     \end{lemma}
 
     \begin{proof}
+        Let $a$ is $\alpha$-terminating element.
+        We distinguish two cases.
+        \begin{itemize}
+            \item If $a \in \mathsf{NF}(\alpha/\beta)$, the claim is trivial.
+            \item If $a \abto b$, by the quasi-commutation of $\alpha$ over $\beta^*$, we have
+            $a \ato a' \to^* b$. Since $a$ is $\alpha$-terminating and $a \ato a'$,
+            $a'$ is $\alpha$-terminating. By I.H., $a'$ is $\alpha/\beta$-terminating.
+            Because $(\alpha \cup \beta)^* = \beta^* \cup (\alpha/\beta)^*$,
+            we observe two cases.
+            \begin{itemize}
+                \item If $a' \abto^* b$, trivially $b$ is $\alpha/\beta$-terminating.
+                \item If $a' \bto^* b$, since $a'$ is $\alpha/\beta$-terminating, $b$ is $\alpha/\beta$-terminating 
+            \end{itemize}
+        \end{itemize}
 
     \end{proof}
 
