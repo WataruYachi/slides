@@ -135,6 +135,69 @@
     \end{example}
 \end{frame}
 
+\newcommand{\bcab}{\;\beta^* \cup (\alpha/\beta)^*\;}
+\newcommand{\bs}{\;\beta^*\;}
+\newcommand{\acbs}{\;(\alpha \cup \beta)^* \;}
+\newcommand{\asbs}{\;(\alpha/\beta)^*\;}
+
+
+\begin{frame}
+    \begin{lemma}
+        $\beta^* \cup (\alpha/\beta)^* \subseteq (\alpha \cup \beta)^*$
+    \end{lemma}
+    \begin{proof}
+        We distinguish two cases.
+        \begin{itemize}
+            \item If $a \bs b$ then we have $a\;\beta^* \;b\; (\alpha \cdot \beta^*)^*\;b$.
+            Since $\beta^* \cdot (\alpha \cdot \beta^*)^* = (\alpha \cup \beta)^*$, $a \acbs b$ holds.
+            \item If $a \asbs c$ then we perfome induction on the length of $\asbs$.
+                \begin{itemize}
+                    \item If $a = c$ then $a \acbs c$ holds.
+                    \item If $a \;\alpha/\beta\; b \; (\alpha/\beta)^* c$ then by I.H., we have $b \acbs c$.
+                    Since $a \bs a' \; \alpha \; b' \bs b$, we have $a \acbs a'$, $a' \acbs b'$, and $b' \acbs b$.
+                    Hence $a \acbs c$ holds.
+                \end{itemize}
+        \end{itemize}
+    \end{proof}
+\end{frame}
+
+\begin{frame}
+    \begin{lemma}
+        $(\alpha \cup \beta)^* \subseteq \beta^* \cup (\alpha/\beta)^*$
+    \end{lemma}
+    \begin{proof}
+        We show that $(\alpha \cup \beta)^n \subseteq \beta^* \cup (\alpha/\beta)^*$ for all $n \in \mathbb{N}$ by induction on $n$.
+        \begin{itemize}
+            \item If $n = 0$ and $a\; (\alpha \cup \beta)^n \; b$ then $a =b$. So $a \bs b$.
+            Hence the claim holds.   
+            \item If $n > 0$ and $a\; (\alpha \cup \beta)^{n-1} \; b \; \alpha \cup \beta\; c$
+            then we have $a \;\beta^* \cup (\alpha/\beta)^*\; b$ by I.H. So we have four cases.
+            \begin{itemize}
+                \item If $a \bs b$ and $b\; \alpha \;c$ then $a\; \alpha/\beta\;c$. So $a\; \beta^* \cup (\alpha/\beta)^*\; c$ holds.
+                \item If $a \bs b$ and $b \;\beta\; c$ then we have $a \bs c$. So $a\; \beta^* \cup (\alpha/\beta)^*\; c$ holds.
+                \item If $a \; (\alpha/\beta)^*\; b$ and $b \; \alpha \;c$ then
+                since $b\; \alpha/\beta\; c$, we have $a \; (\alpha/\beta)^*\; c$. So the claim holds.
+                \item If $a \; (\alpha/\beta)^*\; b$ and $b \; \beta \; c$ then we distinguish two cases.
+                If $a = b$ then $a \bs c$. So the claim holds.
+                If $a \;(\alpha/\beta)^* \cdot \alpha/\beta\; b$ then we have $a \;(\alpha/\beta)^*\;$.
+                Hence the claim holds. 
+            \end{itemize}
+        \end{itemize}
+    \end{proof}
+\end{frame}
+
+\begin{frame}
+    \begin{lemma}
+        $\beta^* \cup (\alpha/\beta)^* = (\alpha \cup \beta)^*$
+    \end{lemma}
+    \begin{proof}
+        By previous lemmata, we have
+        $\beta^* \cup (\alpha/\beta)^* \subseteq (\alpha \cup \beta)^*$ and
+        $(\alpha \cup \beta)^* \subseteq \beta^* \cup (\alpha/\beta)^*$.
+        So $\beta^* \cup (\alpha/\beta)^* = (\alpha \cup \beta)^*$ holds.
+    \end{proof}
+\end{frame}
+
 \begin{frame}
 \begin{lemma}
     for all ARS $\MA = \langle A, \{\alpha,\beta\} \rangle$, following statements are equivalent
@@ -162,7 +225,7 @@
     \begin{proof}
         Suppose $a_0 \to a_1 \to a_2 \to \cdots$. Since $\alpha$ is relatively terminating
         with respect to $\beta$, the sequence contains only finitely many $\ato$.
-        So there exist some $i \in \mathbb{N}$ such that
+        So there exists some $i \in \mathbb{N}$ such that
         $a_i \bto a_{i+1} \bto a_{i+2} \bto \cdots$. 
         However $\beta$ is terminating.
         So $a_i \bto a_{i+1} \bto a_{i+2} \bto \cdots$ is terminating.
@@ -202,7 +265,7 @@
     \end{lemma}
 
     \begin{proof}
-        To prove the lemma, we show that for all $n \in \mathbb{N}$,
+        We show that for all $n \in \mathbb{N}$,
         $\alpha$ quasi-commutes over $\beta^n$ by induction on $n$.
         \begin{columns}[totalwidth=\mytotalwidth]
             \begin{column}[t]{0.5\mycolumnwidth}
@@ -250,7 +313,8 @@
     \end{lemma}
 
     \begin{proof}
-        Let $a$ is $\alpha$-terminating element.
+        Let $a$ be an $\alpha$-terminating element.
+        We perfome well-founded induction on $a$.
         We distinguish two cases.
         \begin{itemize}
             \item If $a \in \mathsf{NF}(\alpha/\beta)$, the claim is trivial.
