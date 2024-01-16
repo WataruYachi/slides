@@ -17,6 +17,7 @@
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}
 \newtheorem*{theorem*}{Theorem}
+\newtheorem*{lemma*}{Lemma}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}
@@ -44,21 +45,141 @@ Eliminate $e \rightarrow b$. Then the ARS terminates.
 \section*{1.9 (a)}
 
 \begin{claim*}
-    Every normal form of $\mathcal{A}$ is complete.
+    Every normal form is complete.
 \end{claim*}
 
 \begin{proof}
-    Let $a$ be a normal form of $\mathcal{A}$.
+    Let $a$ be a normal form of ARS $\mathcal{A}$.
     We show that $a$ is terminating and confluent.
-    Firstry, it is obvius that $a$ is terminating because there is no $b$ such that $a \rightarrow b$.
+    Firstly, it is obvious that $a$ is terminating because there is no $b$ such that $a \rightarrow b$.
     Secondly we show that $a$ is confluent.
     Assume $b \;\reflectbox{$\rightarrow^*$}\; a \rightarrow^* c$ for some $b$ and $c$.
     Since $a$ is a normal form, we have $a=b$ and $a=c$. Thus $b \rightarrow^* a \;\reflectbox{$\rightarrow^*$} \; c$.
     Hence $a$ is complete.
 \end{proof}
 
-\section*{}
+\section*{1.10 (a)}
 
+\begin{claim*}
+    The ARS $\mathcal{A}$ of Exercise 1.5 is terminating.
+\end{claim*}
+
+\begin{proof}
+    Assume $a_0 \to a_1 \to a_2 \to \cdots$.
+    By the definition of $\to$, for all $i \in \mathbb{N}$, $a_i > a_{i+1}$ holds.
+    So we have $a_0 > a_1 > a_2 > \cdots$.
+    However $>$ on $\mathbb{N}$ has the least element.
+    Hence we have contradiction.
+\end{proof}
+
+
+\section*{1.11 (a)}
+\begin{claim*}
+    Let $\mathcal{A} = \langle A, \to \rangle$ be an ARS. If $a \in A$ is terminating then
+    $b \in \{b \mid a \rightarrow^* b\}$ is terminating.
+\end{claim*}
+
+\begin{proof}
+    Let $a$ be a terminating element of $A$ and $a \to^* b_0$.
+    Assume $b_0 \to b_1 \to b_2 \to \cdots$.
+    Since $a \to^* b_0$, we have $a \to^* b_0 \to b_1 \to b_2 \to \cdots$.
+    Then $a$ is not terminating, which is contradiction.
+\end{proof}
+
+\section*{1.12}
+
+\newcommand{\conv}{\leftrightarrow}
+\newcommand{\join}{\downarrow}
+\newcommand{\ito}{\leftarrow}
+\begin{lemma*}
+    For every ARS $\mathcal{A} = \langle A, \to \rangle$,
+    $\conv^* \; \subseteq \; \downarrow \cup \conv^* \cdot \leftarrow \cdot \rightarrow \cdot \conv^*$ holds.
+\end{lemma*}
+
+\begin{proof}
+    Let $a \conv^n e$.
+    We perform induction on $n$.
+    \begin{itemize}
+        \item If $n = 0$ then we have $a = e$. So $a \downarrow e$.
+            Thus the claim holds. %$a \downarrow \cup \; \conv^* \cdot \leftarrow \cdot \rightarrow \cdot \conv^* e$.
+        \item If $n > 0$ then we have $a \conv^{n-1} d \conv e$ for some $d$.
+            By the I.H., we have $a \downarrow \cup \conv^* \cdot \leftarrow \cdot \rightarrow \cdot \conv^* d$.
+            We perform case analysis.
+            \begin{itemize}
+                \item If $a \join d \ito e$, we have $a \join e$.
+                \item If $a \join d \to e$ namely $a \to^* b \; \lto \; d \to e$, we have two cases.
+                    \begin{itemize}
+                        \item If $a \to^* b = d \to e$, we have $a \join e$.
+                        \item If $a \to^* b \; \lto \; c \ito d \to e$,
+                            we have $a \conv^* \cdot \ito \cdot \to \cdot \conv^* e$.
+                    \end{itemize}
+                \item If $a \conv^* \cdot \ito \cdot \to \cdot \conv^* d \conv e$, we have
+                    $a \conv^* \cdot \ito \cdot \to \cdot \conv^* e$.
+            \end{itemize}
+    \end{itemize}
+\end{proof}
+
+\section*{1.13 (c)}
+
+\begin{claim*}
+    Let $\mathcal{A} = \langle A, \to \rangle$ be an ARS.
+    For all $a \in A$, if $\mathcal{A}$ is weakly normalizing and $a$ has the unique normal form then $a is confluent$.
+\end{claim*}
+
+\begin{proof}
+    Assume $c \;\lto\; a \to^* b$. Since $\mathcal{A}$ is weakly normalizing, there exists some
+    $b'$ and $c'$ such that $b \to^! b'$ and $c \to^! c'$.
+    Because $a$ has unique normal form property, we have $b' = c'$.
+    Thus $b \join c$. Hence $a$ is confluent.    
+\end{proof}
+
+\section*{1.14 (b)}
+Let $A = \langle A, \to \rangle$ be an ARS with the diamond property.
+
+\begin{claim*}
+    For all $a \in A$, $a$ is terminating if and only if $a \in \mathsf{NF}(\mathcal{A})$.
+\end{claim*}
+
+\begin{proof}
+    To prove the claim, we show that for all $a \in A$, $a$ is not terminating if and only if $a \notin \mathsf{NF}(\mathcal{A})$.
+
+    (Only if-direction) Assume $a = a_0 \to a_1 \to a_2 \to \cdots$.
+    It is obvious that $a \notin \mathsf{NF}(\mathcal{A})$ because we have $a = a_0 \to a_1$.
+    
+    (If-direction) Let $a = a_0$. Suppose $a_0 \to a_1$ for some $a_1$.
+    Since $\mathcal{A}$ has the diamond property,
+    we have $a_1 \to a_2 \ito a_1$ for some $a_2$. %Then we have $a_0 \to a_1 \to a_2$.
+    In addition, we can construct $a_3, a_4, a_5, \dots$ in the same way.
+    Hence we obtain the infinite rewrite sequence $a_0 \to a_1 \to a_2 \to a_3 \to \cdots$.
+\end{proof}
+
+\begin{claim*}
+    $\mathcal{A}$ is terminating if and only if $\to \; = \emptyset$.
+\end{claim*}
+
+\begin{proof}
+    If-direction is trivial.
+
+    (Only if-direction)
+    Assume $\mathcal{A}$ is terminating.
+    Suppose $(a,b) \in \;\to$ for some $a,b \in A$.
+    According to the previous claim, $a \to b$ implies $a$ is not terminating.
+    So $\mathcal{A}$ is not terminating. We have contradiction.
+    Hence $\to\; = \emptyset$.
+    
+
+\end{proof}
+
+\section*{1.15 (c)}
+
+\begin{claim*}
+    The ARS is not terminating.
+\end{claim*}
+
+\begin{proof}
+    Take (1,1).
+    Then we have $(1,1) \to (1,1) \to (1,1) \to \cdots$.
+\end{proof}
 
 
 \end{document}
