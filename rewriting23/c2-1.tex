@@ -1,0 +1,265 @@
+% 4up version
+%\documentclass[handout, 12pt, aspectratio=169]{beamer}
+
+\documentclass[12pt,aspectratio=169]{beamer}
+
+\usefonttheme{professionalfonts}
+
+\mode<handout>
+{
+\usepackage{pgfpages}
+\pgfpagesuselayout{4 on 1}[a4paper,landscape]
+}
+
+\usepackage[english]{babel}
+\usepackage{luatexja}
+\usepackage{luatexja-fontspec}
+
+
+% for display code
+%\usepackage{minted}
+%\newfontfamily\hasklig{hasklig}[NFSSFamily=haskligFamily]
+%\setminted[haskell]{fontfamily=haskligFamily,
+%mathescape,
+%       numbersep=5pt
+%}
+
+% for proof tree
+%\usepackage{bcprules}
+
+%\usepackage[T1]{fontenc}
+
+%for lualatex
+\usepackage{fontspec}
+\setsansfont{CMU Sans Serif}%{Arial}
+\setmainfont{CMU Serif}%{Times New Roman}
+\setmonofont{CMU Typewriter Text}%{Consolas}
+
+\usepackage{lmodern,amsmath,amssymb,proof}
+\usepackage{latexsym}
+\usepackage{tikz}
+\usetikzlibrary{arrows,positioning}
+
+
+
+% color scheme
+\definecolor{green}{rgb}{0.0,0.5,0.0}
+\definecolor{blue}{rgb}{0.0,0.0,0.7}
+\definecolor{red}{rgb}{0.8,0.0,0.0}
+\definecolor{lightred}{rgb}{1.0,0.97,0.97}
+\definecolor{lightblue}{rgb}{0.95,0.95,1.0}
+\definecolor{darkblue}{rgb}{0.3,0.3,0.5}
+\definecolor{darkred}{rgb}{0.6,0.0,0.0}
+\definecolor{darkorange}{rgb}{0.6,0.2,0.1}
+\definecolor{darkgreen}{rgb}{0,0.3,0}
+%
+\newcommand{\IMAGE}[2]{\pgfdeclareimage[#1]{#2}{#2}\pgfuseimage{#2}}
+
+\setbeamerfont{title}{series=\bfseries,size=\Large}
+\setbeamercolor{title}{fg=red}
+\setbeamerfont{subtitle}{series=\bfseries,size=\LARGE}
+\setbeamercolor{subtitle}{fg=red}
+\setbeamerfont{author}{series=\bfseries,size=\large}
+\setbeamercolor{author}{fg=blue}
+\setbeamerfont{institute}{series=\bfseries,size=\large}
+\setbeamercolor{institute}{fg=green}
+
+\setbeamertemplate{blocks}[rounded]
+\setbeamerfont{block title}{series=\bfseries,family=\sffamily,size=\small\strut}
+\setbeamercolor{block title}{bg=darkblue,fg=white}
+\setbeamercolor{block body}{bg=blue!4!white}
+\setbeamercolor{block title example}{bg=white,fg=darkgreen}
+\setbeamercolor{block body example}{bg=white}
+\setbeamercolor{block title alerted}{bg=darkred,fg=white}
+\setbeamercolor{block body alerted}{bg=red!4!white}
+\setbeamercolor{structure}{fg=darkred}
+% no fading effect
+\makeatletter
+\pgfdeclareverticalshading[lower.bg,upper.bg]{bmb@transition}{200cm}{%
+  color(0pt)=(lower.bg); color(4pt)=(lower.bg); color(4pt)=(upper.bg)}
+\makeatother
+
+% frametitle
+\useframetitletemplate{
+\begin{centering}
+\centerline{\large\bfseries\color{darkblue}\insertframetitle}
+\end{centering}
+}
+
+% footer  (title  page/pages)
+\setbeamertemplate{navigation symbols}{}
+\useheadtemplate{\vbox{\vskip8pt}}
+\usefoottemplate{\vbox{\vskip2pt\inserttitle\hfil\insertframenumber/\inserttotalframenumber\vskip5pt}}
+
+% enumerate/itemize environment
+\newcommand*\tikzboxed[1]{\tikz[baseline=(c.base)]{%
+\node[thick,shape=rectangle,draw,inner sep=2pt] (c) {#1};}}
+\setbeamertemplate{items}[square]
+\setbeamertemplate{enumerate item}{\tikzboxed{\footnotesize\insertenumlabel}}
+\setlength{\itemsep}{1ex}
+
+\newcommand{\m}[1]{\mathsf{#1}}
+\newcommand{\mi}[1]{\mathit{#1}}
+\newcommand{\md}[1]{\mathtt{\textcolor{blue}{#1}}}
+\newcommand{\seq}[2][n]{{#2_1},\dots,{#2_{#1}}}
+%
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\RR}{\mathcal{R}}
+\newcommand{\VV}{\mathcal{V}}
+\newcommand{\TT}{\mathcal{T}}
+\newcommand{\Var}{\mathcal{V}\m{ar}}
+%
+\newcommand{\app}{\circ}
+
+\newlength{\mytotalwidth}
+\mytotalwidth=\dimexpr\linewidth-5mm
+\newlength{\mycolumnwidth}
+\mycolumnwidth=\dimexpr\mytotalwidth-5mm
+
+\title{ Terms }
+\author{Wataru Yachi}
+\institute{JAIST}
+\date{January 22, 2024}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}
+    \frametitle{Signatures}
+    \begin{definition}
+        \begin{itemize}
+            \item \alert{signature} $\FF$ is set of function symbols
+            \item \alert{$f^n$} denotes $f$ will take $n$ arguments (n is called \alert{arity})
+            \item $f$ is \alert{constant} if arity of $f$ is 0
+        \end{itemize}
+    \end{definition}
+
+    \begin{example}
+        \begin{columns}[totalwidth=\mytotalwidth]
+        \begin{column}[t]{0.5\mycolumnwidth}
+            \begin{itemize}
+                \item $\mathsf{0}^0$ \quad \alert{constant}
+                \item $\m{s}^1$ \quad unray function
+                \item $\m{+}^2$ \quad binary function
+            \end{itemize}
+        \end{column}
+        \begin{column}[t]{0.5\mycolumnwidth}
+            \begin{itemize}
+                \item $\m{ifThenElse}^3$ \quad ternary function
+                \item $\m{f}^4$ \quad 4-ary function
+            \end{itemize}
+        \end{column}
+        \end{columns}
+    \end{example}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Terms}
+    \begin{definition}
+        let $\FF$ be sigunature and let $\VV$ be set of variables
+        \begin{itemize}
+            \item \alert{$\TT(\FF,\VV)$} is set of terms built from $\FF$ and $\VV$
+            \item $t \in \TT(\FF,\VV)$ is \alert{term}
+                \begin{itemize}
+                    \item if $t = x$ and $x \in \VV$,
+                    \item if $t = f$, $f^n \in \FF$ and $n = 0$, or
+                    \item if $t = f(t_1, \dots, t_n)$, $f^n \in \FF$, and $t_1, \dots, t_n \in \TT(\FF,\VV)$ 
+                \end{itemize}
+        \end{itemize}
+    \end{definition}
+    \begin{example}
+        let $\FF = \{\m{0}^0, \m{s}^1, \m{+}^2\}$ and $\VV = \{x,y,\dots\}$
+        \vspace{-12pt}
+        \begin{columns}[totalwidth=\mytotalwidth]
+            \begin{column}[t]{0.5\mycolumnwidth}
+                \begin{itemize}
+                    \item $x$ and $\m{0}$ \quad \textcolor{green}{term}
+                    \item $\m{s}(\m{0}) + x$ \quad \textcolor{green}{term}
+                \end{itemize}
+            \end{column}
+            \begin{column}[t]{0.5\mycolumnwidth}
+                \begin{itemize}
+                    \item $x(y)$ and $\m{0}(x)$ \quad \textcolor{red}{not term}
+                    \item $\m{s}(+)$ \quad \textcolor{red}{not term}
+                \end{itemize}
+            \end{column}
+        \end{columns}
+    \end{example}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Subterm Relation}
+    \begin{definition}
+        let $s,t \in \TT(\FF,\VV)$
+        \begin{itemize}
+            \item $s \unrhd t \begin{cases}
+                \text{if}\; s = t\; \text{or}\\
+                \text{if}\; s = f(s_1,\dots,s_n)\; \text{and} \; s_i \unrhd t \; \text{for some} \; 1 \leq i \leq n
+            \end{cases}$
+            \item $s \rhd t$ if $s \unrhd t$ and $s \neq t$
+            %\item $t$ is \alert{subterm} of $s$ if $s \unrhd t$
+            %\item $t$ is \alert{proper subterm} of $s$ if $s \rhd t$
+        \end{itemize}
+    \end{definition}
+
+    \begin{example}
+        \begin{itemize}
+            \item $\m{s}(x) \unrhd x$ and $\m{s}(x) \rhd x$
+            \item $\m{s}(x) + \m{s}(y) \rhd \m{s}(x)$
+            \item $\m{s}(x + y) \rhd x$
+        \end{itemize}
+    \end{example}
+\end{frame}
+
+\begin{frame}
+    \frametitle{well-foundedness of $\rhd$}
+    \begin{comment}
+    \begin{definition}
+        $s \rhd_1 t$ if $s = f(s_1,\dots,s_n)$ and $s_i = t$ for some $1 \leq i \leq n$
+    \end{definition}
+    \begin{lemma}
+        $\rhd_1$ is well-founded
+    \end{lemma}
+    \begin{proof}
+        Suppose $s_1 \rhd_1 s_2 \rhd_1 s_3 \rhd_1 \cdots$.
+        Then we have $f_1(\dots,f_2(\dots, f_3(\dots)\dots),\dots)$. By the definition of terms,
+        we 
+    \end{proof}
+    \end{comment}
+
+    \begin{lemma}
+    \end{lemma}
+    \begin{proof}
+        We define $s \rhd_1 t$ as $t$ is an argument of $s$.
+        Then the relation $\rhd_1$ is well-founded due to the definition of terms.
+    \end{proof}
+\end{frame}
+
+\begin{frame}
+    \frametitle{$\unrhd$ is partial order}
+
+    \begin{lemma}
+        $\unrhd$ is partial order
+    \end{lemma}
+
+    \begin{proof}
+        We show that $\unrhd$ on terms is reflexive, transitive, and antisymmetric.
+
+        (reflexivity) For all term $t$, $t = t$ holds. Hence $t \unrhd t$ holds.
+
+        (transitivity) Let $s \unrhd t$ and $t \unrhd u$. We perform structural induction on $s$.
+        \begin{itemize}
+            \item If $s = t$ then trivially we have $s \unrhd u$.
+            \item If $s = f(s_1, \dots, s_n)$ and $s_i \unrhd t$ for some $1 \leq i \leq n$ then, 
+            by the I.H., we have $s_i \unrhd u$. Hence $s \unrhd u$ holds.
+        \end{itemize}
+
+        (anti-symmetry) Suppose $s \unrhd t$ and $t \unrhd s$. If $s \neq t$ we have $s \rhd t$ and $t \rhd s$.
+        It contradicts with the well-fuondedness of $\rhd$.
+    \end{proof}
+\end{frame}
+
+\end{document}
