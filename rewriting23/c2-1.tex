@@ -216,31 +216,38 @@
 
 \begin{frame}
     \frametitle{well-foundedness of $\rhd$}
-    \begin{comment}
+
     \begin{definition}
         $s \rhd_1 t$ if $s = f(s_1,\dots,s_n)$ and $s_i = t$ for some $1 \leq i \leq n$
     \end{definition}
     \begin{lemma}
-        $\rhd_1$ is well-founded
+        $\rhd \subseteq \rhd_1^+$
     \end{lemma}
     \begin{proof}
-        Suppose $s_1 \rhd_1 s_2 \rhd_1 s_3 \rhd_1 \cdots$.
-        Then we have $f_1(\dots,f_2(\dots, f_3(\dots)\dots),\dots)$. By the definition of terms,
-        we 
-    \end{proof}
-    \end{comment}
-
-    \begin{lemma}
-    \end{lemma}
-    \begin{proof}
-        We define $s \rhd_1 t$ as $t$ is an argument of $s$.
-        Then the relation $\rhd_1$ is well-founded due to the definition of terms.
-        
+        Let $s \rhd t$. Then we have $s = f(s_1,\dots,s_m)$ and $s_i \rhd t$ for some $i$.
+        We perform structural induction on $s_i$.
+        If $s_i = t$ then  we have $s_i {\rhd_1}^+ t$.
+        If $s_i = g(s_{i1}, \dots, s_{in})$ and $s_{ij} \rhd t$ then by the I.H., we have $s_{ij} \rhd_1^+ t$.
+        Thus we obtain $s \rhd_1 s_{ij} \rhd_1^+ t$. Hence $s \rhd_1^+ t$ holds.
     \end{proof}
 \end{frame}
 
 \begin{frame}
-    \frametitle{$\unrhd$ is partial order}
+    \frametitle{well-foundedness of $\rhd$}
+    \begin{lemma}
+        $\rhd$ is well-founded
+    \end{lemma}
+    \begin{proof}
+        Suppose $s_1 \rhd s_2 \rhd s_3 \rhd \cdots$.
+        Because $\rhd \subseteq \rhd_1^+$,
+        we obtain $s_1 \rhd_1 \cdots \rhd_1 s_2 \rhd_1 \cdots \rhd_1 s_3 \rhd_1 \cdots$.
+        However, since the definition of terms, $\rhd_1$ is well-founded.
+        Hence we have contradiction.
+    \end{proof}
+\end{frame}
+
+\begin{frame}
+    \frametitle{$\unrhd$ is Partial Order}
 
     \begin{lemma}
         $\unrhd$ is partial order
@@ -261,6 +268,23 @@
         (anti-symmetry) Suppose $s \unrhd t$ and $t \unrhd s$. If $s \neq t$ we have $s \rhd t$ and $t \rhd s$.
         It contradicts with the well-fuondedness of $\rhd$.
     \end{proof}
+\end{frame}
+
+\begin{frame}
+    \frametitle{$\rhd$ is Strict Order}
+    \begin{lemma}
+        $\rhd$ is strict order
+    \end{lemma}
+    \begin{proof}
+        Firstly, irreflexivity of $\rhd$ is yielded from the definition of $\rhd$.
+        Secondly, we show that $\rhd$ is transitive. Suppose $s \rhd t$ and $t \rhd u$.
+        Then we have $s \unrhd t$, $t \unrhd u$, $s \neq t$, and $t \neq u$.
+        So we have $s \unrhd u$. If $s = u$ then it contradicts the well-foundedness of $\rhd$.
+        Thus we obtain $s \neq u$. Hence $s \rhd u$ holds.
+    \end{proof}
+    \begin{corollary}
+        $\rhd$ is well-founded order
+    \end{corollary}
 \end{frame}
 
 \end{document}
