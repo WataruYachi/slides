@@ -130,24 +130,30 @@
     \begin{definition}
         \begin{itemize}
             \item \alert{signature} $\FF$ is set of function symbols
-            \item \alert{$f^n$} denotes $f$ will take $n$ arguments (n is called \alert{arity})
+            \item \alert{$f^{(n)}$} denotes $f$ will take $n$ arguments (n is called \alert{arity})
             \item $f$ is \alert{constant} if arity of $f$ is 0
         \end{itemize}
     \end{definition}
-
+    
+    \pause
     \begin{example}
         \begin{columns}[totalwidth=\mytotalwidth]
         \begin{column}[t]{0.5\mycolumnwidth}
             \begin{itemize}
-                \item $\mathsf{0}^0$ \quad \alert{constant}
-                \item $\m{s}^1$ \quad unray function
-                \item $\m{+}^2$ \quad binary function
+                \pause
+            \item $\mathsf{0}^{(0)}$ \quad \alert{constant}
+                \pause
+            \item $\m{s}^{(1)}$ \quad \alert{unary function}
+                \pause
+            \item $\m{+}^{(2)}$ \quad \alert{binary function}
             \end{itemize}
         \end{column}
         \begin{column}[t]{0.5\mycolumnwidth}
             \begin{itemize}
-                \item $\m{ifThenElse}^3$ \quad ternary function
-                \item $\m{f}^4$ \quad 4-ary function
+                \pause
+            \item $\m{ifThenElse}^{(3)}$ \quad \alert{ternary function}
+                \pause
+            \item $\m{f}^{(4)}$ \quad \alert{4-ary function}
             \end{itemize}
         \end{column}
         \end{columns}
@@ -161,27 +167,32 @@
         let $\FF$ be sigunature and let $\VV$ be set of variables
         \begin{itemize}
             \item \alert{$\TT(\FF,\VV)$} is set of terms built from $\FF$ and $\VV$
-            \item $t \in \TT(\FF,\VV)$ is \alert{term}
+            \item $t \in \TT(\FF,\VV)$ is \alert{term} if
                 \begin{itemize}
-                    \item if $t = x$ and $x \in \VV$,
-                    \item if $t = f$, $f^n \in \FF$ and $n = 0$, or
-                    \item if $t = f(t_1, \dots, t_n)$, $f^n \in \FF$, and $t_1, \dots, t_n \in \TT(\FF,\VV)$ 
+                    \item $t = x$ and $x \in \VV$,
+                    \item $t = f$, $f^n \in \FF$ and $n = 0$, or
+                    \item $t = f(t_1, \dots, t_n)$, $f^n \in \FF$, and $t_1, \dots, t_n \in \TT(\FF,\VV)$ 
                 \end{itemize}
         \end{itemize}
     \end{definition}
+    \pause
     \begin{example}
         let $\FF = \{\m{0}^0, \m{s}^1, \m{+}^2\}$ and $\VV = \{x,y,\dots\}$
+        \pause
         \vspace{-12pt}
         \begin{columns}[totalwidth=\mytotalwidth]
             \begin{column}[t]{0.5\mycolumnwidth}
                 \begin{itemize}
                     \item $x$ and $\m{0}$ \quad \textcolor{green}{term}
+                    \pause
                     \item $\m{s}(\m{0}) + x$ \quad \textcolor{green}{term}
+                    \pause
                 \end{itemize}
             \end{column}
             \begin{column}[t]{0.5\mycolumnwidth}
                 \begin{itemize}
                     \item $x(y)$ and $\m{0}(x)$ \quad \textcolor{red}{not term}
+                    \pause
                     \item $\m{s}(+)$ \quad \textcolor{red}{not term}
                 \end{itemize}
             \end{column}
@@ -195,78 +206,101 @@
     \begin{definition}
         let $s,t \in \TT(\FF,\VV)$
         \begin{itemize}
-            \item $s \unrhd t \begin{cases}
-                \text{if}\; s = t\; \text{or}\\
-                \text{if}\; s = f(s_1,\dots,s_n)\; \text{and} \; s_i \unrhd t \; \text{for some} \; 1 \leq i \leq n
-            \end{cases}$
+            \item $s \unrhd t$ if
+                \begin{itemize}
+                    \item $s = t$ or
+                    \item $s = f(s_1,\dots,s_n)$ and $s_i \unrhd t$ for some $1 \leq i \leq n$
+                \end{itemize}
             \item $s \rhd t$ if $s \unrhd t$ and $s \neq t$
             %\item $t$ is \alert{subterm} of $s$ if $s \unrhd t$
             %\item $t$ is \alert{proper subterm} of $s$ if $s \rhd t$
         \end{itemize}
     \end{definition}
-
+    \pause
     \begin{example}
         \begin{itemize}
+            \pause
             \item $\m{s}(x) \unrhd x$ and $\m{s}(x) \rhd x$
+            \pause
             \item $\m{s}(x) + \m{s}(y) \rhd \m{s}(x)$
+            \pause
             \item $\m{s}(x + y) \rhd x$
         \end{itemize}
     \end{example}
 \end{frame}
 
 \begin{frame}
-    \frametitle{well-foundedness of $\rhd$}
+    \frametitle{Well-foundedness of $\rhd$}
 
     \begin{definition}
         $s \rhd_1 t$ if $s = f(s_1,\dots,s_n)$ and $s_i = t$ for some $1 \leq i \leq n$
     \end{definition}
+    \pause
     \begin{lemma}
         $\rhd \subseteq \rhd_1^+$
     \end{lemma}
+    \pause
     \begin{proof}
-        Let $s \rhd t$. Then we have $s = f(s_1,\dots,s_m)$ and $s_i \rhd t$ for some $i$.
+        Let $s \rhd t$. \pause
+        Then we have $s = f(s_1,\dots,s_m)$ and $s_i \rhd t$ for some $i$.
+        \pause
         We perform structural induction on $s_i$.
-        If $s_i = t$ then  we have $s_i {\rhd_1}^+ t$.
-        If $s_i = g(s_{i1}, \dots, s_{in})$ and $s_{ij} \rhd t$ then by the I.H., we have $s_{ij} \rhd_1^+ t$.
+        \pause
+        \begin{itemize}
+            \item If $s_i = t$ then we have $s \rhd_1 t$. Hence $s \rhd_1^+ t$ holds.
+            \pause
+            \item If $s_i = g(s_{i1}, \dots, s_{in})$ and $s_{ij} \rhd t$ then by the I.H., we have $s_{ij} \rhd_1^+ t$.
+        \end{itemize}
         Thus we obtain $s \rhd_1 s_{ij} \rhd_1^+ t$. Hence $s \rhd_1^+ t$ holds.
     \end{proof}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Well-foundedness of $\rhd$}
+    %\frametitle{Well-foundedness of $\rhd$}
     \begin{lemma}
         $\rhd$ is well-founded
     \end{lemma}
+    \pause
     \begin{proof}
         Suppose $s_1 \rhd s_2 \rhd s_3 \rhd \cdots$.
+        \pause
         Because $\rhd \subseteq \rhd_1^+$,
         we obtain $s_1 \rhd_1 \cdots \rhd_1 s_2 \rhd_1 \cdots \rhd_1 s_3 \rhd_1 \cdots$.
+        \pause
         However, since the definition of terms, $\rhd_1$ is well-founded.
+        \pause
         Hence we have contradiction.
     \end{proof}
 \end{frame}
 
 \begin{frame}
     \frametitle{$\unrhd$ is Partial Order}
-
     \begin{lemma}
         $\unrhd$ is partial order
     \end{lemma}
-
+    \pause
     \begin{proof}
         We show that $\unrhd$ on terms is reflexive, transitive, and antisymmetric.
 
+        \pause
         (reflexivity) For all term $t$, $t = t$ holds. Hence $t \unrhd t$ holds.
 
-        (transitivity) Let $s \unrhd t$ and $t \unrhd u$. We perform structural induction on $s$.
+        \pause
+        (transitivity) Let $s \unrhd t$ and $t \unrhd u$.
+        \pause
+        We perform structural induction on $s$.
         \begin{itemize}
+            \pause
             \item If $s = t$ then trivially we have $s \unrhd u$.
-            \item If $s = f(s_1, \dots, s_n)$ and $s_i \unrhd t$ for some $1 \leq i \leq n$ then, 
+            \pause
+            \item If $s = f(s_1, \dots, s_n)$ and $s_i \unrhd t$ for some $1 \leq i \leq n$ then,
             by the I.H., we have $s_i \unrhd u$. Hence $s \unrhd u$ holds.
         \end{itemize}
 
-        (anti-symmetry) Suppose $s \unrhd t$ and $t \unrhd s$. If $s \neq t$ we have $s \rhd t$ and $t \rhd s$.
-        It contradicts with the well-fuondedness of $\rhd$.
+        \pause
+        (anti-symmetry) Suppose $s \unrhd t$ and $t \unrhd s$.
+        \pause If $s \neq t$ we have $s \rhd t$ and $t \rhd s$.
+        \pause It contradicts the well-foundedness of $\rhd$. Hence $s = t$ holds.
     \end{proof}
 \end{frame}
 
@@ -275,11 +309,16 @@
     \begin{lemma}
         $\rhd$ is strict order
     \end{lemma}
+    \pause
     \begin{proof}
-        Firstly, irreflexivity of $\rhd$ is yielded from the definition of $\rhd$.
+        Firstly, irreflexivity of $\rhd$ is obtained by the definition of $\rhd$.
+        \pause
         Secondly, we show that $\rhd$ is transitive. Suppose $s \rhd t$ and $t \rhd u$.
+        \pause
         Then we have $s \unrhd t$, $t \unrhd u$, $s \neq t$, and $t \neq u$.
+        \pause
         So we have $s \unrhd u$. If $s = u$ then it contradicts the well-foundedness of $\rhd$.
+        \pause
         Thus we obtain $s \neq u$. Hence $s \rhd u$ holds.
     \end{proof}
     \begin{corollary}
