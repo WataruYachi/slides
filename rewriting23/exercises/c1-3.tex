@@ -7,7 +7,7 @@
 \usepackage{mathtools}
 \usepackage{tikz}
 \usetikzlibrary{arrows, positioning}
-
+\usepackage{comment}
 
 \newcommand{\VV}{\mathcal{V}}
 \newcommand{\TT}{\mathcal{T}}
@@ -48,9 +48,10 @@
 \begin{proof}
     Let $\mathcal{A} = \langle A, \to \rangle$ be a bounded ARS.
     Assume $a_0 \to a_1 \to a_2 \to \cdots$.
-    Since $\mathcal{A}$ is bounded, the length of the rewrite sequence starting at $a$ is at most $n$ for some $n \in \mathbb{N}$.
-    However the sequence is infinite, then the length of it will be greter than $n$.
-    Hence we have contradiction.    
+    Since $\mathcal{A}$ is bounded, the length of the rewrite sequence starting at $a_0$
+    is at most $n$ for some $n \in \mathbb{N}$.
+    However the sequence is infinite, then the length of it will be greater than $n$.
+    Hence we have contradiction.
 \end{proof}
 
 \section*{1.26 (a)}
@@ -62,8 +63,8 @@
 
 \begin{proof}
     Assume $a_0 \to a_1 \to a_2 \to \cdots$.
-    Since $\mathcal{A}$ is acyclic, for all $i,j \in \mathcal{N}$, $a_i \neq a_j$.
-    Then the set $\{ a_i \mid 1 \leq i \}$ is infinite.
+    Since $\mathcal{A}$ is acyclic, for all $i,j \in \mathbb{N}$, $a_i \neq a_j$.
+    Then the set $\{ a_i \mid 0 \leq i \}$ is infinite.
     It is obvious that $\{ a_i \mid 1 \leq i \} \subseteq \{b \mid a_0 \to^* b\}$.
     However $\{b \mid a_0 \to^* b\}$ is finite. Hence we have contradiction.
 \end{proof}
@@ -84,8 +85,14 @@
     Thus we have $a_0 > a_1 > a_2 > \cdots$.
     However $>$ is well-founded. Hence we have contradiction.
 
-    Secondly, we show that $\mathcal{A}$ is confluent.
-    Let $c$ $^m\!\!\leftarrow a \rightarrow^n b$.
+    Secondly, we prove that $\mathcal{A}$ is confluent.
+    Since $\mathcal{A}$ is terminating,
+    it is enough to show that $\mathcal{A}$ is locally confluent.
+    Suppose $c \leftarrow a \to b$. Because $\mathcal{A}$ is connected,
+    we have $c = d_0 \leftrightarrow \cdots \leftrightarrow d_n = b$ with $0 \leq 0$ and for all $0 \leq i \leq n$, $a > d_i$.
+    So we perform well-founded induction.
+    By the I.H., we have $c \downarrow b$.
+    Hence $\mathcal{A}$ is locally confluent.
 \end{proof}
 
 \section*{1.30 (b)}
@@ -185,7 +192,7 @@ Let $\mathcal{A} = \langle \mathbb{N}, \{\to_1, \to_2\} \rangle$ be an ARS
 \end{claim*}
 
 \begin{proof}
-    Let $c$ $_2\!\leftarrow a \to_1 b$.
+    Let $c$ $_2\!\!\leftarrow a \to_1 b$.
     According to the definition of $\to_1$ and $\to_2$, we have $b = a+1$ and $c = a+2$.
     So we have $c = b+1$. Thus $b \to_1 c$ holds.
     Since $2 > 1$, $c \xleftrightarrow[\vee 12]{*} b$ holds.
@@ -195,26 +202,29 @@ Let $\mathcal{A} = \langle \mathbb{N}, \{\to_1, \to_2\} \rangle$ be an ARS
     The ARS is not connected.
 \end{claim*}
 \begin{proof}
-    Take $1$ $_1\!\leftarrow 0 \to_2 2$. Then $1 \leftrightarrow^* 2$ but $0 \ngtr 1$.
+    Take $1$ $_1\!\!\leftarrow 0 \to_2 2$. Then $1 \leftrightarrow^* 2$ but $0 \ngtr 1$.
 \end{proof}
 
 \section*{1.34 (b)}
 
 \begin{claim*}
     Let $\mathcal{A} = \langle A, \{\alpha, \beta, \gamma\} \rangle$ be an ARS.
-    If $\alpha/(\beta \cup \gamma)$ and $\beta/\gamma$ are terminating
+    If $\alpha/(\beta\;\cup\;\gamma)$ and $\beta/\gamma$ are terminating
     then $(\alpha \cup \beta) / \gamma$ is terminating.
 \end{claim*}
 
+\begin{comment}
 \begin{proof}
-    To prove the claim, we show that $\gamma^*(\alpha \cup \beta)$ is terminating.
-    We distinguish two cases.
+    To prove the claim, we show that $\gamma^*(\alpha\,\cup\,\beta)$ is terminating.
+    Assume $\gamma^*(\alpha \cup \beta)$ is not terminating.
+    Then we distinguish three cases.
     \begin{itemize}
-        \item If $\gamma^*\beta$ then it is terminating by the assumption.
-        \item If $\gamma^*\alpha$ then suppose $\gamma^*\alpha$ is not terminating.
+        \item If $\gamma^*\beta$ is not terminating then it contradicts with the assumption.
+        \item If $\gamma^*\alpha$ is not terminating then we have 
         Then $\alpha$ is not terminating. However since $\alpha/(\beta \cup \gamma)$ is terminating,
         $\alpha$ is terminating. Hence we have contradiction.
     \end{itemize}
 \end{proof}
 
+\end{comment}
 \end{document}
