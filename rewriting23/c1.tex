@@ -112,7 +112,7 @@
 \newcommand{\CA}{\mathcal{A}}
 
 \title{Term Rewriting}
-\subtitle{\S 1.1 Definitions}
+\subtitle{1.1 Definitions}
 \author{Wataru Yachi}
 \institute{JAIST}
 \date{Nov 9, 2023}
@@ -145,12 +145,13 @@
 \begin{frame}
     \frametitle{Abstract Rewrite System}
     \begin{definition}
-        \begin{itemize}
+        \pause
+        \begin{itemize}[<+->]
             \item \alert{abstract rewrite system} $\CA$ is pair $(A, \rightarrow)$ of set $A$ and relation $\rightarrow$ on $A$
             \item \alert{$a \rightarrow b$} denotes $(a,b) \in \; \rightarrow$
         \end{itemize}
     \end{definition}
-
+    \pause
     \begin{example}
         \begin{columns}
             \begin{column}{0.48\textwidth}
@@ -163,7 +164,7 @@
                         (\m{d}, \m{e}), & (\m{d},\m{f}), & (\m{e}, \m{f}), & (\m{g}, \m{g})
                     \end{array}\right\}
                 \end{align*}
-        \end{column}
+        \end{column}\pause
         \begin{column}{0.35\textwidth}
             \centering
             \fig
@@ -174,14 +175,16 @@
 
 \begin{frame}
     \frametitle{Composition of $\rightarrow$}
-    \begin{definition}
+    \begin{definition}\pause
         \begin{itemize}
             %\item \alert{$a \rightarrow \cdot \rightarrow b$} if $a \rightarrow c$ and $c\rightarrow b$ for some c
+            \pause
             \item \alert{$a \rightarrow^{0} b$} if $a = b$
+            \pause
             \item \alert{$a \rightarrow^{n+1}$} if $a \rightarrow^{n} \cdot \rightarrow b$
         \end{itemize}
     \end{definition}
-
+    \pause
     \begin{example}
         \begin{columns}
         \begin{column}{0.35\textwidth}
@@ -189,10 +192,11 @@
             \fig
         \end{column}
         \begin{column}{0.5\textwidth}
+            \pause
             \begin{itemize}
-                \item $\m{f} \rightarrow^{0} \m{f}$ because $f=f$
-                \item $\m{a} \rightarrow^{2} \m{c}$ because $\m{a} \rightarrow \m{b} \rightarrow \m{c}$
-                \item $\m{g} \rightarrow^{1000} \m{g}$ because $\m{g}\rightarrow \cdots \rightarrow \m{g}$
+                \item $\m{f} \rightarrow^{0} \m{f}$ \pause because $f=f$
+                \item $\m{a} \rightarrow^{2} \m{c}$ \pause because $\m{a} \rightarrow \m{b} \rightarrow \m{c}$
+                \item $\m{g} \rightarrow^{1000} \m{g}$ \pause  because $\m{g}\rightarrow \cdots \rightarrow \m{g}$
             \end{itemize}
         \end{column}
         \end{columns}
@@ -203,25 +207,27 @@
 \begin{frame}
     \frametitle{Closures of $\rightarrow$}
     \begin{definition}
+        \pause
         \begin{itemize}
-            \item \alert{$a \rightarrow^{=} b$} if $a\rightarrow b$ or $a = b$ \hfill reflexive closure of $\rightarrow$
-            \item \alert{$a \rightarrow^{+} b$} if $a\rightarrow^{n} b$ for some $n \geq 1$ \hfill transitive closure of $\rightarrow$
-            \item \alert{$a \rightarrow^{*} b$} if $a\rightarrow^{n} b$ for some $n \geq 0$ \hfill reflexive and transitive closure $\rightarrow$
+            \item \alert{$a \rightarrow^{=} b$} if $a\rightarrow b$ or $a = b$ \hfill \alert{reflexive closure of $\rightarrow$}
+            \pause \item \alert{$a \rightarrow^{+} b$} if $a\rightarrow^{n} b$ for some $n \geq 1$ \hfill \alert{transitive closure of $\rightarrow$}
+            \pause \item \alert{$a \rightarrow^{*} b$} if $a\rightarrow^{n} b$ for some $n \geq 0$ \hfill \alert{reflexive and transitive closure $\rightarrow$}
         \end{itemize}
     \end{definition}
-
+\pause
     \begin{example}
     \begin{columns}
         \begin{column}{0.35\textwidth}
             \centering
             \fig
         \end{column}
+    \pause
         \begin{column}{0.5\textwidth}
             \begin{itemize}
                 \item $\m{a} \rightarrow^{=} \m{b}$
-                \item $\m{a} \rightarrow^{*} \m{f}$ and also $\m{a} \rightarrow^{+} \m{f}$
-                \item $\m{a} \rightarrow^{*} \m{a}$ but $\m{a} \rightarrow^{+} \m{a}$ does not hold
-                \item $\m{f} \rightarrow^{*} \m{g}$ does not hold
+                \pause \item $\m{a} \rightarrow^{*} \m{f}$ and also $\m{a} \rightarrow^{+} \m{f}$
+                \pause \item $\m{a} \rightarrow^{*} \m{a}$ but $\m{a} \rightarrow^{+} \m{a}$ does not hold
+                \pause \item $\m{f} \rightarrow^{*} \m{g}$ does not hold
             \end{itemize}
         \end{column}
         \end{columns}
@@ -232,11 +238,15 @@
     \frametitle{Conversion}
     \begin{definition}
         \begin{itemize}
-            \item \alert{$a \leftarrow b$} if $b \rightarrow a$ \hfill inverse of $\rightarrow$
-            \item \alert{$a \leftrightarrow b$} if $a \rightarrow b$ or $a \leftarrow b$ \hfill symmetric closure of $\rightarrow$
-            \item \alert{$a \leftrightarrow^{*} b$} if $a \leftrightarrow^{n} b$ for some $n \geq 0$ \hfill conversion
+            \pause
+            \item \alert{$a \leftarrow b$} if $b \rightarrow a$ \hfill \alert{inverse of $\rightarrow$}
+            \pause
+            \item \alert{$a \leftrightarrow b$} if $a \rightarrow b$ or $a \leftarrow b$ \hfill \alert{symmetric closure of $\rightarrow$}
+            \pause
+            \item \alert{$a \leftrightarrow^{*} b$} if $a \leftrightarrow^{n} b$ for some $n \geq 0$ \hfill \alert{conversion}
         \end{itemize}
     \end{definition}
+    \pause
 
     \begin{example}
     \begin{columns}
@@ -246,8 +256,11 @@
         \end{column}
         \begin{column}{0.5\textwidth}
             \begin{itemize}
-                \item $\m{b} \leftrightarrow^{*} \m{d}$ because $\m{d} \rightarrow \m{e} \leftarrow \m{b}$
+                \pause
+                \item $\m{b} \leftrightarrow^{*} \m{d}$ \pause because $\m{d} \rightarrow \m{e} \leftarrow \m{b}$
+                \pause
                 \item $\m{a} \leftrightarrow^{*} \m{a}$
+                \pause
                 \item $\m{f} \leftrightarrow^{*} \m{g}$ does not hold
             \end{itemize}
         \end{column}
@@ -260,11 +273,13 @@
     \frametitle{Joinability and Meetability}
     \begin{definition}
         \begin{itemize}
+                \pause
             \item \alert{$a \downarrow b$} if $a \rightarrow^* c \;\reflectbox{$\rightarrow^*$}\; b$ for some $c$ \hfill \alert{joinability}
+                \pause
             \item \alert{$a \uparrow b$} if $a \;\reflectbox{$\rightarrow^*$}\; c \rightarrow^* b$ for some $c$ \hfill \alert{meetability}
         \end{itemize}
     \end{definition}
-
+\pause
     \begin{example}
     \begin{columns}
         \begin{column}{0.35\textwidth}
@@ -273,10 +288,14 @@
         \end{column}
         \begin{column}{0.5\textwidth}
             \begin{itemize}
-                \item $\m{a} \downarrow \m{d}$ because $\m{a} \rightarrow \m{b} \rightarrow \m{e} \rightarrow \m{f} \leftarrow \m{d}$
-                \item $\m{f} \uparrow \m{c}$ because $\m{f} \leftarrow \m{e} \leftarrow \m{b} \leftarrow \m{a} \rightarrow \m{b} \rightarrow \m{c}$
-                \item $\m{a} \downarrow \m{g}$ does not hold
-                \item $\m{c} \downarrow \m{d}$ but $\m{c} \uparrow \m{d}$ does not hold
+                \pause
+                \item $\m{a} \downarrow \m{d}$ \pause because $\m{a} \rightarrow \m{b} \rightarrow \m{e} \rightarrow \m{f} \leftarrow \m{d}$
+                \pause
+                \item $\m{f} \uparrow \m{c}$ \pause because $\m{f} \leftarrow \m{e} \leftarrow \m{b} \leftarrow \m{a} \rightarrow \m{b} \rightarrow \m{c}$
+                \pause
+                \item $\m{a} \downarrow \m{g}$ \pause does not hold
+                \pause
+                \item $\m{c} \downarrow \m{d}$ \pause but $\m{c} \uparrow \m{d}$ does not hold
             \end{itemize}
         \end{column}
         \end{columns}
@@ -288,12 +307,15 @@
     \frametitle{Normal Form}
     \begin{definition}
         \begin{itemize}
+            \pause
             \item $a$ is \alert{normal form} if there is no $b$ such that $a \rightarrow b$
+            \pause 
             \item \alert{$\mathsf{NF}(\mathcal{A})$} denotes set of all normal forms of $\mathcal{A}$
+            \pause
             \item \alert{$a \rightarrow^{!} b$} if $a \rightarrow^* b$ and $b \in \mathsf{NF}(\mathcal{A})$
         \end{itemize}
     \end{definition}
-
+\pause
     \begin{example}
     \begin{columns}
         \begin{column}{0.35\textwidth}
@@ -302,9 +324,13 @@
         \end{column}
         \begin{column}{0.5\textwidth}
             \begin{itemize}
+                \pause
                 \item $\mathsf{NF}(\mathcal{A}) = \{\m{c}, \m{f}\}$
+                \pause
                 \item $\m{a} \rightarrow^! \m{f}$
+                \pause
                 \item $\m{a} \rightarrow^! \m{c}$
+                \pause
                 \item $\m{g}$ has no normal form
             \end{itemize}
         \end{column}

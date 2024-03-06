@@ -110,6 +110,11 @@
 %
 \newcommand{\app}{\circ}
 
+\newlength{\mytotalwidth}
+\mytotalwidth=\dimexpr\linewidth-5 mm
+\newlength{\mycolumnwidth}
+\mycolumnwidth=\dimexpr\mytotalwidth-5 mm
+
 \title{ Chapter1.4 }
 \author{Wataru Yachi}
 \institute{JAIST}
@@ -122,7 +127,7 @@
 \newcommand{\MA}{\mathcal{A}}
 \newcommand{\AB}{\alpha/\beta}
 
-\begin{frame}
+\begin{frame}[fragile]
     \frametitle{$\alpha/\beta$ Relation}
     \begin{definition}
         let $\MA = \langle A, \{\alpha,\beta\} \rangle$ be ARS
@@ -131,7 +136,41 @@
             \item $\alpha$ is \alert{relatively terminating} with respect to $\beta$ if $\AB$ is terminating 
         \end{itemize}
     \end{definition}
+    \pause
     \begin{example}
+    \begin{columns}[totalwidth=\mytotalwidth]
+    \begin{column}[t]{0.5\mycolumnwidth}
+    \[
+            \begin{tikzpicture}[auto]
+                \node (a) at (0,0) {$\m{a}$}; \node (b) at (1,0) {$\m{b}$}; \node (c) at (2,0) {$\m{c}$};
+                \node (d) at (0,-1) {$\m{d}$}; \node (e) at (1,-1) {$\m{e}$};
+                \node (f) at (0,-2) {$\m{f}$}; \node (g) at (1.5, -1.5) {$\m{g}$};
+
+                \draw[->] (a) to node [above]{$\scriptstyle\beta$}(b);
+                \draw[->] (b) to node [above]{$\scriptstyle\alpha$} (c);
+                \draw[->] (a) to [swap]node{$\scriptstyle \alpha$} (d);
+                \draw[->] (d) to [swap]node{$\scriptstyle \alpha$} (f);
+                \draw[->] (d) to node{$\scriptstyle \beta$}  (e);
+                \draw[->] (f) to [swap]node{$\scriptstyle \alpha$} (e);
+                \draw[->] (e) to node{$\scriptstyle \alpha$} (b);
+                \draw[->] (e) to [swap]node{$\scriptstyle \beta$}  (c);
+                \draw[->,loop right] (g) to node{$\scriptstyle \beta$} (g);
+            \end{tikzpicture}
+        \]
+    \end{column}
+        \pause
+    \begin{column}[t]{0.5\mycolumnwidth}
+            \[
+                \alpha/\beta = \alpha \;\cup\; \{
+                        (\m{a}, \m{c}), (\m{a},\m{e}), (\m{d},\m{b})\}
+            \]
+            \pause
+            \begin{itemize}
+                \item this ARS is not terminating
+                \item but $\alpha/\beta$ is terminating
+            \end{itemize}
+    \end{column}
+    \end{columns}
     \end{example}
 \end{frame}
 
@@ -145,16 +184,24 @@
     \begin{lemma}
         $\beta^* \cup (\alpha/\beta)^* \subseteq (\alpha \cup \beta)^*$
     \end{lemma}
+    \pause
     \begin{proof}
         We distinguish two cases.
+        \pause
         \begin{itemize}
             \item If $a \bs b$ then we have $a\;\beta^* \;b\; (\alpha \cdot \beta^*)^*\;b$.
+                \pause
             Since $\beta^* \cdot (\alpha \cdot \beta^*)^* = (\alpha \cup \beta)^*$, $a \acbs b$ holds.
-            \item If $a \asbs c$ then we perfome induction on the length of $\asbs$.
+                \pause
+            \item If $a \asbs c$ then we perform induction on the length of $\asbs$.
                 \begin{itemize}
+                    \pause
                     \item If $a = c$ then $a \acbs c$ holds.
+                    \pause
                     \item If $a \;\alpha/\beta\; b \; (\alpha/\beta)^* c$ then by I.H., we have $b \acbs c$.
+                    \pause
                     Since $a \bs a' \; \alpha \; b' \bs b$, we have $a \acbs a'$, $a' \acbs b'$, and $b' \acbs b$.
+                    \pause
                     Hence $a \acbs c$ holds.
                 \end{itemize}
         \end{itemize}
@@ -165,20 +212,29 @@
     \begin{lemma}
         $(\alpha \cup \beta)^* \subseteq \beta^* \cup (\alpha/\beta)^*$
     \end{lemma}
+    \pause
     \begin{proof}
         We show that $(\alpha \cup \beta)^n \subseteq \beta^* \cup (\alpha/\beta)^*$ for all $n \in \mathbb{N}$ by induction on $n$.
+        \pause
         \begin{itemize}
             \item If $n = 0$ and $a\; (\alpha \cup \beta)^n \; b$ then $a =b$. So $a \bs b$.
-            Hence the claim holds.   
+            Hence the claim holds.
+            \pause
             \item If $n > 0$ and $a\; (\alpha \cup \beta)^{n-1} \; b \; \alpha \cup \beta\; c$
             then we have $a \;\beta^* \cup (\alpha/\beta)^*\; b$ by I.H. So we have four cases.
+            \pause
             \begin{itemize}
                 \item If $a \bs b$ and $b\; \alpha \;c$ then $a\; \alpha/\beta\;c$. So $a\; \beta^* \cup (\alpha/\beta)^*\; c$ holds.
+                \pause
                 \item If $a \bs b$ and $b \;\beta\; c$ then we have $a \bs c$. So $a\; \beta^* \cup (\alpha/\beta)^*\; c$ holds.
+                \pause
                 \item If $a \; (\alpha/\beta)^*\; b$ and $b \; \alpha \;c$ then
+                \pause
                 since $b\; \alpha/\beta\; c$, we have $a \; (\alpha/\beta)^*\; c$. So the claim holds.
                 \item If $a \; (\alpha/\beta)^*\; b$ and $b \; \beta \; c$ then we distinguish two cases.
+                \pause
                 If $a = b$ then $a \bs c$. So the claim holds.
+                \pause
                 If $a \;(\alpha/\beta)^* \cdot \alpha/\beta\; b$ then we have $a \;(\alpha/\beta)^*\;$.
                 Hence the claim holds. 
             \end{itemize}
@@ -190,6 +246,7 @@
     \begin{lemma}
         $\beta^* \cup (\alpha/\beta)^* = (\alpha \cup \beta)^*$
     \end{lemma}
+    \pause
     \begin{proof}
         By previous lemmata, we have
         $\beta^* \cup (\alpha/\beta)^* \subseteq (\alpha \cup \beta)^*$ and
@@ -207,7 +264,7 @@
         \item $\alpha\beta^*$ is terminating
     \end{enumerate}
 \end{lemma}
-
+    \pause
 \begin{proof}
     Exercise 1.34 (a) 
 \end{proof}
@@ -222,13 +279,19 @@
         %let $\MA = \langle A, \{\alpha,\beta\} \rangle$ be ARS\\
         if $\AB$ and $\beta$ are terminating then $\MA$ is terminating
     \end{lemma}
+    \pause
     \begin{proof}
-        Suppose $a_0 \to a_1 \to a_2 \to \cdots$. Since $\alpha$ is relatively terminating
+        Suppose $a_0 \to a_1 \to a_2 \to \cdots$.
+        \pause Since $\alpha$ is relatively terminating
         with respect to $\beta$, the sequence contains only finitely many $\ato$.
+        \pause
         So there exists some $i \in \mathbb{N}$ such that
         $a_i \bto a_{i+1} \bto a_{i+2} \bto \cdots$. 
+        pause
         However $\beta$ is terminating.
+        \pause
         So $a_i \bto a_{i+1} \bto a_{i+2} \bto \cdots$ is terminating.
+        \pause
         Hence we have contradiction.
     \end{proof}
 \end{frame}
@@ -238,7 +301,6 @@
     \begin{definition}
         %let $\MA = \langle A, \{\alpha,\beta\} \rangle$ be ARS\\
         $\alpha$ \alert{quasi-commutes} over $\beta$ if
-        \[
         \begin{tikzcd}
             \cdot & \cdot \\
             \cdot & \cdot
@@ -247,26 +309,42 @@
             \arrow["\alpha"', dashed, from=1-1, to=2-1]
             \arrow["{*}", dashed, from=2-1, to=2-2]
         \end{tikzcd}
-        \]
     \end{definition}
+    \pause
 
     \begin{example}
+        \centering
+            \begin{tikzpicture}[auto]
+                \node (a) at (0,0) {$\m{a}$}; \node (b) at (1,0) {$\m{b}$}; \node (c) at (2,0) {$\m{c}$};
+                \node (d) at (0,-1) {$\m{d}$}; \node (e) at (1,-1) {$\m{e}$};
+                \node (f) at (0,-2) {$\m{f}$};
+
+                \draw[->, red] (a) to node [above]{$\scriptstyle\beta$}(b);
+                \draw[->, red] (b) to node [above]{$\scriptstyle\alpha$} (c);
+                \draw[->, blue] (a) to [swap]node{$\scriptstyle \alpha$} (d);
+                \draw[->, blue] (d) to [swap]node{$\scriptstyle \alpha$} (f);
+                \draw[->, red] (d) to node{$\scriptstyle \beta$}  (e);
+                \draw[->, blue] (f) to [swap]node{$\scriptstyle \alpha$} (e);
+                \draw[->,red] (e) to node{$\scriptstyle \alpha$} (b);
+                \draw[->, blue] (e) to [swap]node{$\scriptstyle \beta$}  (c); 
+            \end{tikzpicture}
+        \pause
+        $\alpha$ quasi-commutes over $\beta$
     \end{example}
 \end{frame}
 
-\newlength{\mytotalwidth}
-\mytotalwidth=\dimexpr\linewidth-5mm
-\newlength{\mycolumnwidth}
-\mycolumnwidth=\dimexpr\mytotalwidth-5mm
+
 
 \begin{frame}[fragile]
     \begin{lemma}
         if $\alpha$ quasi-commutes over $\beta$ then $\alpha$ quasi-commutes over $\beta^*$
     \end{lemma}
+    \pause
 
     \begin{proof}
         We show that for all $n \in \mathbb{N}$,
         $\alpha$ quasi-commutes over $\beta^n$ by induction on $n$.
+        \pause
         \begin{columns}[totalwidth=\mytotalwidth]
             \begin{column}[t]{0.5\mycolumnwidth}
             If $n = 0$ then
@@ -281,6 +359,7 @@
                 \end{tikzpicture}
                 \]
             \end{column}
+            \pause
             \begin{column}[T]{0.5\mycolumnwidth}
             If $n > 0$ then
             \[
@@ -311,26 +390,41 @@
         if $\alpha$ quasi-commutes over $\beta$,
         every $\alpha$-terminating element $a$ is $\alpha/\beta$-terminating
     \end{lemma}
-
+    \pause
     \begin{proof}
         Let $a$ be an $\alpha$-terminating element.
-        We perfome well-founded induction on $a$.
-        We distinguish two cases.
+        \pause
+        We perform well-founded induction on $a$.
+        \pause
+        %We distinguish two cases.
         \begin{itemize}
             \item If $a \in \mathsf{NF}(\alpha/\beta)$, the claim is trivial.
+            \pause
             \item If $a \abto b$, by the quasi-commutation of $\alpha$ over $\beta^*$, we have
-            $a \ato a' \to^* b$. Since $a$ is $\alpha$-terminating and $a \ato a'$,
-            $a'$ is $\alpha$-terminating. By I.H., $a'$ is $\alpha/\beta$-terminating.
+            $a \ato a' \to^* b$.
+            \pause Since $a$ is $\alpha$-terminating and $a \ato a'$,
+            $a'$ is $\alpha$-terminating.
+            \pause By I.H., $a'$ is $\alpha/\beta$-terminating.
+            \pause
             Because $(\alpha \cup \beta)^* = \beta^* \cup (\alpha/\beta)^*$,
             we observe two cases.
             \begin{itemize}
+                \pause
                 \item If $a' \abto^* b$, trivially $b$ is $\alpha/\beta$-terminating.
-                \item If $a' \bto^* b$, since $a'$ is $\alpha/\beta$-terminating, $b$ is $\alpha/\beta$-terminating 
+                \pause
+                \item If $a' \bto^* b$, since $\alpha/\beta$-termination is preserved under $\bto^*$,
+                    $b$ is $\alpha/\beta$-terminating. 
             \end{itemize}
         \end{itemize}
-
     \end{proof}
 
+\end{frame}
+
+\begin{frame}
+    \begin{corollary}
+        let $\MA = \langle A, \{\alpha,\beta\} \rangle$ be an ARS such that $\alpha$ quasi-commutes over $\beta$\\
+        if $\alpha$ and $\beta$ is terminating then $\mathcal{A}$ is terminating
+    \end{corollary}
 \end{frame}
 
 \end{document}
