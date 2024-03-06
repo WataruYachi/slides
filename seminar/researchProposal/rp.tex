@@ -158,6 +158,11 @@
                   (tool) edge (YN);
     \end{tikzpicture}
     \end{figure}
+    and our target program has
+    \begin{itemize}
+        \item recursive data structure
+        \item higer-order function
+    \end{itemize}
 \end{frame}
 
 \newcommand{\map}{\m{map}}
@@ -166,8 +171,8 @@
 \begin{frame}
     \frametitle{Example Program}
     \begin{example}
-            \setlength{\abovedisplayskip}{1pt}
-            \setlength{\belowdisplayskip}{1pt}
+            \setlength{\abovedisplayskip}{0pt}
+            \setlength{\belowdisplayskip}{0pt}
         \begin{align*}
             \nil \catenate ys &= ys\\
             x\cons xs \catenate ys &= x \cons (xs \catenate ys)\\
@@ -243,14 +248,34 @@
                   (tool) edge (YN);
     \end{tikzpicture}
     \end{figure}
+    rewriting induction requires reduction order on applicative term
     \begin{itemize}
-        \item 
+        \item lambda-free Knuth-Bendix order(2017) \quad based on KBO
+        \item embedding path order (2021)
+        \item applicative interpretation order (2023) \quad based on polynomial interpretation
     \end{itemize}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Object of Research}
+    \frametitle{Limitation of Interpretation Method}
+    \begin{example}
+    polynomial order cannot orient
+        \vspace{-1pt}
+        \begin{align*}
+            \m{ack}(\m{0}, y) &\to \m{s}(y)\\
+            \m{ack}(\m{s}(x),\m{0}) &\to \m{ack}(x,\m{s}(\m{0}))\\
+            \m{ack}(\m{s}(x),\m{s}(y)) &\to \m{ack}(x,\m{ack}(\m{s}(x),y))
+        \end{align*}
+    but Lexicographic path order can orient it
+    \end{example}
+\end{frame}
 
+\begin{frame}
+    \frametitle{Object of Research}
+    \begin{itemize}
+        \item develop new reduction order based on LPO
+        \item develop rewriting induction on applicative term
+    \end{itemize}
 \end{frame}
 
 \end{document}
