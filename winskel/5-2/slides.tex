@@ -140,8 +140,24 @@
 \maketitle
 
 \begin{frame}
-    \frametitle{Denotational Semantics}
+    \frametitle{Semantic Functions}
+    
+    we will define semantic functions
 
+    \begin{itemize}
+        \item $\mathcal{A}:\Aexp \rightarrow (\Sigma \rightarrow \mathbf{N})$
+        \item $\mathcal{B}:\Bexp \rightarrow (\Sigma \rightarrow \mathbf{T})$
+        \item $\mathcal{C}:\Com \rightarrow (\Sigma \rightharpoonup \Sigma)$
+    \end{itemize}
+
+    \pause
+    \bigskip
+
+    for example,
+    \begin{itemize}
+        \item command $c$ is said to \alert{denote} $\denoC{c}$
+        \item $\denoC{c}$ is said to be \alert{denotation} of $c$
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -157,10 +173,12 @@
             \denoA{a_0 \times a_1} & = \{(\sigma, n_0 \times n_1) \mid
                 (\sigma, n_0) \in \denoA{a_0} \; \& \; (\sigma, n_1) \in \denoA{a_1}\}
         \end{align*}
+        \vspace{-10mm}
+        \pause
     \begin{example}
         let $\sigma = \{(X,1),(Y,2)\}$
-        \begin{itemize}
-            \item $\denoA{1} = 1$, $\denoA{X}\sigma = 1$
+        \begin{itemize}[<+->]
+            \item $\denoA{1} = 1$, \pause $\denoA{X}\sigma = \sigma(X) = 1$
             \item $\denoA{X \times (Y + 3)}\sigma = \denoA{X}\sigma \times (\denoA{Y + 3}\sigma) = 1 \times (2 + 3) = 5$
         \end{itemize}
     \end{example}
@@ -177,8 +195,11 @@
             & \; \{ (\sigma, \false) \mid \sigma \in \Sigma \; \& \; \denoA{a_0}\sigma \neq \denoA{a_1}\sigma\}\\
             \denoB{b_0 \land b_1} = & \; \{(\sigma, t_0 \land_T t_1) \mid \sigma \in \Sigma \; \& \; (\sigma,t_0) \in \denoB{b_0} \; \& \; (\sigma,t_1) \in \denoB{b_1} \}
         \end{align*}
+        \vspace{-10mm}
+        \pause
     \begin{example}
-
+        let $\sigma = \{(X,1),(Y,2)\}$\\ \pause
+        $\denoB{(X + 1) = Y}\sigma \pause = \true$, \pause because $\denoA{(X+1)}\sigma = \denoA{Y}\sigma$ 
     \end{example}
 \end{frame}
 
@@ -193,32 +214,33 @@
             \{(\sigma,\sigma') \mid \denoB{b}\sigma = \true \; \& \; (\sigma, \sigma') \in \denoC{c_0}\} \; \cup\\
             & \;\{(\sigma,\sigma') \mid \denoB{b}\sigma = \false \; \& \; (\sigma, \sigma') \in \denoC{c_1}\}
     \end{align*}
-    but how we define $\While{b}{c}$?
+    \pause
+    but how we define denotation of $\While{b}{c}$?
 \end{frame}
 
 \begin{frame}
     \frametitle{Denotation of While-Loop}
     let $w \equiv \While{b}{c}$
-
+    \pause
     recall that
     \[
         w \sim \ITE{b}{c;w}{\Skip}
     \]
-
-    so we have
+    \pause
+    so we can assume that
     \begin{align*}
-        \denoC{w} = & \; \denoC{\ITE{b}{c;w}{\Skip}}\\
+        \denoC{w} = & \; \denoC{\ITE{b}{c;w}{\Skip}}\\ \pause
             = & \; \{(\sigma, \sigma') \mid \denoB{b}\sigma = \true \; \& \; (\sigma, \sigma') \in \denoC{w} \circ \denoC{c}\} \; \cup \\
             & \; \{ (\sigma,\sigma) \mid \denoB{b}\sigma = \false \}
     \end{align*}
-
-    $\denoC{w}$ appears in both side of eqation, how to solve it?
+    \pause
+    $\denoC{w}$ appears in both side of equation, how to solve it?
     %writing $\varphi$ for $\denoC{w}$, $\beta$ for $\denoB{b}$ and $\gamma$ for $\denoC{c}$
     
 \end{frame}
 
 \begin{frame}
-    \frametitle{Fixed Point of $\Gamma$}
+    \frametitle{Fixed Point of $\Gamma$ Is Denotation of While-Loop}
     we assume $\Gamma$, where
         \begin{align*}
             \Gamma(\varphi) %= & \; \{(\sigma, \sigma') \mid \beta(\sigma) = \true \; \& \; (\sigma,\sigma') \in \varphi \circ \gamma\} \; \cup \\
@@ -226,20 +248,20 @@
                             = & \; \{(\sigma, \sigma') \mid \exists \sigma'' .\, \beta(\sigma) = \true \; \& \; (\sigma, \sigma'') \in \gamma \; \& \; (\sigma'', \sigma') \in \varphi\} \; \cup \\
                             & \; \{(\sigma,\sigma) \mid \beta(\sigma) = \false \}
         \end{align*}
-    and we want to find fixed point $\varphi$ of $\Gamma$ such that
-    \[
-        \varphi = \Gamma(\varphi)
-    \]
-    $\Gamma$ is equal to $\widehat{R}$ which determined by $R$
+    $\Gamma$ is equal to $\widehat{R}$
+    \begin{align*}
+        \Gamma(\varphi) = \widehat{R} = \{(\sigma,\sigma') \mid \exists \{(\sigma'',\sigma')\} \subseteq \varphi \, . \, \{(\sigma'',\sigma')\} / (\sigma, \sigma') \in R \}
+    \end{align*}
+    and $\widehat{R}$ is determined by rule instances $R$
     \begin{align*}
         R = & \; \{ (\{(\sigma'', \sigma')\} / (\sigma, \sigma')) \mid \beta(\sigma) = \true \; \& \; (\sigma, \sigma'') \in \gamma\}\; \cup \\
         & \; \{(\emptyset / (\sigma,\sigma)) \mid \beta(\sigma) = \false \}
     \end{align*}
-    \begin{align*}
-        \Gamma(\varphi) = \{(\sigma,\sigma') \mid \exists \{(\sigma'',\sigma')\} \subseteq \varphi \, . \, \{(\sigma'',\sigma')\} / (\sigma, \sigma') \in R \}
-    \end{align*}
-    and we know that $\widehat{R}$ has least fixed point
+
+    and we know $\widehat{R}$ has least fixed point
 \end{frame}
+
+
 
 \begin{frame}
     %\frametitle{Denotations of $\Com$}
@@ -256,26 +278,42 @@
     where
     \begin{align*}
         \Gamma(\varphi) = & \; \{ (\sigma, \sigma') \mid \denoB{b}\sigma = \true \; \& \; (\sigma, \sigma') \in \varphi \circ \denoC{c}\} \; \cup \\
-        & \; \{(\sigma,\sigma) \mid \denoB{b} = \false \}
+        & \; \{(\sigma,\sigma) \mid \denoB{b}\sigma = \false \}
     \end{align*}
 \end{frame}
 
 \begin{frame}
+    \begin{block}{Proposition}
+        $\denoC{\While{\false}{c_0};c_1} = \denoC{c_1}$
+    \end{block}
+    \pause
+    \begin{proof}
+        \begin{align*}
+            \action<+->{\denoC{\While{\false}{c_0};c_1} & = \denoC{c_1} \circ \denoC{\While{\false}{c_0}}\\}
+            \action<+->{& = \denoC{c_1} \circ \Gamma(\denoC{\While{\false}{c_0}})\\}
+            \action<+->{& = \denoC{c_1} \circ \{(\sigma,\sigma) \mid \sigma \in \Sigma\}\\}
+            \action<+->{& = \denoC{c_1}}
+        \end{align*}
+    \end{proof}
+\end{frame}
+
+\begin{frame}
     \begin{block}{Claim (Exercise 5.5 (1))}
-        for alll arithmetic expressions $a$, $\{(\sigma, n) \mid \langle a, \sigma \rangle \rightarrow n\} \subseteq \denoA{a}$
+        for all arithmetic expressions $a$, $\{(\sigma, n) \mid \langle a, \sigma \rangle \rightarrow n\} \subseteq \denoA{a}$
     \end{block}
     \begin{proof}
         We show the claim by rule induction on arithmetic expressions.
         Let $n$ be a number, $\sigma$ state and $X$ location.
         Fix $A = \{(\sigma, n) \mid \deriv{a}{\sigma}{n}\}$.
-        \begin{itemize}
+        \pause
+        \begin{itemize}[<+->]
             \item Assume $(\sigma, n) \in A$. So there exists $\deriv{n}{\sigma}{n}$.
-                Clearly, we have $(\sigma,n) \in A \Rightarrow (\sigma,n) \in \denoA{n}$ for any $n$ and $\sigma$.
-            \item Similarly, assume $(\sigma, \sigma(X)) \in A$ and we have $(\sigma, \sigma(X)) \in \denoA{X}$ for all $X$.
+                Clearly, we have $(\sigma,n) \in \denoA{n}$. %for any $n$ and $\sigma$.
+            \item Similarly, assume $(\sigma, \sigma(X)) \in A$ and we have $(\sigma, \sigma(X)) \in \denoA{X}$.% for all $X$ and $\sigma$.
             \item Assume $\deriv{a_0}{\sigma}{n_0}$ and $\deriv{a_1}{\sigma}{n_1}$.
-                Suppose $(\sigma, n) \in A$. We have $n = n_0 + n_1$.
                 By I.H., we have $(\sigma, n_0) \in \denoA{a_0}$ and $(\sigma,n_1) \in \denoA{a_1}$.
-                Thus $(\sigma, n) \in \denoA{a_0 + a_1} $ holds.\\
+                Suppose $(\sigma, n_0 + n_1) \in A$. %So we can derive $\deriv{a_0 + a_1}{\sigma}{n_0 + n_1}$.
+                Thus $(\sigma, n_0 + n_1) \in \denoA{a_0 + a_1} $ holds.\\
                 The other cases can be shown by the similar way.
         \end{itemize}
     \end{proof}
@@ -286,17 +324,19 @@
         for all arithmetic expressions $a$, $\denoA{a} \subseteq \{(\sigma,n) \mid \deriv{a}{\sigma}{n}\}$
     \end{block}
     \begin{proof}
-        We show the claim by structual induction on arithmetic expressions $a$.
-        \begin{itemize}
-            \item If $a$ is a number $m$: Assume $(\sigma, n) \in \denoA{m}$. Clearly we have $\deriv{m}{\sigma}{n}$
-                and $n = m$. So $(\sigma,n) \in A$.
-            \item If $a$ is a location $X$: Assume $(\sigma, n) \in \denoA{X}$.
-                Then we have $\deriv{X}{\sigma}{\sigma(X)}$ and $\sigma(X) = n$. So $(\sigma,n) \in A$
-            \item If $a$ is of the form $a_0 + a_1$: Assume $(\sigma, n) \in \denoA{a_0 + a_1}$.
+        We show the claim by structural induction on arithmetic expressions $a$.
+        \pause
+        \begin{itemize}[<+->]
+            \item If $a$ is a number $m$, assume $(\sigma, n) \in \denoA{m}$. Clearly we have $\deriv{m}{\sigma}{n}$
+                and $n = m$. So $(\sigma,n) \in \{(\sigma, n) \mid \deriv{a}{\sigma}{n}\}$.
+            \item If $a$ is a location $X$, assume $(\sigma, n) \in \denoA{X}$.
+                Then we have $\deriv{X}{\sigma}{\sigma(X)}$ and $\sigma(X) = n$. So $(\sigma,n) \in \{(\sigma, n) \mid \deriv{a}{\sigma}{n}\}$.
+            \item If $a$ is of the form $a_0 + a_1$, assume $(\sigma, n) \in \denoA{a_0 + a_1}$.
                     We have $(\sigma,n_0) \in \denoA{a_0}$ and $(\sigma, n_1) \in \denoA{a_1}$.
                     By I.H., we obtain $\deriv{a_0}{\sigma}{n_0}$ and $\deriv{a_1}{\sigma}{n_1}$.
                     Hence we have $\deriv{a_0 + a_1}{\sigma}{n}$.
-                    Thus $(\sigma,n) \in A$.\\
+                    Thus $(\sigma,n) \in \{(\sigma, n) \mid \deriv{a}{\sigma}{n}\}$.\\
+
                     The remaining cases follows the same way.
         \end{itemize}
     \end{proof}

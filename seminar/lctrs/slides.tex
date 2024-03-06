@@ -195,15 +195,16 @@ function sum(int n){
 \begin{frame}
 
         TRS
+
        \begin{table} 
-        \begin{tabular}{ll}
-        $\m{sum}(x) \to \m{sum2}(\m{even}(x),x)$ & \\
-        $\m{sum2}(\m{true}, x) \to \m{sum3}(x)$ & $\m{sum2}(\m{false}, x)$ \to $\m{sum3}(\m{p}(x))$\\
-        $\m{sum3}(\m{s}(\m{s}(x))) \to \m{add}(\m{s}(\m{s}(x)), \m{sum}(x))$ & $\m{sum3}(\m{0}) \to \m{0}$\\
-        $\m{even}(\m{s}(\m{s}(x))) \to \m{even}(x)$ & $\m{even}(\m{s}(x)) \to \m{false}$\\
-        $\m{even}(\m{0}) \to \m{true}$ & \\
-        $\m{p}(\m{s}(x)) \to x$ & $\m{p}(\m{0}) \to \m{0}$\\
-        $\m{add}(x,\m{s}(y)) \to \m{s}(\m{add}(x,y))$ & $\m{add}(x,\m{0}) \to x$
+        \begin{tabular}{lll}
+        $\m{sum}(x) \to \m{sum2}(\m{even}(x),x)$ & & $\m{even}(\m{s}(\m{s}(x))) \to \m{even}(x)$\\
+        $\m{sum2}(\m{true}, x) \to \m{sum3}(x)$ & & $\m{even}(\m{s}(x)) \to \m{false}$ \\
+        $\m{sum2}(\m{false}, x)$ \to $\m{sum3}(\m{p}(x))$ & & $\m{even}(\m{0}) \to \m{true}$ \\
+        $\m{sum3}(\m{s}(\m{s}(x))) \to \m{add}(\m{s}(\m{s}(x)), \m{sum3}(x))$ & & $\m{p}(\m{s}(x)) \to x$ \\
+        $\m{sum3}(\m{0}) \to \m{0}$ & & $\m{p}(\m{0}) \to \m{0}$\\ 
+        & & $\m{add}(x,\m{s}(y)) \to \m{s}(\m{add}(x,y))$\\
+        & & $\m{add}(x,\m{0}) \to x$
         \end{tabular}
        \end{table}
        \pause
@@ -219,10 +220,12 @@ function sum(int n){
 
     LCTRS
     \begin{table}
-        \begin{tabular}{ll}
-            $\m{sum}(x) \to \m{sum2}(x)$ & \\
-            $\m{sum2}(x) \to \m{sum3}(x) \; [\m{even}(x)]$ & $\m{sum2}(x) \to \m{sum3}(x-\m{1}) \; [\neg(\m{even}(x))]$ \\
-            $\m{sum3}(x) \to x + \m{sum}(x-\m{2}) \; [\neg(0 \geq x)]$ & $\m{sum3}(x) \to \m{0} \; [0 \geq x]$
+        \begin{tabular}{l}
+            $\m{sum}(x) \to \m{sum2}(x)$ \\
+            $\m{sum2}(x) \to \m{sum3}(x) \; [\m{even}(x)]$ \\
+            $\m{sum2}(x) \to \m{sum3}(x-\m{1}) \; [\neg(\m{even}(x))]$ \\
+            $\m{sum3}(x) \to x + \m{sum3}(x-\m{2}) \; [\neg(0 \geq x)]$ \\
+            $\m{sum3}(x) \to \m{0} \; [0 \geq x]$
         \end{tabular}
     \end{table}
     \pause
@@ -243,7 +246,7 @@ function sum(int n){
             %$\downarrow$ & & $\downarrow$ & & $\downarrow$ \\ 
             TRS     & & $\to_\RR$ & & $s \to_\RR^* t$ \\\\ \pause
             %$\downarrow$ & & $\downarrow$ & & $\downarrow$ \\
-            LCTRS   & & \alert{$\to_\RR$} & & $s \; [\varphi] \to_\RR^* t$
+            \alert{LCTRS}   & & \alert{$\to_\RR$} & & $s \; [\varphi] \to_\RR^* t$
         \end{tabular}
     \end{table}
     }
@@ -257,10 +260,10 @@ function sum(int n){
             \pause
         \item each $f$ has \alert{sort declaration}
             \pause
-        $[\iota_1 \times \cdots \times \iota_n] \Rightarrow \kappa$
+        $[\iota_1 \times \ldots \times \iota_n] \Rightarrow \kappa$
         where all $\iota_i$ and $\kappa$ are sorts
             \pause
-        \item $[] \Rightarrow \kappa$ is abbreviated to $\kappa$
+        \item $[\,] \Rightarrow \kappa$ is abbreviated to $\kappa$
     \end{itemize}
     \end{definition}
     \pause
@@ -283,16 +286,16 @@ function sum(int n){
         $\vdash s : \iota$ \pause
         \begin{align*}
             \infer{\vdash x : \iota}{x : \iota \in \VV} \;\;\;\;
-                & \infer{\vdash f(s_1,\cdots, s_n) : \kappa}
-                    {\vdash s_1 : \iota_1 & \cdots & \vdash s_n : \iota_n
-                    & f:[\iota_1 \times \cdots \times \iota_n]
+                & \infer{\vdash f(s_1,\ldots, s_n) : \kappa}
+                    {\vdash s_1 : \iota_1 & \ldots & \vdash s_n : \iota_n
+                    & f:[\iota_1 \times \ldots \times \iota_n]
                     \Rightarrow \kappa \in \Sigma}
         \end{align*}
         \pause
         \item $s : \iota$ is \alert{well-sorted}
         \pause
-        \item \alert{$\Terms(\Sigma, \VV)$} is set of all terms over $\Sigma$ and $\VV$
-        \pause
+        %\item \alert{$\Terms(\Sigma, \VV)$} is set of all terms over $\Sigma$ and $\VV$
+        %\pause
         \item \alert{$\Var(s)$} is set of all variables in $s$
         %\item term $s$ is \textbf{ground} if $\Var(s) = \emptyset$
         \end{itemize}
@@ -328,14 +331,14 @@ function sum(int n){
     \begin{definition}[substitution]
         \begin{itemize}
             \item \alert{substitution} $\gamma$ is mapping from variables to terms
-        $\{x_1:\iota_1 \mapsto s_1 : \iota_1, \cdots x_n:\iota_n \mapsto s_n : \iota_n\}$
-            \item $s\gamma$ denotes applying $\gamma$ to $s$
+            \item $\{x_1:\iota_1 \mapsto s_1 : \iota_1, \ldots, x_n:\iota_n \mapsto s_n : \iota_n\}$ is notation for substitution
+            \item $s\gamma$ denotes application of $\gamma$ to $s$
         \end{itemize}
     \end{definition}
     \pause
     \begin{definition}[context]
         \begin{itemize}
-            \item \alert{context} $C$ is term which contains special variable $\Box$
+            \item \alert{context} $C$ is term that contains special variable $\Box$
             \item $C[s]$ denotes $C$ with $\Box$ replaced by $s$
         \end{itemize}
     \end{definition}
@@ -344,15 +347,17 @@ function sum(int n){
 \begin{frame}
     \frametitle{}
 
-    \begin{tabular}{ll}
-        $\m{sum}(x) \to \m{sum2}(\m{even}(x),x)$ & \\
-        $\m{sum2}(\m{true}, x) \to \m{sum3}(x)$ & $\m{sum2}(\m{false}, x)$ \to $\m{sum3}(\m{p}(x))$\\
-        $\m{sum3}(\m{s}(\m{s}(x))) \to \m{add}(\m{s}(\m{s}(x)), \m{sum3}(x))$ & $\m{sum3}(\m{0}) \to \m{0}$\\\\\\
-        $\m{even}(\m{s}(\m{s}(x))) \to \m{even}(x)$ & $\m{even}(\m{s}(x)) \to \m{false}$\\
-        $\m{even}(\m{0}) \to \m{true}$ & \\
-        $\m{p}(\m{s}(x)) \to x$ & $\m{p}(\m{0}) \to \m{0}$\\
-        $\m{add}(x,\m{s}(y)) \to \m{s}(\m{add}(x,y))$ & $\m{add}(x,\m{0}) \to x$
+    \begin{table} 
+        \begin{tabular}{lll}
+        $\m{sum}(x) \to \m{sum2}(\m{even}(x),x)$ & & $\m{even}(\m{s}(\m{s}(x))) \to \m{even}(x)$\\
+        $\m{sum2}(\m{true}, x) \to \m{sum3}(x)$ & & $\m{even}(\m{s}(x)) \to \m{false}$ \\
+        $\m{sum2}(\m{false}, x)$ \to $\m{sum3}(\m{p}(x))$ & & $\m{even}(\m{0}) \to \m{true}$ \\
+        $\m{sum3}(\m{s}(\m{s}(x))) \to \m{add}(\m{s}(\m{s}(x)), \m{sum3}(x))$ & & $\m{p}(\m{s}(x)) \to x$ \\
+        $\m{sum3}(\m{0}) \to \m{0}$ & & $\m{p}(\m{0}) \to \m{0}$\\ 
+        & & $\m{add}(x,\m{s}(y)) \to \m{s}(\m{add}(x,y))$\\
+        & & $\m{add}(x,\m{0}) \to x$
         \end{tabular}
+       \end{table}
 
 \end{frame}
 
@@ -366,11 +371,12 @@ function sum(int n){
                 \begin{tabular}{lll}
                     $\m{sum} : [\m{int}] \Rightarrow \m{int}$ & $\m{sum2} : [\m{bool} \times \m{int}] \Rightarrow \m{int}$ & $\m{sum3} : [\m{int}] \Rightarrow \m{int}$
                 \end{tabular}
+            \pause
             \item $\Stheory$\\
                 \begin{tabular}{lll}
-                    $\m{n} : \m{int}$ (for all $n \in \mathbb{Z}$) & $\m{true} : \m{bool}$ & $\m{false} : \m{bool}$\\
-                    $+ : [\m{int} \times \m{int}] \Rightarrow \m{int}$ & $- : [\m{int} \times \m{int}] \Rightarrow \m{int}$ &\\
-                    $\geq : [\m{int} \times \m{int}] \Rightarrow \m{bool}$ & $\m{even}: [\m{int} \times \m{int}] \Rightarrow \m{bool}$ & $\neg : [\m{bool}] \Rightarrow \m{bool}$
+                    $\m{n} : \m{int}$ (for all $n \in \mathbb{Z}$) & $+ : [\m{int} \times \m{int}] \Rightarrow \m{int}$ & $\geq : [\m{int} \times \m{int}] \Rightarrow \m{bool}$ \\
+                    $\m{true} : \m{bool}$ & $- : [\m{int} \times \m{int}] \Rightarrow \m{int}$ & $\neg : [\m{bool}] \Rightarrow \m{bool}$\\
+                    $\m{false} : \m{bool}$ & & $\m{even}: [\m{int} \times \m{int}] \Rightarrow \m{bool}$ 
                 \end{tabular}
         \end{itemize}
     \end{example}
@@ -381,32 +387,35 @@ function sum(int n){
     \frametitle{Logical Term}
 
     \begin{definition}[logical term]
-        for term $s \in \Terms(\Sterms \cup \Stheory, \VV)$ \pause
+        let $\Sterms$ and $\Stheory$ be signature\\
         \begin{itemize}
             %\item $s$ is \textbf{proper term} if $s \in \Terms(\Sterms, \VV)$
-            \item $s$ is \alert{logical term} if $s \in \Terms(\Stheory, \VV)$
+            \item $s$ is \alert{logical term} if $s$ is term over $\Stheory$
             \pause
             \item logical term is \alert{value} if it is form of $s : \kappa$
+            \pause
+            \item value $s \in \Sterms \cap \Stheory$  
         \end{itemize}
     \end{definition}
     \pause
     \begin{example}
-        $\Sterms = \{\m{sum}: [\m{int} \times \m{int}] \Rightarrow \m{int}\}$,
-        $\Stheory=\{0,1 : \m{int}, +:[\m{int} \times \m{int}] \Rightarrow \m{int}\}$
+        {\small
+        $\Sterms = \{0,1 : \m{int}, \m{sum}: [\m{int} \times \m{int}] \Rightarrow \m{int}\}$,
+        $\Stheory=\{0,1 : \m{int}, +:[\m{int} \times \m{int}] \Rightarrow \m{int}\}$}
         \pause
         \begin{itemize}
-            \item $\m{0},\m{true}$ \quad \pause logical term and value
+            \item $\m{0},\m{true}$ \quad \pause \alert{logical term and value}
                 \pause
-            \item $x + 1$ \quad  \pause logical term
+            \item $x + 1$ \quad  \pause \alert{logical term}
             %\item $\m{sum2}(\m{true},x)$ proper term
             \pause 
-            \item $\m{sum}{(\m{1} + \m{1})}$ \quad \pause mixed term
+            \item $\m{sum}{(\m{1} + \m{1})}$ \quad \pause \alert{mixed term}
         \end{itemize}
     \end{example}
 \end{frame}
 
 
-
+\begin{comment}
 \begin{frame}
     \frametitle{Interpretation of $\Stheory$}
     \begin{definition}[interpretation mapping$\JJ$]
@@ -415,10 +424,10 @@ function sum(int n){
         \pause
         \begin{itemize}
             \item \alert{interpretation mapping $\JJ$} is mapping from each
-            $f : [\iota_1 \times \cdots \times \iota_n] \in \Stheory$ to function $\JJ_f \in \II_{\iota_1} \Rightarrow \cdots \II{\iota_n} \Rightarrow \II{\kappa}$
+            $f : [\iota_1 \times \ldots \times \iota_n] \in \Stheory$ to function $\JJ_f \in \II_{\iota_1} \Rightarrow \ldots \II{\iota_n} \Rightarrow \II{\kappa}$
             \pause
-        \item interpretation of logical term $s$ \alert{($\Var(s) = \emptyset$)}
-            $\interpret{f(s_1,\cdot,s_n)} = \JJ_f(\interpret{s_1},\cdots,\interpret{s_n})$
+            \item interpretation of logical term $s$ with \alert{$\Var(s) = \emptyset$}
+            $\interpret{f(s_1,\cdot,s_n)} = \JJ_f(\interpret{s_1},\ldots,\interpret{s_n})$
         \end{itemize}
     \end{definition}
     
@@ -435,7 +444,34 @@ function sum(int n){
         \end{itemize}
     \end{example}
 \end{frame}
+\end{comment}
 
+\begin{frame}
+    \frametitle{Interpretation of Logical Term}
+    \begin{definition}[interpretation of logical term]
+        \pause
+        \begin{itemize}
+        %\item assume mapping \alert{$\II_\iota$} from sort $\iota$ in $\Stheory$ to corresponding set and
+        \item assume mapping \alert{$\JJ$} from symbol $f$ in $\Stheory$ to coressponding function
+        \item \alert{interpretation} of logical term $s$ with \alert{$\Var(s) = \emptyset$} is defined as
+            $\interpret{f(s_1,\cdot,s_n)} = \JJ(f)(\interpret{s_1},\ldots,\interpret{s_n})$
+        \item value $t$ is value of $s = f(s_1,\ldots,s_n)$  if
+            $\interpret{s} = \interpret{t}$
+        \end{itemize}
+    \end{definition}
+    
+    \pause
+    \begin{example}
+        %choose $\II(\m{int}) = \mathbb{Z}$ and $\II(\m{bool}) = \{\top, \perp \}$
+        \begin{itemize}
+            \item $\JJ(\m{0}) = 0$
+            \pause
+            \item $\JJ(\m{true}) = \top$
+            \pause
+            \item $\interpret{\m{1} + \m{2}} = \interpret{\m{1}} + \interpret{\m{2}} = 1 + 2$ 
+        \end{itemize}
+    \end{example}
+\end{frame}
 
 
 \begin{frame}
@@ -469,9 +505,9 @@ function sum(int n){
     \pause
     \begin{example}
         \begin{itemize}[<+->]
-            \item $\m{even}(x + \m{1})$ \quad \pause constraint
-            \item $\m{5} + {3}$ \quad \pause not constraint
-            \item $\m{true}$ \quad \pause constraint
+            \item $\m{even}(x + \m{1})$ \quad \pause \alert{constraint}
+            \item $\m{5} + {3}$ \quad \pause \alert{not constraint}
+            \item $\m{true}$ \quad \pause \alert{constraint}
         \end{itemize}
     \end{example}
 \end{frame}
@@ -479,22 +515,26 @@ function sum(int n){
 \begin{frame}
     \frametitle{Rewrite Rule}
     \begin{definition}[rewrite rule]
-        let $l$ and $r$ be term and $\varphi$ be logical constraint
+        let $l$ and $r$ be term and $\varphi$ logical constraint
         \pause
         \begin{itemize}
             \item \alert{rewrite rule} is triple $l \to r \; [\varphi]$
+            \item $l$ is of form $f(\ldots)$ with $f \in \Sterms \setminus \Stheory$
             \pause
             \item $l$ and $r$ must be same sort
             \pause
-            \item denote $l \to r$ if $l \to r \; [\m{true}]$
+            \item $l \to r \; [\m{true}]$ is abbreviated to $l \to r$
             %\item $\LVar(l \to r \; [\varphi])$ is defined as $\Var(\varphi) \cup (\Var(r) \setminus \Var(l))$
         \end{itemize}
     \end{definition}
-    \begin{example}[<+->]
+    \pause
+    \begin{example}
     \begin{itemize}
-        \item $\m{sum}(x) \to \m{sum2}(x)$ \quad \pause rule
-        \item $\m{sum2}(x) \to \m{sum3}(x-1) \; [\neg(\m{even}(x))]$ \quad \pause rule
-        \item $\m{sum}(x) \to \m{true} \; [\m{even}(x)]$ \quad \pause not rule
+        \item $\m{sum}(x) \to \m{sum2}(x)$ \quad \pause \alert{rule}
+        \pause
+        \item $\m{sum2}(x) \to \m{sum3}(x-1) \; [\neg(\m{even}(x))]$ \quad \pause \alert{rule}
+        \pause
+        \item $\m{sum}(x) \to \m{true} \; [\m{even}(x)]$ \quad \pause \alert{not rule}
     \end{itemize}
     \end{example}
 \end{frame}
@@ -509,7 +549,7 @@ function sum(int n){
         \begin{tabular}{ll}
             $\m{sum}(x) \to \m{sum2}(x)$ & \\
             $\m{sum2}(x) \to \m{sum3}(x) \; [\m{even}(x)]$ & $\m{sum2}(x) \to \m{sum3}(x-1) \; [\neg(\m{even}(x))]$ \\
-            $\m{sum3}(x) \to x + \m{sum}(x-2) \; [0 \leq x]$ & $\m{sum3}(x) \to \m{0} \; [\neg(0 \leq x)]$
+            $\m{sum3}(x) \to x + \m{sum3}(x-2) \; [0 \leq x]$ & $\m{sum3}(x) \to \m{0} \; [\neg(0 \leq x)]$
         \end{tabular}
     \end{example}
 \end{frame}
@@ -533,26 +573,12 @@ function sum(int n){
         \pause
         \begin{itemize}[<+->]
             \item $C[l\gamma] \torule C[r\gamma]$ if $l \to r \; [\varphi] \in \RR$ and $\gamma$ \alert{respects} $l \to r \; [\varphi]$
-            \item $C[f(s_1,\cdots,s_n)] \tocalc C[v]$ if $f \in \Stheory\setminus\Sterms$, all $s_i$ values and $v$ is value of $f(s_1,\cdots,s_n)$
+            \item $C[f(s_1,\ldots,s_n)] \tocalc C[v]$ if $f \in \Stheory\setminus\Sterms$, all $s_i$ values and $v$ is value of $f(s_1,\ldots,s_n)$
         \end{itemize}
     \end{definition}
 \end{frame}
 
-\begin{frame}
-    \begin{example}
-        \begin{tabular}{ll}
-            $\m{sum}(x) \to \m{sum2}(x)$ & \\
-            $\m{sum2}(x) \to \m{sum3}(x) \; [\m{even}(x)]$ & $\m{sum2}(x) \to \m{sum3}(x-1) \; [\neg(\m{even}(x))]$ \\
-            $\m{sum3}(x) \to x + \m{sum}(x) \; [\neg(0 \geq x)]$ & $\m{sum3}(x) \to \m{0} \; [0 \geq x]$
-        \end{tabular}
-        \begin{align*}
-            & \m{sum}(\m{5}) \torule \m{sum2}(\m{5}) \torule \m{sum3}(\m{5} - \m{1}) \tocalc \m{sum3}(\m{4})\\
-            & \torule \m{4} + \m{sum3}(\m{4} -\m{2}) \tocalc \m{4} + \m{sum3}(\m{2}) \torule \m{4} + (\m{2} + \m{sum3}(\m{2}-\m{2}))\\
-            & \tocalc \m{4} + (\m{2} + \m{sum3}(0)) \torule \m{4} + (\m{2} + \m{0}) \tocalc \m{4} + \m{2} \\
-            & \tocalc \m{6}
-        \end{align*}
-    \end{example}
-\end{frame}
+
 
 \begin{comment}
 \begin{frame}
@@ -577,9 +603,9 @@ function sum(int n){
         \begin{itemize}
             \item if $C=\Box$, \pause obviously we have $C[s] \to_{\RR} C[t]$
             \pause
-            \item if $C=f(u_1,\cdots,C',\cdots,u_i)$,\\
+            \item if $C=f(u_1,\ldots,C',\ldots,u_i)$,\\
                 \pause
-                %$C[s] = f(u_1,\cdots,C'[s],\cdots,u_i)$ and $C[t] = f(u_1,\cdots,C'[t],\cdots,u_i)$\\
+                %$C[s] = f(u_1,\ldots,C'[s],\ldots,u_i)$ and $C[t] = f(u_1,\ldots,C'[t],\ldots,u_i)$\\
                 by I.H. $C'[s] \to_{\RR} C'[t]$ or $C'[s] \tocalc C'[t]$
                 \pause
                 \begin{itemize}
@@ -587,9 +613,9 @@ function sum(int n){
                         \pause
                         we have $l \to r \; [\varphi]$ and $\gamma$ s.t. \\ $s=C''[l\gamma]$, $t=C''[r\gamma]$ and $\varphi\gamma$ is valid\\
                         \pause
-                        so $C[C''[l\gamma]]$ and $C[C''[r\gamma]]$\\
+                        so $f(u_1,\ldots,C'[C''[l\gamma]],\ldots,u_n)$ and $f(u_1,\ldots,C'[C''[r\gamma]],\ldots,u_n)$\\
                         \pause
-                        hence $C[s] \torule C[t]$
+                        hence $C[s]$ $C[t]$ $C[s] \torule C[t]$
                         \pause
                       \item if $C'[s] \tocalc C'[t]$, we have $C[s] \tocalc C[t]$
                 \end{itemize}
@@ -600,7 +626,7 @@ function sum(int n){
 
 \begin{frame}
     \begin{lemma}
-        $C[s]\gamma = (C\gamma)[s\gamma]$ for all $C$
+        $C[s]\gamma = C\gamma[s\gamma]$ for all $C$
     \end{lemma}
     \pause
     \begin{proof}
@@ -610,21 +636,23 @@ function sum(int n){
             \item if $C = \Box$, \pause
                 $C\gamma[s\gamma] = \Box\gamma[s\gamma] = s\gamma = \Box[s]\gamma = C[s]\gamma$
             \pause
-            \item if $C = f(u_1,\cdots,C',\cdots,u_n)$, \pause
-                $C\gamma[s\gamma] = f(u_1,\cdots,C',\cdots,u_n)\gamma[s\gamma]$\\
-                \pause
-                $= f(u_1\gamma,\cdots,C'\gamma,\cdots,u_n\gamma)[s\gamma]$ \\
-                \pause
-                $= f(u_1\gamma, \cdots, (C'\gamma)[s\gamma],\cdots,u_n)$\\
-                \pause
-                $= f(u_1\gamma, \cdots, C'[s]\gamma,\cdots,u_n\gamma)$ by I.H. \\
-                \pause
-                $= f(u_1, \cdots, C'[s], \cdots, u_n)\gamma$\\
-                \pause
+            \item if $C = f(u_1,\ldots,C',\ldots,u_n)$, \pause
+                $(C\gamma)[s\gamma] = f(u_1,\ldots,C',\ldots,u_n)\gamma[s\gamma]$\\
+                \quad\pause
+                $= f(u_1\gamma,\ldots,C'\gamma,\ldots,u_n\gamma)[s\gamma]$ \\
+                \quad\pause
+                $= f(u_1\gamma, \ldots, \alert{C'\gamma[s\gamma]},\ldots,u_n)$\\
+                \quad\pause
+                $= f(u_1\gamma, \ldots, C'[s]\gamma,\ldots,u_n\gamma)$ by I.H. \\
+                \quad\pause
+                $= f(u_1, \ldots, C'[s], \ldots, u_n)\gamma$\\
+                \quad\pause
                 $= C[s]\gamma$
         \end{itemize}
     \end{proof}
 \end{frame}
+
+
 
 \begin{frame}
     \begin{theorem}
@@ -638,10 +666,10 @@ function sum(int n){
                 \pause
                 we have $s=C[l\gamma]$, $t=C[r\gamma]$ and $\varphi\gamma$ for some rule $l \to r \; [\varphi]$\\
                 \pause
-                so $s\sigma = (C[l\gamma])\sigma \pause = (C\sigma)[l(\sigma\gamma)]$
-                \pause and $t\sigma = (C\sigma)[r(\sigma\gamma)]$\\
+                so $s\sigma = C[l\gamma]\sigma \pause = C\sigma[l(\sigma\gamma)]$
+                \pause and $t\sigma = C\sigma[r(\sigma\gamma)]$\\
                 \pause
-                $\varphi\gamma$ is value, thus $(\varphi\gamma)\sigma = \varphi\gamma$\\
+                $\varphi\gamma$ is value, thus $(\varphi\gamma)\sigma = \varphi\gamma$ and $\varphi\gamma$ is valid\\
                 \pause
                 hence $(C\sigma)[s\sigma] \torule (C\sigma)[t\sigma]$
             \pause
@@ -649,6 +677,32 @@ function sum(int n){
         \end{itemize}
     \end{proof}
 \end{frame}
+
+
+
+\begin{frame}
+    \begin{example}
+        \begin{table}
+        \begin{tabular}{l}
+            $\m{sum}(x) \to \m{sum2}(x)$ \\
+            $\m{sum2}(x) \to \m{sum3}(x) \; [\m{even}(x)]$ \\
+            $\m{sum2}(x) \to \m{sum3}(x-1) \; [\neg(\m{even}(x))]$ \\
+            $\m{sum3}(x) \to x + \m{sum3}(x) \; [\neg(0 \geq x)]$ \\
+            $\m{sum3}(x) \to \m{0} \; [0 \geq x]$
+        \end{tabular}
+    \end{table}
+        \bigskip
+            \quad $\m{sum}(\m{5}) \pause \torule \m{sum2}(\m{5})$
+            $\torule \m{sum3}(\m{5} - \m{1})$ \pause 
+            $\tocalc \m{sum3}(\m{4})$\\
+            \quad $\torule \m{4} + \m{sum3}(\m{4} -\m{2}) \tocalc \m{4} + \m{sum3}(\m{2}) \torule \m{4} + (\m{2} + \m{sum3}(\m{2}-\m{2}))$\\
+            \pause
+            \quad $\tocalc \m{4} + (\m{2} + \m{sum3}(0)) \torule \m{4} + (\m{2} + \m{0}) \tocalc \m{4} + \m{2}$ \\
+            \pause
+            \quad $\tocalc \m{6}$
+    \end{example}
+\end{frame}
+
 
 \begin{frame}
     \frametitle{Conclusion}
@@ -659,7 +713,7 @@ function sum(int n){
             \bigskip
         \item constrained term $\m{sum}(x)\; [x \geq 0]$
             \bigskip
-        \item rewrite induction
+        \item rewriting induction
     \end{itemize}
 \end{frame}
 

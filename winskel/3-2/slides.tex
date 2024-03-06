@@ -124,17 +124,21 @@
 
 \begin{frame}
     \frametitle{Structural Induction on Arithmetic Expressions}
-    To prove some property $P$ for all arithmetic expressions $a$, we need to show:
-    \begin{itemize}
-        \item [1] for all $m \in \mathbf{N}$ $P(m)$ holds,
-        \item [2] for all $X \in \mathbf{Loc}$ $P(X)$ holds and
+    to prove $P(a)$ for all arithmetic expressions $a$, we need to show
+    \pause
+    \begin{itemize}[<+->]
+        \item [1] for all $m \in \mathbf{N}$ $P(m)$
+        \item [2] for all $X \in \mathbf{Loc}$ $P(X)$
         \item [3] for all $a_0, a_1 \in \mathbf{Aexp}$ $P(a_0)\; \& \; P(a_1)$ implise $P(a_0 * a_1)$ \\
-            where $* \in \{+, -, \times\}$.
+            where $* \in \{+, -, \times\}$
     \end{itemize}
-    Sometimes we must not show the property holds for subexpressions ($a_0, a_1$ in the above).
-    In that case, we can use a degenerate form of structural induction:
-    \begin{itemize}
-        \item [3] for all $a_0, a_1 \in \mathbf{Aexp}$ $P(a_0 * a_1)$ where $* \in \{+, -, \times\}$.
+    \pause
+    sometimes we can use degenerate form
+    \pause
+    \begin{itemize}[<+->]
+        \item [1] for all $m \in \mathbf{N}$ $P(m)$
+        \item [2] for all $X \in \mathbf{Loc}$ $P(X)$
+        \item [3] for all $a_0, a_1 \in \mathbf{Aexp}$ $P(a_0 * a_1)$ where $* \in \{+, -, \times\}$
     \end{itemize}
 
 \end{frame}
@@ -142,24 +146,24 @@
 \begin{frame}
     \begin{block}{Claim}
         For all arithmetic expressions $a$, states $\sigma$
-        and numbers $m, m'$
-        \[
-            \langle a, \sigma \rangle \to m \; \& \;
-                \langle a, \sigma \rangle \to m'
-                    \Rightarrow m = m'
-        \]
+        and numbers $m, m'$,
+        if $\langle a, \sigma \rangle \to m$ and $\langle a, \sigma \rangle \to m'$ then m = m'.
     \end{block}
+    \pause
 
     \begin{Proof}
         We show the claim by structural induction on arithmetic expressions $a$.
 
-        \begin{itemize}
-            \item If $a$ is number $n$, $\cmd{a}{\sigma}{m}$ and $\cmd{a}{\sigma}{m'}$ implies $m = n = m'$.
+        \pause
+
+        \begin{itemize}[<+->]
+            \item If $a$ is a number $n$, $\cmd{a}{\sigma}{m}$ and $\cmd{a}{\sigma}{m'}$ implies $m = n = m'$.
             \item If $a = a_0 + a_1$, we have $\cmd{a_0}{\sigma}{m_0}$ and $\cmd{a_1}{\sigma}{m_1}$ with $ m = m_0 + m_1$
                 and also, we have $\cmd{a_0}{\sigma}{m'_0}$ and $\cmd{a_1}{\sigma}{m'_1}$ with $ m' = m'_0 + m'_1$.\\ 
                 By induction hypothesis $m_0 = m_0'$ and $m_1 = m'_1$.\\
                 So $ m = m_0 + m_1 = m'_0 + m'_1 = m'$.
         \end{itemize}
+        \pause
         The remaning cases follow in a similar way.
     \end{Proof}
 \end{frame}

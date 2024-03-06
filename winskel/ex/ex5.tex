@@ -120,17 +120,25 @@
 \begin{frame}
     \frametitle{Exercise 5.10 (1)}
     \begin{block}{Claim}
-        for all sets $X$, $(Pow(X), \subseteq)$ is cpo with bottom
+        for all set $X$, $(Pow(X), \subseteq)$ is cpo with bottom
     \end{block}
+    \pause
     \begin{proof}
-        First, for any set X, $(Pow(X), \subseteq)$ is a partial order because the relation $\subseteq$ is
+        For all set X, $(Pow(X), \subseteq)$ is a partial order because the relation $\subseteq$ is
         reflexive, transitive, and antisymmetric.
-        Obviously, $\emptyset$ is a least element. 
+        \pause
+        Obviously, $\emptyset$ is a least element.
+        \pause
         Let $\{X_n \mid n \in \omega \}$ be a increasing chain
         $X_0 \subseteq X_1 \subseteq \dots \subseteq X_n \subseteq \cdots $ of subsets of $X$.
+        \pause
         Take $C = \bigcup \{X_n \mid n \in \omega \}$.
-        So for every $X_n \in \{X_n \mid n \in \omega\}$, $X_n \subseteq C$ and for every $Y \supseteq \{X_n \mid n \in \omega\}$, $C \subseteq Y$ holds.
-        Thus $C$ is a least upper bound of $\{X_n \mid n \in \omega \}$.
+        \pause
+        So for all $X_n \in \{X_n \mid n \in \omega\}$, $X_n \subseteq C$ and
+        for every upper bound $U$ of $\{X_n \mid n \in \omega\}$, $C \subseteq U$ holds.
+        \pause
+        Thus $C$ is a least upper bound of $\{X_n \mid n \in \omega \}$ in $Pow(X)$.
+        \pause
         Hence $(Pow(X), \subseteq)$ is a cpo with bottom.
     \end{proof}
 \end{frame}
@@ -138,9 +146,9 @@
 \begin{frame}
     \frametitle{Exercise 5.10 (2)}
     \begin{block}{Claim}
-        let $F$ be a set of partial functions $\Sigma \rightharpoonup \Sigma$\\
-        $(F,\subseteq)$ is a cpo with bottom
+        set of partial functions $\Sigma \rightharpoonup \Sigma$ ordered by $\subseteq$ is cpo with bottom
     \end{block}
+    \pause
     \begin{proof}
         A partial functions $\Sigma \rightharpoonup \Sigma$ are subsets of $\Sigma \times \Sigma$.
         So according to the previous question, the claim holds.
@@ -150,12 +158,18 @@
 \begin{frame}
     \frametitle{Exercise 5.14}
     \begin{block}{Claim}
-        complete lattice $(L, \sqsubseteq)$ has least upper bound of arbitrary subsets
+        let $(L, \sqsubseteq)$ be complete lattice, every subset of $L$ has least upper bound
     \end{block}
+    \pause
 
     \begin{proof}
-        Let $S$ be a subset of $L$ and let $T \subseteq L$ be a set of upper bounds of $S$.
-        So there exists some $p$ such that $p \sqsubseteq t$ for all $t \in T$ and $s \sqsubseteq p$ for all $s \in S$.
+        Let $S$ be a subset of $L$. \pause
+        Take $U = \{u \in L \mid \forall s \in S . \, s \sqsubseteq u\} $.
+        \pause
+        So there exists some $p$ such that $p \sqsubseteq u$ for all $u \in U$.
+        \pause
+        By definition of glb, we have $s \sqsubseteq p$ for all $s \in S$.
+        \pause
         Hence $p$ is a least upper bound of $S$.
     \end{proof}
 \end{frame}
