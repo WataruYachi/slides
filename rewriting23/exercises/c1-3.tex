@@ -50,8 +50,8 @@
     Assume $a_0 \to a_1 \to a_2 \to \cdots$.
     Since $\mathcal{A}$ is bounded, the length of the rewrite sequence starting at $a_0$
     is at most $n$ for some $n \in \mathbb{N}$.
-    However the sequence is infinite, then the length of it will be greater than $n$.
-    Hence we have contradiction.
+    However the sequence is infinite. Then we will take $a_0 \to^{n+1} a_{n+1}$.
+    Thus $\mathcal{A}$ is not bounded. Hence we have contradiction.
 \end{proof}
 
 \section*{1.26 (a)}
@@ -86,13 +86,40 @@
     However $>$ is well-founded. Hence we have contradiction.
 
     Secondly, we prove that $\mathcal{A}$ is confluent.
-    Since $\mathcal{A}$ is terminating,
-    it is enough to show that $\mathcal{A}$ is locally confluent.
-    Suppose $c \leftarrow a \to b$. Because $\mathcal{A}$ is connected,
-    we have $c = d_0 \leftrightarrow \cdots \leftrightarrow d_n = b$ with $0 \leq 0$ and for all $0 \leq i \leq n$, $a > d_i$.
-    So we perform well-founded induction.
-    By the I.H., we have $c \downarrow b$.
-    Hence $\mathcal{A}$ is locally confluent.
+    Suppose $c$$^*\!\!\leftarrow a \rightarrow^* b$.
+    We perform well-founded induction on $a$.
+    So we assume that for all $a' < a$, $a'$ is confluent as a induction hypothesis.    
+    We distinguish two cases.
+    \begin{itemize}
+        \item If $a = c$ or $a = b$ then triviarly we have $c \downarrow b$.
+        \item If $c\;$$^*\!\!\!\leftarrow c' \leftarrow a \rightarrow b' \to^* b$ then since $\mathcal{A}$ is connected,
+            there exist some elements $a_0, \dots, a_n$ such that $b' = a_0 \leftrightarrow \cdots \leftrightarrow a_n = c'$ with $n \geq 0$ and
+            for all $0 \leq i \leq n$, $a > a_i$.
+            So we have
+            \[
+                \begin{tikzpicture}[auto]
+                    \node(a) at (0,0) {$a$}; \node (b') at (-1,-1) {$b'$}; \node (c') at (1,-1) {$c'$};
+                    \node(b) at (-2,-2) {$b$}; \node (c) at (2,-2) {$c$};
+                    \node(d') at (0,-2) {$\cdot$}; \node(d'') at (-1,-3) {$\cdot$};
+                    \node(d) at (0,-4) {$\cdot$};
+                    \node(IH) at (0, -1.3) {I.H.};
+                    \node(IH2) at (-1, -2) {I.H.};
+                    \node(IH3) at (0.5, -2.5) {I.H.};
+                    \draw[->] (a) to (b');
+                    \draw[->] (a) to (c');
+                    \draw[->] (b') to node[swap]{$*$}(b);
+                    \draw[->] (c') to node{$*$}(c);
+                    \draw[<->, dotted] (b') to node{$*$}(c');
+                    \draw[->, dotted] (b') to node[swap]{$*$}(d');
+                    \draw[->, dotted] (c') to node{$*$}(d');
+                    \draw[->, dotted] (b) to node[swap]{$*$}(d'');
+                    \draw[->, dotted] (d') to node{$*$}(d'');
+                    \draw[->, dotted] (d'') to node[swap]{$*$}(d);
+                    \draw[->, dotted] (c) to node{$*$}(d);
+                \end{tikzpicture}
+            \].
+    \end{itemize}
+
 \end{proof}
 
 \section*{1.30 (b)}
@@ -213,18 +240,13 @@ Let $\mathcal{A} = \langle \mathbb{N}, \{\to_1, \to_2\} \rangle$ be an ARS
     then $(\alpha \cup \beta) / \gamma$ is terminating.
 \end{claim*}
 
-\begin{comment}
+\newcommand{\abgto}{\xrightarrow[(\alpha \cup \beta)/\gamma]{}}
 \begin{proof}
-    To prove the claim, we show that $\gamma^*(\alpha\,\cup\,\beta)$ is terminating.
-    Assume $\gamma^*(\alpha \cup \beta)$ is not terminating.
-    Then we distinguish three cases.
-    \begin{itemize}
-        \item If $\gamma^*\beta$ is not terminating then it contradicts with the assumption.
-        \item If $\gamma^*\alpha$ is not terminating then we have 
-        Then $\alpha$ is not terminating. However since $\alpha/(\beta \cup \gamma)$ is terminating,
-        $\alpha$ is terminating. Hence we have contradiction.
-    \end{itemize}
+    Assume $a_0 \abgto a_1 \abgto a_2 \abgto \cdots$.
+    Since $\alpha /(\beta \cup \gamma)$ is terminating, there exists some $i \in \mathbb{N}$
+    such that for all $j \geq i$, $a_j \xrightarrow[\beta/\gamma]{} a_{j+1}$.
+    By the assumption, we have $a_i \xrightarrow[\beta/\gamma]{} a_{i+1} \xrightarrow[\beta/\gamma]{} a_{i+2} \xrightarrow[\beta/\gamma]{} a_{j+1} \cdots$.
+    However, $\beta/\gamma$ is terminating. Hence we have contradiction.
 \end{proof}
 
-\end{comment}
 \end{document}

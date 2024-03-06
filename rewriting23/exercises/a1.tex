@@ -23,12 +23,12 @@
 \newtheorem*{definition*}{Definition}
 
 \theoremstyle{definition}
-\newtheorem{claim}{Claim}
-\newtheorem*{claim*}{Claim}
+\newtheorem*{claim}{Claim}
+%\newtheorem*{claim*}{Claim}
 
 % page number
 % if you don't need page numbers, set "empty"
-\pagestyle{empty}
+%\pagestyle{empty}
 
 
 \title{}
@@ -110,22 +110,296 @@
                 \item $R^{-1} = \{(1,0), (2,1)\}$, and
                 \item $R^2 \cdot R^{-1} = \{(0,1)\}$.
             \end{itemize}
-        But $R^m = R^1 = R = \{(0,1), (0,2)\} \neq \{(0,2)\}$.
+        However, $R^m = R^1 = R = \{(0,1), (0,2)\} \neq \{(0,2)\}$.
     \end{proof}
 
-\subsection*{(d)}
-    \begin{claim}
-        $(R^*)^{-1} = (R^{-1})^{*}$
-    \end{claim}
-    \begin{proof}
-        Firstly, we show $(\bigcup_{n \geq 0} R^n)^{-1} \subseteq \bigcup_{n \geq 0} (R^{-1})^n$.
-        We perfome case analysis on $n$.
+%\subsection*{(d)}
+%    \begin{claim}
+%        $(R^*)^{-1} = (R^{-1})^{*}$
+%    \end{claim}
+%    \begin{proof}
+%        Firstly, we show $(\bigcup_{n \geq 0} R^n)^{-1} \subseteq \bigcup_{n \geq 0} (R^{-1})^n$.
+%        We perfome case analysis on $n$.
+%        \begin{itemize}
+%            \item If $n=0$ then $(a,b) \in \mathrm{id}_A$ then $(a,b) \in \mathrm{id}_A$.
+%            \item If $n>0$ then $(a,b) \in (\bigcup_{n \geq 0} R^{n} \cup R)^{-1}$.
+%                \begin{itemize}
+%                    \item If (a,b) \in 
+%                \end{itemize}
+%        \end{itemize}
+%    \end{proof}
+
+\newcommand{\RS}{R^{*}}
+\newcommand{\RP}{R^{+}}
+\newcommand{\RN}{R^{n}}
+\newcommand{\NN}{\mathbb{N}}
+
+\subsection*{(e)}
+\begin{claim}
+    $\RS \cdot R \subseteq \RP$
+\end{claim}
+
+\begin{proof}
+    Let $(a,c) \in \RS \cdot R$.
+    Then there exists some $b$ such that
+    $(a,b) \in \RS$ and $(b,c) \in R$.
+    Thus we have $(a,b) \in \RN$ for some $n \in \NN$.
+    So $(a,c) \in \RN \cdot R$ and $\RN \cdot R = R^{n+1}$ holds.
+    Hence $(a,c) \in \RP$.
+\end{proof}
+
+\begin{claim}
+    $\RS \cdot \RS \subseteq \RS$
+\end{claim}
+
+\newcommand{\RM}{R^{m}}
+
+\begin{proof}
+    Let $(a,c) \in \RS \cdot \RS$.
+    Then we have $(a,b) \in \RS$ and $(b,c) \in \RS$ for some $b$.
+    So there exists some $n,m \in \NN$ such that $(a,b) \in \RN$ and $(b,c) \in \RM$.
+    Therefore $(a,c) \in R^{n+m}$.
+    Hence $(a,c) \in \RS$.
+\end{proof}
+
+\begin{claim}
+    $\RS \cdot \RP \subseteq \RP$
+\end{claim}
+
+\begin{proof}
+    Let $(a,c) \in \RS \cdot \RP$.
+    Then we have $(a,b) \in \RS$ and $(b,c) \in \RP$ for some $b$.
+    So there exists some $n,m \in \NN$ such that $(a,b) \in \RN$, $(b,c) \in \RM$, $n \geq 0$, and $m \geq 1$.
+    Thus $(a,c) \in R^{n+m}$ and $n+m \geq 1$.
+    Hence $(a,c) \in \RP$.
+\end{proof}
+
+\begin{claim}
+    $\RP \cdot \RP \subseteq \RP$.
+\end{claim}
+
+\begin{proof}
+    Let $(a,c) \in \RP \cdot \RP$.
+    Then we have $(a,b) \in \RP$ and $(b,c) \in \RP$ for some $b$.
+    So there exists some $n,m\in \NN$ such that $(a,b) \in \RN$, $(b,c) \in \RM$,
+    $n \geq 1$, and $m \geq 1$.
+    Thus $(a,c) \in R^{n+m}$ and $n+m \geq 1$.
+    Hence $(a,c) \in \RP$.
+\end{proof}
+
+\subsection*{(f)}
+
+\begin{claim}
+    $\RP \subseteq \RS \cdot R$
+\end{claim}
+
+\begin{proof}
+    Let $(a,c) \in \RP$.
+    Then there exists some $n \in \NN$ such that $(a,b) \in \RN$ and $n \geq 1$.
+    So we have $(a,c) \in R^{n-1} \cdot R$ and $n-1 \geq 0$.
+    Thus we have $(a,b) \in R^{n-1}$ and $(b,c) \in R$ for some $b$.
+    Hence $(a,c) \in \RS \cdot R$.
+\end{proof}
+
+\begin{claim}
+    $\RS \subseteq \RS \cdot \RS$
+\end{claim}
+
+\begin{proof}
+    Let $(a,c) \in \RS$.
+    Then we have $(a,c) \in R^{n+m}$ and $n,m \geq 0$ for some $n,m \in \NN$.
+    So we have $(a,b) \in \RN$ and $(b,c) \in \RM$ for some $b$.
+    Thus $(a,b) \in \RS$ and $(b,c) \in \RS$.
+    Hence $(a,c) \in \RS \cdot \RS$.
+\end{proof}
+
+\begin{claim}
+    $\RP \subseteq \RS \cdot \RP$
+\end{claim}
+
+\begin{proof}
+    Let $(a,c) \in \RP$.
+    We already know that $\RP \subseteq \RS \cdot R$.
+    So we have $(a,b) \in \RS$ and $(b,c) \in R$ for some $b$.
+    Hence $(a,c) \in \RS \cdot \RP$.
+
+\end{proof}
+
+\begin{claim}
+    $\RP \subseteq \RP \cdot \RP$ does not hold
+\end{claim}
+
+\begin{proof}
+    Take
+    \begin{itemize}
+        \item $A = \{0,1,2\}$ and
+        \item $R = \{(0,1),(1,2)\}$.
+    \end{itemize}
+    Then we have
+    \begin{itemize}
+        \item $\RP = \{(0,1),(1,2),(0,2)\}$ and
+        \item $\RP \cdot \RP = \{(0,2)\}$.
+    \end{itemize}
+    So $(0,1) \in \RP$ but $(0,1) \notin \RP \cdot \RP$.
+\end{proof}
+
+\section*{A.9}
+\subsection*{(c)}
+\begin{claim}
+    $(\RS)^{*} = (\RP)^{*} = (\RS)^{+} = \RS$
+\end{claim}
+
+\begin{proof}
+    It is enoght to show that
+    \begin{itemize}
+        \item $(\RS)^{*} = \RS$,
+        \item $(\RP)^{*} = \RS$, and
+        \item $(\RS)^+ = \RS$.
+    \end{itemize}
+
+    Firstly, we show that $(\RS)^{n} \subseteq \RS$ for all $n \in \NN$ by induction on $n$.
         \begin{itemize}
-            \item If $n=0$ then $(a,b) \in \mathrm{id}_A$ then $(a,b) \in \mathrm{id}_A$.
-            \item If $n>0$ then $(a,b) \in (\bigcup_{n \geq 0} R^{n} \cup R)^{-1}$.
-                \begin{itemize}
-                    \item If (a,b) \in 
-                \end{itemize}
+            \item If $n = 0$ then trivially we have $(\RS)^n \subseteq \RS$.
+            \item If $n > 0$ then we have $(a,c) \in (\RS)^{n-1} \cdot \RS$.
+                    So there exists some $b$ such that $(a,b) \in (\RS)^{n-1}$
+                    and $(b,c) \in \RS$. By I.H., we have $(a,b) \in \RS$.
+                    Hence $(a,c) \in \RS$.
         \end{itemize}
-    \end{proof}
+        Conversely, it is obviously that $\RS \subseteq (\RS)^*$.
+        So we obtain that $(\RS)^{*} = \RS$
+
+    Secondly, we show that $(\RP)^n \subseteq \RS$ for all $n \geq 0$ by induction on $n$.
+        \begin{itemize}
+            \item If $n = 0$ then $(\RP)^0 \subseteq \RS$.
+            \item If $n > 0$ then we have $(a,c) \in (\RP)^{n-1} \cdot \RP$.
+                  So there exists some $b$ such that $(a,b) \in (\RP)^{n-1}$ and $(b,c) \in \RP$.
+                  By I.H., we have $(a,b) \in \RS$. Hence $(a,c) \in \RS$.
+        \end{itemize}
+                  Additionally, we show taht $\RS \subseteq (\RP)^+$.$Let (a,b) \in \RS$.
+                  Then $(a,b) \in \RN$ for some $n \geq 0$.
+                  \begin{itemize}
+                      \item If $n = 0$ then $(a,b) \in R^0 = \mathrm{id}_A$. So $(a,c) \in (\RP)^{*}$.
+                      \item If $n > 0$ then we have $(a,b) \in R^n$ and $n \geq 1$. So $(a,c) \in (\RP)^{*}$.
+                  \end{itemize} 
+                 Hence we have $(\RP)^* = \RS$.
+
+    Thirdly, we show that $(\RS)^n = \RS$ for all $n \geq 1$ by induction on $n$.
+        \begin{itemize}
+            \item If $n = 1$ then trivially we have $(\RS)^1 = \RS$.
+            \item If $n > 1$ then we have $(\RS)^{n-1} \cdot \RS$. By I.H., $\RS \cdot \RS = \RS$.
+        \end{itemize}
+        So $(\RS)^+ = \RS$ holds.
+
+    Finally, we conclude that the claim holds.
+\end{proof}
+
+
+\section*{A.10}
+\subsection*{(a)}
+
+\begin{claim}
+    $(\RP)^+ = \RP$
+\end{claim}
+
+\begin{proof}
+    It is enoght to show that $(\RP)^n \subseteq \RP$ for all $n \geq 1$.
+    We perfome induction on $n$.
+    If $n = 1$ then $(\RP)^1 = \RP \subseteq \RP$.
+    If $n > 1$ then $(\RP)^n = (\RP)^{n-1} \cdot \RP$. Let $(a,c) \in (\RP)^{n-1} \cdot \RP$.
+    So we have $(a,b) \in (\RP)^{n-1}$ and $(b,c) \in \RP$ for some $b$.
+    By I.H., we have $(a,b) \in \RP$. Thus $(a,c) \in \RP \cdot \RP$.
+    Hence $(a,c) \in \RP$.
+\end{proof}
+
+\newcommand{\SP}{S^{+}}
+\begin{claim}
+    $R \subseteq S \Rightarrow \RP \subseteq \SP$
+\end{claim}
+
+\begin{proof}
+    Assume $R \subseteq S$.
+    We show that $\RN \subseteq \SP$ for all $n \geq 1$ by induction on $n$.
+    \begin{itemize}
+        \item If $n = 1$ then $(a,c) \in R$ implies $(a,c) \in S$. So $(a,c) \in \SP$
+        \item If $n > 1$, suppose $(a,c) \in R^{n}$. So we have $(a,b) \in R^{n-1}$ and $(b,c) \in R$ for some $b$.
+              Then we have $(a,b) \in \SP$ by I.H. and  $(b,c) \in S$ by the assamption.
+              Thus $(a,c) \in \SP \cdot \SP$.
+              Hence $(a,c) \in \SP$.
+    \end{itemize}
+\end{proof}
+
+\begin{claim}
+    $(\cdot)^+$ is a closure operator.
+\end{claim}
+
+\begin{proof}
+    Because $\RP$ is a transitive closure of $R$, $R \subseteq R$ holds.
+    Additionally, we already show that idempotence and monotonicity of $(\cdot)^{+}$.
+    Hence the claim holds.
+\end{proof}
+
+\section*{A.11}
+\subsection*{(a)}
+
+\begin{claim}
+    $\RP = \RN$ for some $n$ dose not hold for arbitrary relation $R$ on a finite set $A$.
+\end{claim}
+
+\begin{proof}
+    Take
+    \begin{itemize}
+        \item $A = \{0,1,2\}$ and
+        \item $R = \{(0,1), (1,2)\}$.
+    \end{itemize}
+
+    Then we have
+    \begin{itemize}
+        \item $\RP = \{(0,1),(1,2),(0,2)\}$,
+        \item $R^0 = \mathrm{id}_A = \{(0,0), (1,1), (2,2)\}$,
+        \item $R^1 = \{(0,1), (1,2)\}$,
+        \item $R^2 = \{(0,2)\}$, and
+        \item $R^n = \emptyset$ with $n \geq 3$.
+    \end{itemize}
+    So we have $\RP \neq R^n$ for all $n$.
+    Hence the claim holds.
+\end{proof}
+
+\section*{A.13}
+\subsection*{(1)}
+\newcommand{\lex}{(>_A, >_B)_{\mathsf{lex}}}
+\begin{claim}
+    $(>_A, >_B)_{\mathsf{lex}}$ is a strict order if $>_A$ and $>_B$ are strict orders.
+\end{claim}
+
+\begin{proof}
+    Assume $>_A$ and $>_B$ are strict orders on $A$ and $B$ respectively.
+    
+    Firstly, we show that $\lex$ is irreflexive.
+    Let $((a_1, b_1), (a_2,b_2)) \in \lex$.
+    Then we have $a_1 >_A a_2$ or $a_1 = a_2$ and $b_1 >_B b_2$.
+        \begin{itemize}
+            \item If $a_1 >_A a_2$ then since $>_A$ is a strict order, $a_2 >_A a_1$ does not hold.
+            \item If $a_1 = a_2$ and $b_1 >_B b_2$ then $b_2 >_B b_1$ does not hold.
+        \end{itemize}
+        So $((a_2, b_2), (a_1, b_1)) \notin \lex$. 
+   
+    Secondly we show that $\lex$ is transitive.
+    Let $((a_1, b_1) (a_2, b_2)) \in \lex$ and $((a_2, b_2), (a_3, b_3)) \in \lex$.
+    \begin{itemize}
+        \item If $a_1 >_A a_2$ then we have two cases:
+            \begin{itemize}
+                \item If $a_2 >_A a_3$ then we have $a_1 >_A a_3$.
+                \item If $a_2 = a_3$ and $b_2 >_B b_3$ then $a_1 >_A a_3$.
+            \end{itemize}
+        \item If $a_1 = a_2$ and $b_1 >_B b_2$ then also we have two cases:
+            \begin{itemize}
+                \item If $a_2 >_A a_3$ then $a_1 >_A a_3$.
+                \item If $a_2 = a_3$ and $b_2 >_B b_3$ then we have $a_1 = a_3$ and $b_1 >_B b_3$.
+            \end{itemize}
+    \end{itemize}
+    Hence $\lex$ is transitive.
+    Finally, we conclude that $\lex$ is a strict order.
+    
+\end{proof}
+
 \end{document}
