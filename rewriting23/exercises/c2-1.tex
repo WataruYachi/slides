@@ -1,4 +1,4 @@
-\documentclass[autodetect-enginem]{article}
+\documentclass[autodetect-engine]{article}
 
 \usepackage{luatexja}
 \usepackage{luatexja-fontspec}
@@ -45,12 +45,12 @@
 \section*{2.1 (b)}
 
 Let $t = (\m{s}(\m{0}) + x) + \m{s}(\m{s}(\m{0}))$.
-Then $t$ is linear because the variable $x$ is occurred once.
+Then $t$ is linear because the variable $x$ occurs once.
 
 \section*{2.3 (a)}
 
 \begin{definition*}
-    Let t be a term and let $a$ be a function symbol or variable.
+    Let $t$ be a term and let $a$ be a function symbol or variable.
     \[
         |t|_a = \begin{cases}
             1 & \text{if $t = a$ and $a$ is a variable}\\
@@ -70,7 +70,7 @@ Then $t$ is linear because the variable $x$ is occurred once.
     We perform structural induction on $t$.
     \begin{itemize}
         \item If $t$ is a variable or constant then trivially we have $|t|_a = 0$. 
-        \item If $t = f(t_1,\dots,t_n)$ then by the I.H., for all $0 \leq i \leq n$, $|t_i|_a = 0$ holds.
+        \item If $t = f(t_1,\dots,t_n)$ then by the I.H., $|t_i|_a = 0$ for all $0 \leq i \leq n$ holds.
               By the assumption, $f \neq a$. Hence $|t|_a = 0$ holds.
     \end{itemize}
 \end{proof}
@@ -80,24 +80,24 @@ Then $t$ is linear because the variable $x$ is occurred once.
 \section*{2.4}
 
 \begin{claim}
-    For all term $t$ and $s$,
+    For all terms $t$ and $s$,
     if there exists some $p \in \Pos(t)$ such that $p \neq \varepsilon$ and $t|_p = s$ then
-    there exists some context $C$ such that $t = C[s]$.
+    there exists some non-empty context $C$ such that $t = C[s]$.
 \end{claim}
 
 \begin{proof}
     We perform structural induction on $t$.
     \begin{itemize}
-        \item If $t$ is a variable or constant then the claim holds.
-        \item If $t = f(t_1,\dots, t_n$ then take $C = t[\,]_p$.
+        \item If $t$ is a variable or constant then vacuously the claim holds.
+        \item If $t = f(t_1,\dots, t_n$) then take $C = t[\,]_p$.
         Since $p \neq \varepsilon$, we have $p = iq$ for some $i,q$ and $C \neq \Box$.
-        Additionally, we have $t[\,]_p = f(t_1, t_i[\,]_q, t_n)$ and $s = t|_p = t_i|_q$.
+        Moreover, we have $t[\,]_p = f(t_1, \dots, t_i[\,]_q,\dots, t_n)$ and $s = t|_p = t_i|_q$.
         We distinguish two cases.
         \begin{itemize}
             \item If $q=\varepsilon$ then we have $t[\,]_p = f(t_1,\dots,\Box,t_n)$ and $s = t_i$.
                 Thus $C[s] = (t[\,]_p)[s] = f(t_1,\dots,\Box[s],\dots,t_n) = f(t_1,\dots,t_i,\dots,t_n) = t$.
                 Hence the claim holds.
-            \item If $q \neq \varepsilon$ we have $s = t_i|_q$. By the I.H., we have $(t_i[\,])[s] = t_i$.
+            \item If $q \neq \varepsilon$ we have $s = t_i|_q$. By the I.H., we have $(t_i[\,]_q)[s] = t_i$.
                 Thus $C[s] = (t[\,]_p)[s] = f(t_1,\dots,(t_i[\,]_q)[s],\dots,t_n) = f(t_1,\dots,t_i,\dots,t_n) = t$.
                 Hence the claim holds.
         \end{itemize}
@@ -112,44 +112,44 @@ Then $t|_{21} = \m{s}(\m{s}(\m{0}))$.
 \section*{2.7 (b)}
 
 \begin{claim}
-    $|t| = ||t|| + |\Pos_\VV(t)|$
+    $|t| = \|t\| + |\Pos_\VV(t)|$
 \end{claim}
 
 \begin{proof}
     We perform structural induction on $t$.
     \begin{itemize}
-        \item If $t$ is a variable $x$ then we have $|x| = 1$, $||x|| = 0$, and $|\Pos_\VV(x)| = 1$.
-            Hence $|x| = 1 = ||x|| + |\Pos_\VV(x)| holds$.
-        \item If $t$ if a constant $f$ then we have $|f| = 1$, $||f|| = 1$, and $|\Pos_\VV(f)| = 0$.
-            Hence $|f| = 1 = ||f|| + |\Pos_\VV(f)|$ holds.
+        \item If $t$ is a variable $x$ then we have $|x| = 1$, $\|x\| = 0$, and $|\Pos_\VV(x)| = 1$.
+            Hence $|x| = 1 = \|x\| + |\Pos_\VV(x)| holds$.
+        \item If $t$ is a constant $f$ then we have $|f| = 1$, $\|f\| = 1$, and $|\Pos_\VV(f)| = 0$.
+            Hence $|f| = 1 = \|f\| + |\Pos_\VV(f)|$ holds.
         \item If $t = f(t_1,\dots,t_n)$ then we have $|t| = 1 + |t_1| + \cdots + |t_n|$,
-            $||t|| = 1 + ||t_1|| + \cdots + ||t_n||$, and $|\Pos_\VV(t)| = |\Pos_\VV(t_1)| + |\Pos_\VV(t_n)|$.
-            By the I.H., for all $1 \leq i \leq n$, $|t_i| = ||t_i|| + |\Pos_\VV(t_i)|$ holds.
-            Thus we have $|t| = 1 + ||t_1|| + \cdots ||t_n|| + |\Pos_\VV(t_1)| + |\Pos_\VV(t_n)|$.
-            Hence $|t| = ||t|| +|\Pos_\VV(t)|$ holds. 
+            $\|t\| = 1 + \|t_1\| + \cdots + \|t_n\|$, and $|\Pos_\VV(t)| = |\Pos_\VV(t_1)| + \cdots + |\Pos_\VV(t_n)|$.
+            By the I.H., for all $1 \leq i \leq n$, $|t_i| = \|t_i\| + |\Pos_\VV(t_i)|$ holds.
+            Thus we have $|t| = 1 + \|t_1\| + \cdots \|t_n\| + |\Pos_\VV(t_1)| + \cdots + |\Pos_\VV(t_n)|$.
+            Hence $|t| = \|t\| +|\Pos_\VV(t)|$ holds. 
     \end{itemize}
 \end{proof}
 
 \begin{claim}
-    $t$ is ground $\Leftrightarrow$ $|t| = ||t||$
+    $t$ is ground $\Leftrightarrow$ $|t| = \|t\|$
 \end{claim}
 
 \begin{proof}
     ($\Rightarrow$-direction) Let $t$ be a ground term.
     We perform structural induction on $t$.
     \begin{itemize}
-        \item If $t$ is constant then $|t| = 1 = ||t||$ holds.
-        \item If $t = f(t_1,\dots,f_n)$ then we have $|t| = 1 + |t_1| + \cdots + |t_n|$ and $||t|| = 1 + ||t_1|| + \cdots||t_n||$.
+        \item If $t$ is constant then $|t| = 1 = \|t\|$ holds.
+        \item If $t = f(t_1,\dots,f_n)$ then we have $|t| = 1 + |t_1| + \cdots + |t_n|$ and $\|t\| = 1 + \|t_1\| + \cdots + \|t_n\|$.
         Since $t$ is ground, for all $1 \leq i \leq n$, $t_i$ is ground.
-        By the I.H., we have $|t_i| = ||t_i||$.
-        Hence $|t| = ||t_1||$ holds.
+        By the I.H., we have $|t_i| = \|t_i\|$.
+        Hence $|t| = \|t_1\|$ holds.
     \end{itemize}
 
     ($\Leftarrow$-direction)
-    Suppose $|t| = ||t||$.
+    Suppose $|t| = \|t\|$.
     Assume that $t$ is not ground.
     Then $|\Pos_\VV(t)| > 0$.
-    Since $|t| = ||t|| + |\Pos_\VV(t)|$, $|t| \neq ||t||$.
+    Since $|t| = \|t\| + |\Pos_\VV(t)|$, $|t| \neq \|t\|$.
     Hence we have contradiction.
 \end{proof}
 
@@ -158,7 +158,7 @@ Then $t|_{21} = \m{s}(\m{s}(\m{0}))$.
 \section*{2.9 (b)}
 
 \begin{claim}
-    For all position $p$ and $q$, $p=q$, $p < q$, $p \parallel q$, or $q < p$ holds.
+    For all position $p$ and $q$, one of $p=q$, $p < q$, $p \parallel q$, and $q < p$ holds.
 \end{claim}
 
 \begin{proof}
@@ -173,29 +173,53 @@ Then $t|_{21} = \m{s}(\m{s}(\m{0}))$.
 \end{proof}
 
 \section*{2.11}
+
 \begin{claim}
-    Let $p$ and $q$ be a position.
-    If $p \parallel q$ then $pr \parallel qr$ and $qr \parallel qr$ holds for all position $r$.
+    For all positions $p$, $q$, $r$, and $s$,
+    if $p \parallel q$ then $pr \parallel qs$ and $rq \parallel sq$.
 \end{claim}
 
 \begin{proof}
-    Let $p \parallel q$ and let $r$ be a position.
-    ($pr \parallel qr$)
-    Suppose $pr \leqslant qr$ or $rp \leqslant rq$.
-    \begin{itemize}
-        \item If $pr \leqslant qr$ then there exists some $r'$ such that $prr' = qr$.
-            By eliminating $r'$, we obtain $pr' = q$. Thus $p \nparallel q$. We have contradiction.
-        \item Otherwise, similarly we have contradiction.
-    \end{itemize}
-    Additionally, we can show that $rp \parallel rq$ in the same way.
+    Suppose $p \parallel q$. Firstly, we show that $pr \parallel qs$ for all $r$ and $s$.
+    Assume that $pr \leq qs$ or $qs \leq pr$.
+    
 \end{proof}
+
+%\begin{claim}
+%    Let $p$ and $q$ be a position.
+%    If $p \parallel q$ then $pr \parallel qr$ and $qr \parallel qr$ holds for all position $r$.
+%\end{claim}
+
+%\begin{proof}
+%    Let $p \parallel q$ and let $r$ be a position.
+%    ($pr \parallel qr$)
+%    Suppose $pr \leqslant qr$ or $rp \leqslant rq$.
+%    \begin{itemize}
+%        \item If $pr \leqslant qr$ then there exists some $r'$ such that $prr' = qr$.
+%            By eliminating $r'$, we obtain $pr' = q$. Thus $p \nparallel q$. We have contradiction.
+%        \item Otherwise, similarly we have contradiction.
+%    \end{itemize}
+%    Additionally, we can show that $rp \parallel rq$ in the same way.
+%\end{proof}
 
 \section*{2.12 (d)}
 
 \begin{claim}
     Let $P$ be a finite set of positions.
-    Then $> \cup >_1$ on $P$ is a well-order.
+    Then ${>} \cup {>_1}$ on $P$ is a well-order.
 \end{claim}
+
+\newcommand{\rr}{> \cup >_1}
+
+\begin{proof}
+    By previous question, $> \cup >_1$ is total order.
+    So, we show that $> \cup >_1$ is well-founded on every finite set of position $P$.
+    
+    Assume that there exists an infinite descending sequence $p_1 \rr p_2 \rr p_3 \rr \cdots$ of element $P$.
+    Since $P$ is finite, we have $p_i = p_j$ for some $i$ and $j$ such that $i < j$.
+    Because $\rr$ is transitive, we have $p_i > p_j$.
+    Hence we have contradiction.
+\end{proof}
 
 \section*{2.14 (a)}
 
@@ -208,24 +232,34 @@ Then $t|_{21} = \m{s}(\m{s}(\m{0}))$.
     Let $s$ and $t$ be a term and $p,q \in \Pos(s)$.
     We perform structural induction on $s$.
     \begin{itemize}
-        \item If $s$ is a variable or constant then the claim holds.
+        \item If $s$ is a variable or constant then the claim holds vacuously.
         \item If $s = f(s_1,\dots,s_n)$ then suppose $p \parallel q$.
         We distinguish two cases.
             \begin{itemize}
                 \item If $p = ip'$ and $q = iq'$ then
-                    we have $(s[t]_p)|_q = f(s_1, \dots, s_i[t]_{p'}, \dots, s_n)|_{iq'} = (s_i[t]_p')|_{q'}$
-                    and $s|_q = s_i|_{q'}$. Since $p' \parallel q'$ and the I.H., we obtain $(s_i[t]_{p'})|_{q'} = s_i|_{q'}$.
+                    we have
+                        \[
+                            (s[t]_p)|_q = f(s_1, \dots, s_i[t]_{p'}, \dots, s_n)|_{iq'} = (s_i[t]_p')|_{q'}
+                        \]
+                    and \[
+                            s|_q = s_i|_{q'}.
+                        \]
+                    Since $p' \parallel q'$ and the I.H., we obtain $(s_i[t]_{p'})|_{q'} = s_i|_{q'}$.
                     Hence we have $(s[t]_p)|_q = s|_q$.
-                \item If $p = ip'$, $q = iq'$ and $i \neq j$ then
-                    we have $(s[t]_p)|_q = f(s_1, \dots, s_i[t]_{p'}, \dots, s_j, \dots, s_n)|_{jq'}
-                    = s_j|_{q'}$ and $s|_q = s_j|_{q'}$.
+                \item If $p = ip'$, $q = jq'$ and $i \neq j$ then
+                    we have
+                    \[(s[t]_p)|_q = f(s_1, \dots, s_i[t]_{p'}, \dots, s_j, \dots, s_n)|_{jq'}
+                    = s_j|_{q'}\]
+                    and \[
+                        s|_q = s_j|_{q'}.
+                    \]
                     Hence $(s[t]_p)|_q = s|_q$ holds.
             \end{itemize}
     \end{itemize}
 \end{proof}
 
 \section*{2.15}
-Let $t = x + (y + (x + y)) and \sigma = \{x \mapsto \m{0}, y \mapsto \m{s}(\m{0}), z \mapsto x + x\}$.
+Let $t = x + (y + (x + y))$ and $\sigma = \{x \mapsto \m{0}+z, y \mapsto \m{s}(\m{0}), z \mapsto x + x\}$.
 Then $t\sigma = (\m{0} + z) + (\m{s}(0) + ((\m{0} + z) + \m{s}(\m{0})))$ and
 $\mathcal{D}\mathsf{om}(\sigma) = \{x,y,z\}$.
 
